@@ -1,0 +1,114 @@
+<div class="container-fluid p-0">
+    <div class="row justify-content-center mx-3">
+        <div class="col-md-12 m-3">
+            <div class="card my-3">
+                <div class="d-flex align-items-center justify-content-between p-2">
+                    <h3 class="m-0 px-3 fw-bold fs-4 d-flex align-items-center">
+                        Students
+                    </h3>
+                    <div class="col-md-9 d-flex align-items-center justify-content-end">
+                        <i class="fa-solid fa-magnifying-glass searching-icon"></i>
+                        <input type="search" placeholder="Search here..." aria-label="Search" class="search-input"
+                            #searchInput (input)="getSearchInput(searchInput.value)" />
+                    </div>
+                </div>
+            </div>
+            <div class="card px-3">
+                <div class="col-md-12">
+                    <mat-paginator [length]="total" [pageSize]="limit" [pageSizeOptions]="[10, 25, 50, 100]"
+                        [showFirstLastButtons]="true" (page)="onPageChange($event)">
+                    </mat-paginator>
+                </div>
+
+                <hr class="m-0" />
+                <div class="card-header bg-white d-flex justify-content-end px-3">
+                    <button type="button" class="fw-bold btn btn-outline-primary btn-primary text-white px-4 btn-sm"
+                        [routerLink]="['/admin',{ outlets: { admin_menu: 'add-student' } }]">
+                        <i class="fa fw-bolded fa-solid fa-plus me-1"></i> Add
+                    </button>
+                    <button class="btn btn-success fw-bold text-white px-4 btn-sm ms-2"
+                        (click)="downloadStudentList()">
+                        <i class="fa fw-bolded fa-download me-1"></i> Download
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-light">
+
+                                    <tr>
+                                        <th scope="col">Sr.No</th>
+                                        <th scope="col" class="text-center">Options</th>
+                                        <th scope="col" class="text-center">Group</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Mobile</th>
+                                        <th scope="col">Gender</th>
+                                        <th scope="col">College</th>
+                                        <th scope="col">Course</th>
+                                        <!-- <th scope="col">Designation</th> -->
+                                        <th scope="col">Approve</th>
+                                    </tr>
+
+                                </thead>
+                                <tbody class="body-data">
+                                    <tr *ngFor="let item of allStudentList; let i = index">
+                                        <td>{{ i + 1 }}</td>
+                                        <td class="text-center">
+                                            <div class="btn-group dropright cursor-pointer">
+                                                <i class="bi bi-three-dots-vertical  dropdown-toggle-split" data-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false"></i>
+                                                <div class="dropdown-menu short-dropdown-menu">
+                                                    <a class="dropdown-item cursor-pointer" [routerLink]="['/admin',{outlets: {admin_menu: 'view-student/' + item.student_id}}]">
+                                                        <i class="bi bi-eye fs-5"></i>
+                                                       <small> View</small>
+                                                    </a>
+                                                    <a class="dropdown-item cursor-pointer" [routerLink]="['/admin',{outlets: {admin_menu: 'edit-student/' + item.student_id}}]">
+                                                        <i class="bi bi-pencil-square fs-5"></i>
+                                                        <small> Edit</small>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <!-- <td class="">
+                                            <mat-slide-toggle (change)="changeEvent($event, item.designation_id)"
+                                                class="example-margin small-toggle cursor-pointer"
+                                                [checked]="item.status == true">
+                                            </mat-slide-toggle>
+                                        </td> -->
+                                        <td class="wrap-text text-center">{{ item.group_name || "--" }}</td>
+                                        <td class="wrap-text">{{(item.student_name | titlecase) ||"--"}}</td>
+                                        <td class="wrap-text">{{ item.email_id || "--" }}</td>
+                                        <td class="wrap-text">{{ item.phone_number || "--" }}</td>
+                                        <td class="wrap-text">{{ item.gender || "--" }}</td>
+                                         <td class="wrap-text">{{ (item.college_name | titlecase) || "--" }}</td>
+                                          <td class="wrap-text">{{ item.course || "--" }}</td>
+                                        <!-- <td class="wrap-text">{{ (item.designation | titlecase) || "--" }}</td> -->
+                                        <!-- <td class="wrap-text text-center">{{ (item.Student_status | titlecase) || "--" }}</td> -->
+                                           <td class="">
+                                            <mat-slide-toggle (change)="changeEvent($event, item.student_id)"
+                                                class="example-margin small-toggle cursor-pointer"
+                                                [checked]="item.status == true">
+                                            </mat-slide-toggle>
+                                        </td>
+                                    </tr>
+                                    <tr class="fw-bold text-center" *ngIf="allStudentList.length === 0">
+                                        <td colspan="10" class="text-danger">No Data Available</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div class="col-md-12">
+                                <mat-paginator [length]="total" [pageSize]="limit" [pageSizeOptions]="[5, 10, 25, 100]"
+                                    aria-label="Select page" [showFirstLastButtons]="true"
+                                    (page)="onPageChange($event)">
+                                </mat-paginator>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

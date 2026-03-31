@@ -1,0 +1,251 @@
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col-md-12 m-3">
+      <div class="card p-3">
+        <div class="card-header d-flex justify-content-between p-3">
+          <strong class="text-dark"
+            >{{ isEdit ? "Edit" : "Add " }} Questionnaire</strong
+          >
+        </div>
+        <div class="card-body p-0">
+          <form [formGroup]="form">
+            <div class="row">
+
+                        <div class="col-3 col-md-3">
+                          <div class="form-group">
+                            <label class="">
+                              First Name
+                              <span class="text-danger">*</span></label
+                            >
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="First Name"
+                              formControlName="first_name"
+                              autocomplete="new-password"
+                              [ngClass]="{
+                                'is-invalid':
+                                  controls['first_name'].invalid &&
+                                  (controls['first_name'].dirty ||
+                                    controls['first_name'].touched),
+                              }"
+                            />
+                            <div
+                              class="text-danger"
+                              *ngIf="
+                                controls['first_name'].invalid &&
+                                (controls['first_name'].dirty ||
+                                  controls['first_name'].touched)
+                              "
+                            >
+                              <small> First Name is Required</small>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-3 col-md-3">
+                          <div class="form-group">
+                            <label class=" "
+                              >Last Name
+                              <span class="text-danger">*</span></label
+                            >
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Last Name"
+                              formControlName="last_name"
+                              autocomplete="new-password"
+                              [ngClass]="{
+                                'is-invalid':
+                                  controls['last_name'].invalid &&
+                                  (controls['last_name'].dirty ||
+                                    controls['last_name'].touched),
+                              }"
+                            />
+                            <div
+                              class="text-danger"
+                              *ngIf="
+                                controls['last_name'].invalid &&
+                                (controls['last_name'].dirty ||
+                                  controls['last_name'].touched)
+                              "
+                            >
+                              <small> Last Name is Required</small>
+                            </div>
+                          </div>
+                        </div>
+                     
+                        <div class="col-2 col-md-2">
+                          <div class="form-group">
+                            <label class=" "
+                              >DOB<span class="text-danger">*</span></label
+                            >
+                            <input
+                              type="date"
+                              class="form-control"
+                              placeholder="DOB"
+                              formControlName="dob"
+                              autocomplete="new-password"
+                              [ngClass]="{
+                                'is-invalid':
+                                  controls['dob'].invalid &&
+                                  (controls['dob'].dirty ||
+                                    controls['dob'].touched),
+                              }"
+                            />
+                            <div
+                              class="text-danger"
+                              *ngIf="
+                                controls['dob'].invalid &&
+                                (controls['dob'].dirty ||
+                                  controls['dob'].touched)
+                              "
+                            >
+                              <small>DOB is Required</small>
+                            </div>
+                          </div>
+                        </div>
+                      
+                        
+                        <div class="col-3 col-md-3">
+                          <div class="form-group">
+                            <label class="">Employee Code <span class="text-danger">*</span></label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Employee Code"
+                              formControlName="employee_code"
+                              [ngClass]="{
+                                'is-invalid':
+                                  controls['employee_code'].invalid &&
+                                  (controls['employee_code'].dirty ||
+                                    controls['employee_code'].touched),
+                              }"
+                            />
+                            <div
+                              class="text-danger"
+                              *ngIf="
+                                controls['employee_code'].invalid &&
+                                (controls['employee_code'].touched ||
+                                  controls['employee_code'].dirty)
+                              "
+                            >
+                              <small> Employee Code is Required</small>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                <div class="my-3 card py-2">
+                  <div class="row mx-0 p-2" formArrayName="questionnaireFooter">
+                    <div
+                      class="row card mx-0 mb-2"
+                      *ngFor="
+                        let item of getQuestionnaireArray.controls;
+                        let i = index
+                      "
+                      [formGroupName]="i"
+                    >
+                      <div class="row p-2">
+                        <div class="col-3 col-md-3">
+                          <div class="form-group">
+                            <label class="">Education Type</label>
+                            <mat-select
+                              formControlName="option"
+                              placeholder="Select Education Type"
+                              class="form-control"
+                            >
+                              <mat-option value="">
+                                Select Education Type
+                              </mat-option>
+                              <mat-option
+                                *ngFor="let item of filteredCompanyList"
+                                [value]="item.name"
+                              >
+                                {{ item.name | titlecase }}
+                              </mat-option>
+                            </mat-select>
+                          </div>
+                        </div>
+                        <div class="col-2 col-md-2">
+                          <div class="form-group">
+                            <label for=""></label><br />
+                            <span
+                              class="view"
+                              data-toggle="tooltip"
+                              data-placement="top"
+                              title="Preview"
+                            >
+                              <i
+                                class="bi fs-3"
+                                (click)="onImagePreview(i)"
+                                [ngClass]="{
+                                  'bi-eye-fill': getQuestionnaireArray
+                                    .at(i)
+                                    .get('visible')?.value,
+                                  'bi-eye-slash-fill': !getQuestionnaireArray
+                                    .at(i)
+                                    .get('visible')?.value,
+                                }"
+                              >
+                              </i>
+                            </span>
+                          </div>
+                        </div>
+                        <div class="col-3 col-md-3 d-flex justify-content-end">
+                          <div
+                            class="form-group"
+                            *ngIf="
+                              getQuestionnaireArray.at(i).get('visible')?.value
+                            "
+                          >
+                            <img
+                              [src]="
+                                getQuestionnaireArray.at(i).get('file_path')?.value
+                                  ? 'data:image/png;base64,' +
+                                    getQuestionnaireArray.at(i).get('file_path')
+                                      ?.value
+                                  : 'assets/image/document-placeholder.png'
+                              "
+                              alt="Preview"
+                              height="130px"
+                              width="180px"
+                              class="border"
+                            />
+                          </div>
+                          <i
+                            class="bi fs-3 bi-x-circle text-danger mx-3 cursor-pointer"
+                            (click)="removeQuestionnaire(i,item.get('Questionnaire_education_id')?.value)"
+                            *ngIf="getQuestionnaireArray.value.length > 1"
+                          ></i>
+                        </div>
+                        <!-- <div class="col-1 col-md-1">
+                                                <br>
+                                                <i class="bi fs-3 bi-x-circle text-danger mx-3 "
+                                                        (click)="removeEducation(i)"
+                                                        *ngIf="getQuestionnaireArray.value.length>1"></i>
+                                            </div> -->
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div
+                        class="col-md-12 row d-flex justify-content-end mt-2"
+                      >
+                        <div class="col-md-auto">
+                          <!-- <button
+                            class="btn btn-sm btn-primary"
+                            (click)="addQuestionnaire()"
+                          >
+                            Add
+                          </button> -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+             
+                </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,105 @@
+.text-black-custom {
+  color: black !important;
+}
+.phone-number{
+    padding-left: 55px;
+}
+.input-group .country-code-btn {
+  min-width: 80px;
+}
+.input-group {
+    position: relative;
+}
+.tempus-dominus-container {
+  z-index: 1055 !important; /* higher than bootstrap modal/input */
+}
+
+// .tempus-dominus-widget.show {
+//     display: block !important;
+//     top: 100% !important;    /* positions below input */
+//     left: 0 !important;      /* aligns with input left */
+//     margin-top: 4px;         /* optional gap between input and widget */
+//     z-index: 1050;           /* make sure it's above other elements */
+// }
+
+.country-code-inside-input {
+  position: absolute;
+  top: 7px; /* Adjust this value as needed based on your input height */
+  left: 110px; /* Adjust to match your layout */
+  z-index: 10; /* Higher to stay above input */
+  color: #000 !important; /* Ensure it's black always */
+  font-size: 16px;
+  pointer-events: none;
+}
+
+/* Ensure the typed input text is black and has left padding */
+input.form-control {
+  color: #000 !important;
+//   padding-left: 60px; /* Enough space for the prefix */
+}
+input:disabled,
+select:disabled,
+textarea:disabled {
+  cursor: not-allowed;
+  background-color: #f5f5f5; /* Optional: Gray background */
+}
+@media (max-width: 1200px) {
+  .country-code-inside-input {
+    left: 110px;
+  }
+}
+
+@media (max-width: 992px) {
+  .country-code-inside-input {
+    left: 120px;
+  }
+}
+
+@media (max-width: 768px) {
+  .country-code-inside-input {
+    top: 8px;
+    left: 110px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 576px) {
+  .country-code-inside-input {
+    top: 8px;
+    left: 120px;
+    font-size: 12px;
+  }
+
+  input.form-control {
+    padding-left: 50px;
+  }
+}
+.not-allowed-cursor {
+  cursor: not-allowed !important;
+  background-color: #f8d7da; // light red for invalid input
+}
+.input-group .country-select {
+  max-width: 25% !important;
+}
+.Company-name{
+  cursor: pointer !important;
+}
+// /* This will limit dropdown width and overflow */
+// .autocomplete-container {
+//   position: relative;
+// }
+
+// /* Style for the dropdown list */
+// .autocomplete-dropdown {
+//   position: absolute;
+//   top: 100%;
+//   left: 0;
+//   right: 0;
+//   z-index: 10;
+//   background-color: white;
+//   max-height: 200px;
+//   overflow-y: auto;
+//   border: 1px solid #ced4da;
+//   border-top: none; /* visually connects to input */
+//   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+// }

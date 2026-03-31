@@ -1,0 +1,279 @@
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col-md-12 m-3">
+      <div class="card p-3">
+        <div class="card-header d-flex justify-content-between p-3">
+          <strong class="text-dark"
+            >{{ isEdit ? " Edit" : "Add " }} Test</strong
+          >
+        </div>
+        <div class="card-body">
+          <form [formGroup]="TestForm">
+            <div class="row">
+              <div class="col-3 col-md-3">
+                <div class="form-group">
+                  <label
+                    class="mb-1 d-flex justify-content-between align-items-center"
+                  >
+                    <span>Group <span class="text-danger">*</span></span>
+                  </label>
+                  <mat-select
+                    formControlName="group_id"
+                    placeholder="Select Group"
+                    class="form-control theme-input"
+                    [ngClass]="{
+                      'is-invalid':
+                        controls['group_id'].invalid &&
+                        (controls['group_id'].dirty ||
+                          controls['group_id'].touched),
+                    }"
+                  >
+                    <mat-option>
+                      <ngx-mat-select-search
+                        [(ngModel)]="searchGroupValue"
+                        [ngModelOptions]="{ standalone: true }"
+                        (input)="filterGroup()"
+                        placeholderLabel="Search Group"
+                        noEntriesFoundLabel="No result found"
+                      ></ngx-mat-select-search>
+                    </mat-option>
+
+                    <mat-option
+                      *ngFor="let source of filteredGroupList"
+                      [value]="source.group_id"
+                    >
+                      {{ source.group_name | titlecase }}
+                    </mat-option>
+                  </mat-select>
+                  <div
+                    class="text-danger"
+                    *ngIf="
+                      controls['group_id'].invalid &&
+                      (controls['group_id'].touched ||
+                        controls['group_id'].dirty)
+                    "
+                  >
+                    <small>Please select a Group.</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-3 col-md-3">
+                <div class="form-group">
+                  <label for="test_name" class="mb-1"
+                    >Test Name <span class="text-danger">*</span>
+                  </label>
+                  <input
+                    class="form-control mb-1"
+                    id="test_name"
+                    placeholder="Test Name"
+                    type="text"
+                    formControlName="test_name"
+                    [ngClass]="{
+                      'is-invalid':
+                        controls['test_name'].invalid &&
+                        (controls['test_name'].dirty ||
+                          controls['test_name'].touched),
+                    }"
+                  />
+                  <div
+                    class="text-danger"
+                    *ngIf="
+                      controls['test_name'].invalid &&
+                      (controls['test_name'].dirty ||
+                        controls['test_name'].touched)
+                    "
+                  >
+                    <div *ngIf="controls['test_name'].errors?.['required']">
+                      <small>Test Name is Required</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-3 col-md-3">
+                <div class="form-group">
+                  <label
+                    class="mb-1 d-flex justify-content-between align-items-center"
+                  >
+                    <span>Duration <span class="text-danger">*</span></span>
+                  </label>
+
+                  <input
+                    type="number"
+                    class="form-control"
+                    formControlName="duration"
+                    placeholder="Duration"
+                    [ngClass]="{
+                      'is-invalid':
+                        controls['duration'].invalid &&
+                        (controls['duration'].dirty ||
+                          controls['duration'].touched),
+                    }"
+                  />
+                  <div
+                    class="text-danger"
+                    *ngIf="
+                      controls['duration'].invalid &&
+                      (controls['duration'].dirty ||
+                        controls['duration'].touched)
+                    "
+                  >
+                    <div *ngIf="controls['duration'].errors?.['required']">
+                      <small>Duration is Required</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-3 col-md-3">
+                <div class="form-group">
+                  <label for="total_marks" class="mb-1">
+                    Total Marks
+                    <span class="text-danger">*</span>
+                  </label>
+
+                  <div class="input-group">
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="total_marks"
+                      placeholder="Total Marks"
+                      [ngClass]="{
+                        'is-invalid':
+                          controls['total_marks'].invalid &&
+                          (controls['total_marks'].dirty ||
+                            controls['total_marks'].touched),
+                      }"
+                    />
+                  </div>
+
+                  <div
+                    class="text-danger"
+                    *ngIf="
+                      controls['total_marks'].invalid &&
+                      (controls['total_marks'].dirty ||
+                        controls['total_marks'].touched)
+                    "
+                  >
+                    <div *ngIf="controls['total_marks'].errors?.['required']">
+                      <small>Total Marks is Required</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-3 col-md-3">
+                <div class="form-group">
+                  <label class="mb-2 d-flex justify-content-between">
+                    <span>Start Time <span class="text-danger">*</span></span>
+                  </label>
+                  <div
+                    class="input-group"
+                    id="startTimePicker"
+                    data-td-target-input="nearest"
+                    data-td-target-toggle="nearest"
+                  >
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="start_time"
+                      placeholder="hh:mm"
+                      data-td-target="#startTimePicker"
+                      readonly
+                      [ngClass]="{
+                        'is-invalid':
+                          controls['start_time'].invalid &&
+                          (controls['start_time'].dirty ||
+                            controls['start_time'].touched),
+                      }"
+                    />
+                    <span
+                      class="input-group-text"
+                      data-td-toggle="datetimepicker"
+                      data-td-target="#startTimePicker"
+                    >
+                      <i class="fa fa-clock"></i>
+                    </span>
+                  </div>
+                  <div
+                    class="text-danger"
+                    *ngIf="
+                      controls['start_time'].invalid &&
+                      (controls['start_time'].dirty ||
+                        controls['start_time'].touched)
+                    "
+                  >
+                    <small *ngIf="controls['start_time'].errors?.['required']"
+                      >Start Time is Required</small
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="col-3 col-md-3">
+                <div class="form-group">
+                  <label class="mb-2"
+                    >End Time <span class="text-danger">*</span></label
+                  >
+                  <div
+                    class="input-group"
+                    id="endTimePicker"
+                    data-td-target-input="nearest"
+                    data-td-target-toggle="nearest"
+                  >
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="end_time"
+                      placeholder="hh:mm"
+                      data-td-target="#endTimePicker"
+                      readonly
+                      [ngClass]="{
+                        'is-invalid':
+                          controls['end_time'].invalid &&
+                          (controls['end_time'].dirty ||
+                            controls['end_time'].touched),
+                      }"
+                    />
+                    <span
+                      class="input-group-text"
+                      data-td-toggle="datetimepicker"
+                      data-td-target="#endTimePicker"
+                    >
+                      <i class="fa fa-clock"></i>
+                    </span>
+                  </div>
+                  <div
+                    class="text-danger"
+                    *ngIf="
+                      controls['end_time'].invalid &&
+                      (controls['end_time'].dirty ||
+                        controls['end_time'].touched)
+                    "
+                  >
+                    <small *ngIf="controls['end_time'].errors?.['required']"
+                      >End Time is Required</small
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr />
+            <div>
+              <button
+                type="submit"
+                class="btn btn-primary px-4 btn-sm fw-bold"
+                (click)="submit()"
+              >
+                {{ isEdit ? "Update" : "Submit" }}
+              </button>
+              <button
+                type="submit"
+                class="btn btn-secondary ms-3 px-4 btn-sm fw-bold"
+                (click)="goToback()"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

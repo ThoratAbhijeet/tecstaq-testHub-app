@@ -1,0 +1,113 @@
+<div class="container-fuild">
+  <div class="row h-100 m-0">
+    <div class="side-bar">
+      <div class="logo p-3 text-center cursor-pointer">
+        <img
+          src="assets/image/Tecstaq-new-logo-transeparent.png"
+          alt="tecstaq-test"
+          [routerLink]="[
+            '/admin',
+            { outlets: { admin_menu: ['admin-dashboard'] } },
+          ]"
+        />
+      </div>
+      <div class="menu">
+        <ul class="nav">
+          <!-- Dashboard -->
+          <li
+            class="nav-item"
+            routerLinkActive="active"
+            [routerLink]="[
+              '/admin',
+              { outlets: { admin_menu: ['admin-dashboard'] } },
+            ]"
+          >
+            <span
+              ><i class="fa fas Dashboard-icon fa-tachometer-alt me-2"></i
+            ></span>
+            Dashboard
+          </li>
+          <!-- Group -->
+          <li
+            class="nav-item"
+            routerLinkActive="active"
+            [routerLink]="['/admin', { outlets: { admin_menu: ['group'] } }]"
+          >
+            <span><i class="bi bi-collection h5"></i></span>Group 
+          </li>
+          <!-- student profile -->
+          <li
+            class="nav-item"
+            routerLinkActive="active"
+            [routerLink]="['/admin', { outlets: { admin_menu: ['student'] } }]"
+          >
+            <span><i class="bi bi-person h5"></i></span>Students 
+          </li>
+           <!--  test -->
+          <li
+            class="nav-item"
+            routerLinkActive="active"
+            [routerLink]="['/admin', { outlets: { admin_menu: ['test'] } }]"
+          >
+            <span><i class="bi bi-chat-dots h5"></i></span>Test 
+          </li>
+          <!-- Quetion -->
+           <li class="nav-item accordion-header" id="headingOne">
+            <span
+              ><i class="bi bi-card-checklist h5" aria-hidden="true"></i
+            ></span>
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              (click)="toggleAccordion('collapseOne')"
+              aria-expanded="false"
+              aria-controls="collapseOne"
+            >
+              Question
+              <span class="dropdown-icon"></span>
+            </button>
+          </li>
+          <ul id="collapseOne" class="accordion-collapse collapse sub-menu">
+            <li
+              class="nav-item sub-nav-item"
+              routerLinkActive="active"
+              [routerLink]="[
+                '/admin',
+                { outlets: { admin_menu: ['quetion-type'] } },
+              ]"
+            >
+              Question Type
+            </li>
+            <!-- <li class="nav-item sub-nav-item" routerLinkActive="active"
+                            [routerLink]="['/manager', { outlets: { manager_menu: ['leave-balance'] } }]">
+                            Balance
+                        </li> -->
+            <li
+              class="nav-item sub-nav-item"
+              routerLinkActive="active"
+              [routerLink]="['/admin', { outlets: { admin_menu: ['questionnaire'] } }]"
+            >
+              Create Questionnaire
+            </li>
+          </ul>
+
+          <!-- Change Password -->
+          <li class="nav-item" (click)="openChangePasswordDialog()">
+            <span>
+              <i class="fas fa-key me-2"></i>
+              <span style="position: absolute">Change Password</span>
+            </span>
+          </li>
+
+          <!-- Logout -->
+          <li class="nav-item" (click)="logout()">
+            <span><i class="fa fas fa-sign-out-alt me-2"></i></span>Logout
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="body">
+      <router-outlet name="admin_menu"></router-outlet>
+    </div>
+  </div>
+</div>

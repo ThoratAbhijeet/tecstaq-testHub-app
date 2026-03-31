@@ -1,0 +1,101 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card p-3 m-3">
+        <div class="card-header d-flex justify-content-between p-3">
+          <strong class="text-dark">View Test</strong>
+        </div>
+        <div class="card-body">
+          <form>
+            <div class="row">
+                <div class="col-4 mb-3">
+                <div class="form-group">
+                  <label for="Test_name">Group:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="Test_name"
+                    [value]="(allTestDetails.group_name | titlecase) || '--'"
+                    [disabled]="true"
+                  />
+                </div>
+              </div>
+              <div class="col-4 mb-3">
+                <div class="form-group">
+                  <label for="Test_name">Test Name:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="Test_name"
+                    [value]="(allTestDetails.test_name | titlecase) || '--'"
+                    [disabled]="true"
+                  />
+                </div>
+              </div>
+              <div class="col-4 mb-3">
+                <div class="form-group">
+                  <label for="email_id">Duration:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="email_id"
+                    [value]="allTestDetails.duration || '--'"
+                    [disabled]="true"
+                  />
+                </div>
+              </div>
+
+              <div class="col-4 mb-3">
+                <div class="form-group">
+                  <label for="phone_number">Total Marks:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="phone_number"
+                    [value]="allTestDetails.total_marks || '--'"
+                    [disabled]="true"
+                  />
+                </div>
+              </div>
+               <div class="col-4 mb-3">
+                <div class="form-group">
+                  <label for="Test_name">Start Time:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="Test_name"
+                    [value]="formatTime(allTestDetails.start_time) || '--'"
+                    [disabled]="true"
+                  />
+                </div>
+              </div>
+              <div class="col-4 mb-3">
+                <div class="form-group">
+                  <label for="Test_name">End Time:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="Test_name"
+                    [value]="formatTime(allTestDetails.end_time) || '--'"
+                    [disabled]="true"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <hr />
+            <div>
+              <button
+                type="button"
+                class="btn btn-secondary px-4 btn-sm fw-bold"
+                (click)="goToback()"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,1 +1,766 @@
-/* You can add global styles to this file, and also import other style files */
+* {
+    font-family: 'Poppins', sans-serif ;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.wrap-text {
+  white-space: normal;
+  word-wrap: break-word;
+  max-width: 200px; /* adjust as needed */
+}
+
+.mat-mdc-select-disabled {
+    color: rgb(247, 227, 227) !important;
+   background-color: #f5f5f5 !important; 
+}
+.mat-mdc-select-disabled .mat-mdc-select-trigger
+ {
+   cursor:  not-allowed !important;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.mat-mdc-select-value-text
+ {
+    white-space: nowrap;
+    cursor: pointer !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+        color: #000000 !important;
+}
+tbody .fa {
+  color: #222950 !important;
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+// .form-group{
+//   margin-bottom: 10px;
+//   font-size: 95%;
+//   input,mat-select{
+//     font-size: 95%!important;
+//   }
+// }
+
+
+.scrollable-body {
+  max-height: 500px;
+  overflow-y: auto;
+}
+small {
+  font-size: .83em !important;
+}
+
+small .error-icon {
+  content: url(../src/assets/icon/icon-warning-error.svg);
+  background-repeat: no-repeat;
+}
+.form-check-input {
+  box-shadow: none !important; /* Optional: prevents Bootstrap focus style */
+  border:2px solid #c4c4c4;
+}
+
+.form-check-input:checked {
+  background-color: rgb(87 187 67) !important;
+  box-shadow: 0 0 0 0.2rem rgba(48, 216, 48, 0.25) !important; /* Optional: matching green glow */
+  border: rgb(87 187 67) !important;
+}
+.search-input {
+    width: 35%;
+    height: 38.5px;
+    padding-left: 10px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 5px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 5px;
+    border: 1px solid #d2d2d2;
+  }
+.searching-icon{
+  border: 1px solid #d2d2d2;
+  padding: 10.5px;
+  // color: #757575;
+  border-right: 0px;
+  border-bottom-left-radius: 5px;
+  border-start-start-radius: 5px;
+}
+.search-input:focus{
+  outline: none;
+}
+.password-group {
+        position: relative;
+
+        .password-icon {
+                position: relative;
+                top: -26px;
+                left: 90%;
+
+        }
+
+        .error-message {
+                position: relative;
+                top: -20px;
+        }
+}
+::ng-deep .mat-mdc-paginator-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between !important; 
+    padding: 0 8px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+
+
+/* "Items per page:" ke aage "Results Found: X" dikhane ke liye */
+::ng-deep .mat-mdc-paginator-page-size {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between dropdown and results count */
+}
+.cursor-pointer {
+    cursor: pointer !important;
+  }
+  table, tr, td {
+    background-color: transparent;
+    color: rgb(9, 9, 14) !important;
+    font-size: 14px ;
+    border-color: rgba(190, 221, 255, 0.3);
+}
+.fixed-width {
+  width: 110px !important; /* Minimum width to fit at least 6 digits */
+  max-width: 150px; /* Set a max width to control the overflow */
+  // text-align: right; /* Align text to the right */
+  white-space: nowrap; /* Prevent text from wrapping to a new line */
+  overflow: hidden; /* Hide overflowing content */
+  text-overflow: ellipsis; /* Display ellipsis ("...") for overflow */
+}
+.loading{
+  height: 100%;
+  position: fixed;
+  background: #00000042;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+.lds-roller,
+.lds-roller div,
+.lds-roller div:after {
+  box-sizing: border-box;
+}
+.lds-roller {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-roller div {
+  animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  transform-origin: 40px 40px;
+}
+.lds-roller div:after {
+  content: " ";
+  display: block;
+  position: absolute;
+  width: 7.2px;
+  height: 7.2px;
+  border-radius: 50%;
+  background: rgb(59, 61, 87);
+  margin: -3.6px 0 0 -3.6px;
+}
+.lds-roller div:nth-child(1) {
+  animation-delay: -0.036s;
+}
+.lds-roller div:nth-child(1):after {
+  top: 62.62742px;
+  left: 62.62742px;
+}
+.lds-roller div:nth-child(2) {
+  animation-delay: -0.072s;
+}
+.lds-roller div:nth-child(2):after {
+  top: 67.71281px;
+  left: 56px;
+}
+.lds-roller div:nth-child(3) {
+  animation-delay: -0.108s;
+}
+.lds-roller div:nth-child(3):after {
+  top: 70.90963px;
+  left: 48.28221px;
+}
+.lds-roller div:nth-child(4) {
+  animation-delay: -0.144s;
+}
+.lds-roller div:nth-child(4):after {
+  top: 72px;
+  left: 40px;
+}
+.lds-roller div:nth-child(5) {
+  animation-delay: -0.18s;
+}
+.lds-roller div:nth-child(5):after {
+  top: 70.90963px;
+  left: 31.71779px;
+}
+.lds-roller div:nth-child(6) {
+  animation-delay: -0.216s;
+}
+.lds-roller div:nth-child(6):after {
+  top: 67.71281px;
+  left: 24px;
+}
+.lds-roller div:nth-child(7) {
+  animation-delay: -0.252s;
+}
+.lds-roller div:nth-child(7):after {
+  top: 62.62742px;
+  left: 17.37258px;
+}
+.lds-roller div:nth-child(8) {
+  animation-delay: -0.288s;
+}
+.lds-roller div:nth-child(8):after {
+  top: 56px;
+  left: 12.28719px;
+}
+@keyframes lds-roller {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+}
+
+}
+.small-toggle .mat-mdc-slide-toggle {
+  transform: scale(0.8); /* Adjust scale */
+}
+.sortable {
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.sort-icons {
+  display: flex;
+  flex-direction: column; /* Stack ▲ and ▼ vertically */
+  align-items: center; /* Center the arrows */
+  font-size: 8px; /* Small size */
+  margin-left: 3px;
+  margin-top: 5px;
+  line-height: 10px; /* Adjust spacing */
+}
+
+.sort-icons span {
+  opacity: 0.5; /* Default opacity */
+}
+
+.sort-icons .active {
+  font-weight: bold;
+  opacity: 1; /* Highlight active sort */
+}
+.btn-primary{
+  background-color: #6763f0 !important;
+ }
+.btn-success {
+  background-color: #198754 !important; /* green */
+}
+
+.btn-danger {
+  background-color: #dc3545 !important; /* red */
+}
+
+.btn-warning {
+  background-color: #ffc107 !important; /* yellow/orange */
+}
+
+.btn-info {
+  background-color: #0dcaf0 !important; /* light blue */
+}
+
+.btn-light {
+  background-color: #f8f9fa !important; /* light gray */
+  color: #000 !important;
+}
+
+.btn-dark {
+  background-color: #212529 !important; /* blackish */
+}
+/* Importing Bootstrap SCSS file. */
+// @import 'bootstrap/scss/bootstrap';
+
+::ng-deep.mat-mdc-paginator-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between!important; 
+    padding: 0 8px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+.short-dropdown-menu{
+  min-width: 2px!important
+}
+/* Override angular-editor icon styles to use FA icons */
+angular-editor .angular-editor-toolbar i {
+  font-family: 'Font Awesome 6 Free' !important;
+  font-weight: 900;
+  font-style: normal;
+}
+
+/* Hide broken SVG icons */
+angular-editor .angular-editor-toolbar svg {
+  display: none !important;
+}
+  :host ::ng-deep.mat-mdc-option {
+        font-size: 0px!important;
+        --mat-option-label-text-size:0.px!important
+    }
+
+    
+.form-group {
+    margin-bottom: 10px!important;
+    input, mat-select  {
+        height: 32px!important;
+        font-size: 0.89rem!important;
+    }
+    ::ng-deep .tel-form  {
+        height: 32px!important;
+        font-size: 0.89rem!important;
+    }
+    // .form-control{
+    //    height: 32px!important;
+    //     font-size: 0.89rem!important;
+    // }
+
+      ::ng-deep.prefix-form-field{
+    min-width: 80px!important;
+     }
+    textarea {
+        font-size: 0.89rem!important;
+    }
+
+    label {
+        font-size: 0.89rem !important;
+    }
+
+}
+::ng-deep.prefix-form-field {
+    min-width: 80px !important;
+}
+.leave-balance-details {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.leave-card {
+  width: 120px;
+  height: 120px;
+  padding: 10px;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.chart-wrapper {
+  width: 90px;
+  height: 90px;
+  margin: 0 auto;
+}
+
+.chart-info {
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.mat-date-group {
+  display: flex;
+  align-items: center;
+  border: 1px solid #dee2e6;
+  padding: 0px 0px 0px 15px;
+  height: 32px;
+  border-radius: 0.37rem;
+}
+.mat-date-toggle {
+  width: 10%;
+  height: 32px;
+}
+
+.mat-date-picker {
+  width: 0px;
+  height: 32px;
+  display: none;
+}
+
+.control-sm {
+  height: 25px !important;
+  font-size: 0.78rem;
+  
+}
+.mat-select-sm{
+       padding: 2px 10px;
+  }
+  .w-0{
+    width: 0%!important;
+  }
+  .w-10{
+    width: 10%!important;
+  }
+
+.is-invalid-date{
+    border: 1px solid red!important;
+}
+.req-card {
+  background: #ffffff;
+  padding: 14px 16px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  // justify-content: space-between;   /* 👈 NEW */
+  gap: 14px;
+  border-top: 7px solid;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  min-height: 70px; /* 👈 SAME HEIGHT */
+}
+
+.req-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.req-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.req-count {
+  font-size: 20px;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+/* Colors exactly like image */
+.req-card.attendance {
+  border-color: #22c55e;
+}
+.req-card.attendance .req-icon {
+  background: #e7f8ee;
+  color: #22c55e;
+}
+
+.req-card.tour {
+  border-color: #6366f1;
+}
+.req-card.tour .req-icon {
+  background: #eef0ff;
+  color: #6366f1;
+}
+
+.req-card.leaves {
+  border-color: #f59e0b;
+}
+.req-card.leaves .req-icon {
+  background: #fff4df;
+  color: #f59e0b;
+}
+
+.req-card.other {
+  border-color: #ec4899;
+}
+.req-card.other .req-icon {
+  background: #fde8f1;
+  color: #ec4899;
+}
+.req-card.hours {
+  border-color: #0ea5e9; /* blue shade */
+}
+.req-content {
+  display: flex;
+  flex-direction: column;
+  white-space: nowrap; /* 👈 text wrap band */
+}
+
+.req-title,
+.req-count {
+  white-space: nowrap; /* 👈 safety ke liye */
+  line-height: 1.2;
+}
+
+.req-card.hours .req-icon {
+  background: #e0f2fe;
+  color: #0ea5e9;
+}
+// @media (min-width: 768px) {
+//     .col-md-3 {
+//         flex: 0 0 auto;
+//         // width: 20% !important;
+//     }
+// }
+.req-card.hours {
+  position: relative;
+  padding-left: 14px; /* card content aur line ke beech gap */
+}
+.req-card.hours .btn {
+  // font-size: 12px;       /* 👈 text chhota */
+  // line-height: 1.2;
+  // border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  white-space: nowrap;
+}
+
+.req-card.hours::before {
+  content: "";
+  position: absolute;
+  left: -11px; /* 👈 line aur card ke beech space */
+  top: 0;
+  height: 100%;
+  width: 5px;
+  background-color: #d1d5db;
+  border-radius: 2px;
+}
+/* Calendar Container Styling */
+.attendance-card {
+  max-width: 350px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px;
+
+  // Header text color jaisa image mein hai
+  .mat-calendar-period-button {
+    color: #1a73e8;
+    font-weight: bold;
+  }
+}
+
+/* Common Dot Style */
+.status-present,
+.status-half,
+.status-absent {
+  .mat-calendar-body-cell-content::before {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+  }
+}
+
+/* Green Dot (Present) */
+.status-present .mat-calendar-body-cell-content::before {
+  background-color: #4caf50;
+}
+
+/* Orange Dot (Half-Day) */
+.status-half .mat-calendar-body-cell-content::before {
+  background-color: #ff9800;
+}
+
+/* Red Dot & Circle (Absent) */
+.status-absent {
+  .mat-calendar-body-cell-content {
+    border: 1.5px solid #f44336 !important; // Red Circle
+    border-radius: 50%;
+    color: #f44336 !important;
+  }
+  .mat-calendar-body-cell-content::before {
+    background-color: #f44336; // Red Dot
+  }
+}
+
+/* Sunday Red Color */
+.sunday-text .mat-calendar-body-cell-content {
+  color: #f44336 !important;
+}
+
+/* Selected Date Circle hide (Optional, to match image) */
+.mat-calendar-body-selected {
+  background-color: transparent !important;
+  color: inherit !important;
+  border: none !important;
+}
+
+.attendance-card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  font-family: "Roboto", sans-serif;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+
+    h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #333;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge {
+      background-color: #ffeb3b; // Yellow badge jaisa image mein hai
+      color: #000;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+    }
+  }
+}
+.reporting-card {
+  border-radius: 14px;
+}
+
+.reporting-card .count {
+  color: #888;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.reporting-card .search-input {
+  border-radius: 10px;
+  padding: 6px 10px;
+  font-size: 12px;
+  width: 100%;
+}
+
+.reporting-list {
+  max-height: 340px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.team-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 6px;
+  border-radius: 10px;
+  transition: background 0.2s;
+}
+
+.team-item:hover {
+  background: #f7f8fa;
+}
+
+.team-item img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.team-info {
+  flex: 1;
+}
+
+.team-info .name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #222;
+}
+
+.team-info .role {
+  font-size: 11px;
+  color: #888;
+}
+
+/* Status badges */
+.status {
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.status.in {
+  background: #e8f7ef;
+  color: #2e9c5e;
+}
+
+.status.leave {
+  background: #fff1e6;
+  color: #e67e22;
+}
+
+.status.wfh {
+  background: #f1f3ff;
+  color: #5b6cff;
+}
+.fs-14 { font-size: 14px; }
+.fs-11 { font-size: 11px; }
+.fw-600 { font-weight: 600; }
+.cursor-pointer { cursor: pointer; }
+
+.attendance-cell{
+  height: 100%;
+  font-weight: 600;
+  padding: 10px;
+}
+.cal-out-month{
+  color: #e1e1e1!important;
+  display: none;
+  .attendance-cell{
+   background-color: unset !important;
+   .attendance-text{
+    display: none;
+   }
+}
+}
+.attendance-text{
+  font-size: 0.7rem;
+}
+.cal-month-view .cal-day-cell {
+    min-height: 80px;
+}
+.time{
+   font-size: 0.6rem;
+  font-weight: 500;
+}
+.table-responsive {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+  @media only screen and (max-width: 600px) {
+    :host ::ng-deep .mat-mdc-paginator-range-label{
+    margin:0px !important;
+    font-size: 9px !important;
+  }
+  h6{
+    font-size: 12px !important;
+  }
+  td, th{
+    font-size: 10px !important;
+  }
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

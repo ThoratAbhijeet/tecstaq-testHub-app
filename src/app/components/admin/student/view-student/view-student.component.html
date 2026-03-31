@@ -1,0 +1,125 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card p-3 m-3">
+        <div class="card-header d-flex justify-content-between p-3">
+          <strong class="text-dark">View Student</strong>
+        </div>
+        <div class="card-body">
+          <form>
+            <div class="row">
+                <div class="col-4 mb-3">
+                <div class="form-group">
+                  <label for="student_name">Group:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="student_name"
+                    [value]="(allStudentDetails.group_name | titlecase) || '--'"
+                    [disabled]="true"
+                  />
+                </div>
+              </div>
+              <div class="col-4 mb-3">
+                <div class="form-group">
+                  <label for="student_name">Student Name:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="student_name"
+                    [value]="(allStudentDetails.student_name | titlecase) || '--'"
+                    [disabled]="true"
+                  />
+                </div>
+              </div>
+              <div class="col-4 mb-3">
+                <div class="form-group">
+                  <label for="email_id">Email Id :</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="email_id"
+                    [value]="allStudentDetails.email_id || '--'"
+                    [disabled]="true"
+                  />
+                </div>
+              </div>
+
+              <div class="col-4 mb-3">
+                <div class="form-group">
+                  <label for="phone_number">Phone Number:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="phone_number"
+                    [value]="allStudentDetails.phone_number || '--'"
+                    [disabled]="true"
+                  />
+                </div>
+              </div>
+               <div class="col-4 mb-3">
+                <div class="form-group">
+                  <label for="student_name">Gender:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="student_name"
+                    [value]="(allStudentDetails.gender | titlecase) || '--'"
+                    [disabled]="true"
+                  />
+                </div>
+              </div>
+              <div class="col-4 mb-3">
+                <div class="form-group">
+                  <label for="student_name">College Name:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="student_name"
+                    [value]="(allStudentDetails.college_name | titlecase) || '--'"
+                    [disabled]="true"
+                  />
+                </div>
+              </div>
+              <div class="col-4 mb-3">
+                <div class="form-group">
+                  <label for="student_name">Course:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="student_name"
+                    [value]="(allStudentDetails.course | titlecase) || '--'"
+                    [disabled]="true"
+                  />
+                </div>
+              </div>
+               <div class="col-4 mb-3">
+                <div class="form-group">
+                  <label for="student_name">Course Year:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="student_name"
+                    [value]="(allStudentDetails.course_year ) || '--'"
+                    [disabled]="true"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <hr />
+            <div>
+              <button
+                type="button"
+                class="btn btn-secondary px-4 btn-sm fw-bold"
+                (click)="goToback()"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

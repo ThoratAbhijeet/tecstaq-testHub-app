@@ -1,0 +1,102 @@
+
+<div class="container-fluid background min-vh-100 d-flex flex-row align-items-center p-0 m-0">
+    <div class="row fit-to-screen d-flex justify-content-center w-100 p-4 m-0">
+      <div class="col-md-8 row d-flex justify-content-center  m-0">
+       
+        <div class="col-sm-12 col-md-6 col-lg-6  form-card rounded-4 p-0  m-0">
+            <div class="logo p-3 d-flex justify-content-center">
+                <img class="large-logo logo-image" src="../../../../assets/image/Tecstaq-new-logo-transeparent.png" alt="Tecstaq HRMS" />
+
+              </div>
+          <div class="sign-box d-flex justify-content-center mt-2">
+            <div class=" login-card p-4 login-form m-0  ">
+                    <div class="row login-filds mt-4">
+                        <form [formGroup]="LoginForm">
+                          <div class=" col-md-12 input-text mb-3">
+                            <label for="email_id"class="input-label mb-2">Email Id</label>
+                            <div class="col-md-12 input-group   ">
+                                <input
+                                class="form-control mb-1"
+                                name="email_id"
+                                id="email_id"
+                                placeholder="Email Id"
+                                type="email" formControlName="email_id"
+                                autocomplete="off" 
+                                [ngClass]="{
+                                    'is-invalid':
+                                      controls['email_id'].invalid &&
+                                      (controls['email_id'].dirty ||
+                                        controls['email_id'].touched)
+                                  }"/>
+                      
+                    </div>
+                    <div class="text-danger">
+                        <span *ngIf="
+                            controls['email_id'].invalid &&
+                            (controls['email_id'].dirty || controls['email_id'].touched)
+                          ">
+                          <span *ngIf="controls['email_id'].errors?.['required']" class="text-danger">
+                            <small>Email is required.</small>
+                          </span>
+                          <span *ngIf="controls['email_id'].errors?.['email']" class="text-danger">
+                            <small>Invalid email format.</small>
+                          </span>
+                          <span *ngIf="controls['email_id'].errors?.['pattern']" class="text-danger">
+                            <small>Email must be a valid email address.</small>
+                          </span>
+                        </span>
+                      </div>
+                        </div>
+                        <div class="col-md-12 input-text">
+                            <label for="password" class="input-label mb-2">Password</label>
+                            <div class="input-group">
+                                <input
+                                    id="password"
+                                    name="password"
+                                    class="form-control mb-1"
+                                    placeholder="*****"
+                                    autocomplete="off" 
+                                    [type]="passwordVisible ? 'text' : 'password'"
+                                    formControlName="password"
+                                    [ngClass]="{
+                                        'is-invalid': controls['password'].invalid &&
+                                        (controls['password'].dirty || controls['password'].touched)
+                                    }"
+                                />
+                                <button
+                                    class="passbtn"
+                                    type="button"
+                                    (click)="togglePasswordVisibility()"
+                                >
+                                    <i
+                                        class="fa"
+                                        [class.fa-eye]="passwordVisible"
+                                        [class.fa-eye-slash]="!passwordVisible"
+                                    ></i>
+                                </button>
+                            </div>
+                        
+                            <div class="text-danger">
+                                <div *ngIf="controls['password'].invalid &&
+                                            (controls['password'].dirty || controls['password'].touched)">
+                                    <small>Password is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </form>
+                    </div>
+                   
+                <div class=" my-2 text-end">
+                    <h6 class="label-forgot-password text-primary cursor-pointer fs-6" routerLink="/forgot-password">Forgot Password</h6>
+                </div>
+                <div class="col-md-12 mb-4 ">
+                    <button class="btn-login" (click)="login()">Login</button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

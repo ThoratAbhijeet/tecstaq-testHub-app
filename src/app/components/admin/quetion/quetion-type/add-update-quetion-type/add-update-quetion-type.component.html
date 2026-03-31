@@ -1,0 +1,87 @@
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col-md-12 m-3">
+      <div class="card p-3">
+        <div class="card-header d-flex justify-content-between p-3">
+          <strong class="text-dark"
+            >{{ isEdit ? " Edit" : "Add " }} QuestionType</strong
+          >
+        </div>
+        <div class="card-body">
+          <form [formGroup]="QuetionTypeForm">
+            <div class="row">
+              <div class="col-3 col-md-4">
+                <div class="form-QuetionType">
+                  <label for="quetion_type" class="mb-1"
+                    >Quetion Type  <span class="text-danger">*</span>
+                  </label>
+                  <input
+                    class="form-control mb-1"
+                    id="quetion_type"
+                    placeholder="Quetion Type "
+                    type="text"
+                    formControlName="quetion_type"
+                    [ngClass]="{
+                      'is-invalid':
+                        controls['quetion_type'].invalid &&
+                        (controls['quetion_type'].dirty ||
+                          controls['quetion_type'].touched),
+                    }"
+                  />
+                  <div
+                    class="text-danger"
+                    *ngIf="
+                      controls['quetion_type'].invalid &&
+                      (controls['quetion_type'].dirty ||
+                        controls['quetion_type'].touched)
+                    "
+                  >
+                    <div *ngIf="controls['quetion_type'].errors?.['required']">
+                      <small>Quetion Type  is Required</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-8 input-text mx-2 knowlanguage">
+                <label for="address" class="input-label mb-2">
+                  Description <span class="text-danger">*</span>
+                  </label
+                >
+                <div class="col-md-12 input-QuetionType">
+                  <textarea
+                    type="text"
+                    class="form-control"
+                    id="description"
+                    name="description"
+                    formControlName="description"
+                    aria-describedby="emailHelp"
+                    placeholder="  Description "
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+            <hr />
+            <div>
+              <button
+                type="submit"
+                class="btn btn-primary px-4 btn-sm fw-bold"
+                (click)="submit()"
+              >
+                {{ isEdit ? "Update" : "Submit" }}
+              </button>
+              <button
+                type="submit"
+                class="btn btn-secondary ms-3 px-4 btn-sm fw-bold"
+                (click)="goToback()"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
