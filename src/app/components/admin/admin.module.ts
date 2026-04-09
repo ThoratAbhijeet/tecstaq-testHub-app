@@ -20,6 +20,8 @@ import { ViewQuetionTypeComponent } from './quetion/quetion-type/view-quetion-ty
 import { QuestionnaireComponent } from './quetion/questionnaire/questionnaire.component';
 import { AddUpdateQuestionnaireComponent } from './quetion/questionnaire/add-update-questionnaire/add-update-questionnaire.component';
 import { ViewQuestionnaireComponent } from './quetion/questionnaire/view-questionnaire/view-questionnaire.component';
+import { StudentReportComponent } from './reports/student-report/student-report.component';
+import { TestReportComponent } from './reports/test-report/test-report.component';
 
 
 @NgModule({
@@ -40,7 +42,9 @@ import { ViewQuestionnaireComponent } from './quetion/questionnaire/view-questio
     ViewQuetionTypeComponent,
     QuestionnaireComponent,
     AddUpdateQuestionnaireComponent,
-    ViewQuestionnaireComponent
+    ViewQuestionnaireComponent,
+    StudentReportComponent,
+    TestReportComponent
   ],
   imports: [
     CommonModule,

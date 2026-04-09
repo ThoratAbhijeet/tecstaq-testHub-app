@@ -9,7 +9,7 @@ import { AdminService } from '../../admin.service';
   templateUrl: './view-test.component.html',
   styleUrl: './view-test.component.scss'
 })
-export class ViewTestComponent implements OnInit {
+export class ViewTestComponent  implements OnInit {
   isEdit = false
   TestId: any;
   allTestDetails :any = {};

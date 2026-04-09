@@ -16,14 +16,16 @@ export class AddUpdateQuestionnaireComponent implements OnInit {
   isEdit = false
   form!: FormGroup;
   Questionnaire_id: any;
-  selectedTabIndex = 0
-  allCompanyList: Array<any> = [];
-  searchCompanyValue: string = '';
-  filteredCompanyList: any[] = [];
-  previewUrl: string | ArrayBuffer | null = null;
-  previewDocumentUrl: string | ArrayBuffer | null = null;
+  currentIndex  = 0
+  allTestList: Array<any> = [];
+  searchTestValue: string = '';
+  filteredTestList: any[] = [];
+  allQuestionTypeList: Array<any> = [];
   user_id: any
-  departments_id: any;
+  isPreviewMode: boolean = false;
+  jumpIndex: number | null = null;
+
+ 
 
   constructor(
     private fb: FormBuilder,
@@ -43,152 +45,203 @@ export class AddUpdateQuestionnaireComponent implements OnInit {
       this.getQuestionnaireById(this.Questionnaire_id);
       this.isEdit = true
     }
-    this.getAllCompanyListWma();
+    this.getAllTestListWma();
+    this.getAllQuestionTypeListWma();
   }
 
+nextQuestion() {
+  const currentForm = this.questionnaireHeaderArray.at(this.currentIndex);
+
+  if (currentForm.invalid) {
+    currentForm.markAllAsTouched();
+    return;
+  }
+
+  this.currentIndex++;
+}
+
+prevQuestion() {
+  if (this.currentIndex > 0) {
+    this.currentIndex--;
+  }
+}
   //Questionnaire form
- createForm() {
+// ================= FORM CREATE =================
+createForm() {
   this.form = this.fb.group({
     test_id: ['', Validators.required],
     questionnaireHeader: this.fb.array([this.newQuestionnaireHeader()])
   });
 }
-  get controls() {
-    return this.form.controls
-  }
-  get getQuestionnaireArray(): FormArray {
-    return this.form.get('questionnaireFooter') as FormArray
-  }
 
- 
+// ================= GETTERS =================
+get controls() {
+  return this.form.controls;
+}
 
-newQuestionnaireHeader(): FormGroup {
-  return this.fb.group({
-    question: ['', Validators.required],
-    question_type_id: ['', Validators.required],
-    answer: [''],
-    questionnaireFooter: this.fb.array([this.newQuestionnaireFooter()])
-  });
-}
-  newQuestionnaireFooter(): FormGroup {
-  return this.fb.group({
-    option: ['', Validators.required]
-  });
-}
-  get questionnaireHeaderArray(): FormArray {
+get questionnaireHeaderArray(): FormArray {
   return this.form.get('questionnaireHeader') as FormArray;
 }
 
+// Footer getter (Options)
 getFooterArray(index: number): FormArray {
   return this.questionnaireHeaderArray.at(index).get('questionnaireFooter') as FormArray;
 }
-  removeQuestionnaire(i: number, Questionnaire_bank_documents_id: any) {
-    if (!Questionnaire_bank_documents_id) {
-      this.getQuestionnaireArray.removeAt(i);
-      if (this.getQuestionnaireArray.length === 0) {
-        // this.addQuestionnaire();
-      }
+
+// ================= NEW FORM GROUP =================
+newQuestionnaireHeader(): FormGroup {
+  return this.fb.group({
+    questionnaire_header_id: [''],
+    question: ['', Validators.required],
+    question_mark: ['', Validators.required],
+    question_type_id: ['', Validators.required],
+    answer: ['' , Validators.required],
+    questionnaireFooter: this.fb.array([this.newQuestionnaireFooter()])
+  });
+}
+
+newQuestionnaireFooter(): FormGroup {
+  return this.fb.group({
+    questionnaire_footer_id: [''],
+    option: ['', Validators.required]
+  });
+}
+
+// ================= ADD FUNCTIONS =================
+addQuestion() {
+  const currentForm = this.questionnaireHeaderArray.at(this.currentIndex);
+
+  // ✅ validation check
+  if (currentForm.invalid) {
+    currentForm.markAllAsTouched();
+    return;
+  }
+
+  // ✅ new question add
+  this.questionnaireHeaderArray.push(this.newQuestionnaireHeader());
+
+  // ✅ next question pe move
+  this.currentIndex = this.questionnaireHeaderArray.length - 1;
+}
+addOption(questionIndex: number) {
+  const footerArray = this.getFooterArray(questionIndex);
+
+  if (footerArray.length < 4) {
+    footerArray.push(this.newQuestionnaireFooter());
+  } else {
+    // optional: message dikha sakte ho
+    alert('Maximum 4 options allowed');
+  }
+}
+
+// ================= REMOVE FUNCTIONS =================
+
+// Remove Question
+removeQuestion(index: number, id?: any) {
+
+  const total = this.questionnaireHeaderArray.length;
+
+  // ✅ Only 1 question → just clear value
+  if (total === 1) {
+    this.questionnaireHeaderArray.at(0).reset();
+    return;
+  }
+
+  // ✅ Without ID (new question)
+  if (!id) {
+    this.questionnaireHeaderArray.removeAt(index);
+
+    // 👉 Handle index
+    if (index === total - 1) {
+      this.setCurrentQuestion(index - 1);
+    } else {
+      this.setCurrentQuestion(index);
     }
-    if (this.isEdit && Questionnaire_bank_documents_id) {
-      Swal.fire({
-        title: 'Are you sure?',
-        text: 'You will not be able to recover this item!',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!',
-        cancelButtonText: 'No, cancel!'
-      }).then((result) => {
 
-        if (result.isConfirmed) {
-          // if (Questionnaire_bank_documents_id) {
+    return;
+  }
 
-          //   this._adminService
-          //     .deleteQuestionnaireBankDocuments(Questionnaire_bank_documents_id)
-          //     .subscribe({
+  // ✅ With ID (Edit mode)
+  if (this.isEdit && id) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You will not be able to recover this item!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
 
-          //       next: (res: any) => {
+      if (result.isConfirmed) {
 
-          //         if (res.status === 200) {
-          //           this.getQuestionnaireArray.removeAt(i);
+        // 👉 API CALL here
 
-          //           if (this.getQuestionnaireArray.length === 0) {
-          //             this.addBankDocument();
-          //           }
+        this.questionnaireHeaderArray.removeAt(index);
 
-          //           Swal.fire(
-          //             'Deleted!',
-          //             'Your item has been deleted.',
-          //             'success'
-          //           );
-
-          //         } else {
-          //           Swal.fire(
-          //             'Error!',
-          //             res.message || 'Delete failed',
-          //             'error'
-          //           );
-          //         }
-          //       },
-
-          //       error: (err: any) => {
-          //         Swal.fire(
-          //           'Error!',
-          //           err.error?.message || 'Something went wrong',
-          //           'error'
-          //         );
-          //       }
-
-          //     });
-
-          // } else {
-          //   this.getQuestionnaireArray.removeAt(i);
-          //   if (this.getQuestionnaireArray.length === 0) {
-          //     this.addBankDocument();
-          //   }
-          // }
-
+        // 👉 Handle index
+        if (index === total - 1) {
+          this.setCurrentQuestion(index - 1);
+        } else {
+          this.setCurrentQuestion(index);
         }
 
-      });
-
-    } else {
-      this.getQuestionnaireArray.removeAt(i);
-
-      if (this.getQuestionnaireArray.length === 0) {
-        // this.addQuestionnaire();
+        Swal.fire('Deleted!', 'Question deleted.', 'success');
       }
-    }
+    });
   }
-  //get all company wma list
-  getAllCompanyListWma() {
-    this._adminService.getAllQuetionTypeListWma().subscribe({
+}
+setCurrentQuestion(index: number) {
+  this.currentIndex = index;
+
+  setTimeout(() => {
+    const el = document.getElementById('question-' + index);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, 100);
+}
+// Remove Option
+removeOption(questionIndex: number, optionIndex: number) {
+  const footerArray = this.getFooterArray(questionIndex);
+
+  footerArray.removeAt(optionIndex);
+
+  if (footerArray.length === 0) {
+    footerArray.push(this.newQuestionnaireFooter());
+  }
+}
+
+
+  //get all test wma list
+  getAllTestListWma() {
+    this._adminService.getAllTestListWma('').subscribe({
       next: (res: any) => {
         if (res.data.length > 0) {
-          this.allCompanyList = res.data;
-          this.filteredCompanyList = this.allCompanyList;
+          this.allTestList = res.data;
+          this.filteredTestList = this.allTestList;
         }
       }
     });
   }
-  filterCompany() {
-    if (this.searchCompanyValue !== '') {
-      this.filteredCompanyList = this.allCompanyList.filter(company =>
-        company.name.toLowerCase().includes(this.searchCompanyValue.toLowerCase())
+  filterTest() {
+    if (this.searchTestValue !== '') {
+      this.filteredTestList = this.allTestList.filter(company =>
+        company.test_name.toLowerCase().includes(this.searchTestValue.toLowerCase())
       );
     } else {
-      this.filteredCompanyList = this.allCompanyList;
+      this.filteredTestList = this.allTestList;
     }
   }
-
-
-  onImagePreview(i: number) {
-    const control = this.getQuestionnaireArray.at(i);
-    const currentVisibility = control.get('visible')?.value;
-    control.get('visible')?.setValue(!currentVisibility);
-  }
  
+    //get question type  list...
+  getAllQuestionTypeListWma() {
+    this._adminService.getAllQuetionTypeListWma().subscribe({
+      next: (res: any) => {
+        if (res.data.length > 0) {
+          this.allQuestionTypeList = res.data;
+        }
+      }
+    });
+  }
   submit() {
     this.isEdit ? this.edit() : this.add();
   }
@@ -225,7 +278,6 @@ getFooterArray(index: number): FormArray {
   //add
   add() {
     let data = this.form.value;
-    // console.log(data);
     if (this.form.valid) {
       this._sharedService.setLoading(true);
       this._adminService.addQuestionnaire(data).subscribe({
@@ -259,75 +311,151 @@ getFooterArray(index: number): FormArray {
     this.location.back();
   }
   //get Questionnaire by id
-  getQuestionnaireById(id: any) {
-    this._adminService.getQuestionnaireById(id).subscribe({
-      next: (result: any) => {
-        const data = result.data;
-        this.controls['gender'].patchValue(data.gender)
-        this.controls['father_name'].patchValue(data.father_name)
-        this.controls['mother_name'].patchValue(data.mother_name)
-        this.controls['blood_group'].patchValue(data.blood_group)
-        this.controls['marital_status'].patchValue(data.marital_status)
-        this.controls['personal_email'].patchValue(data.personal_email)
-        // this.controls['country_code'].patchValue(data.country_code)
-        this.controls['mobile_number'].patchValue(data.country_code + data.mobile_number)
+getQuestionnaireById(id: any) {
+  this._adminService.getQuestionnaireById(id).subscribe({
+    next: (result: any) => {
+      const data = result.data;
 
-        this.controls['profile_photo'].patchValue(data.profile_photo_base64)
-        this.controls['current_address'].patchValue(data.current_address)
-        this.controls['permanent_address'].patchValue(data.permanent_address)
-        // this.controls['signed_in'].patchValue(data.signed_in)
-        this.controls['alternate_contact_number'].patchValue(data.alternate_contact_number)
-        this.controls['office_location'].patchValue(data.office_location)
-        this.controls['work_location'].patchValue(data.work_location)
-        this.controls['Questionnaire_status'].patchValue(data.Questionnaire_status)
-        this.controls['holiday_calendar_id'].patchValue(data.holiday_calendar_id)
-        this.controls['reporting_manager_id'].patchValue(data.reporting_manager_id)
-        this.controls['uan_number'].patchValue(data.uan_number)
-        this.controls['esic_number'].patchValue(data.esic_number)
-        this.controls['pf_number'].patchValue(data.pf_number)
-        this.controls['pan_card_number'].patchValue(data.pan_card_number)
-        this.controls['aadhar_number'].patchValue(data.aadhar_number)
-        this.controls['passport_no'].patchValue(data.passport_no)
-        this.controls['payment_mode'].patchValue(data.payment_mode)
-        this.controls['account_number'].patchValue(data.account_number)
-        this.controls['bank_name'].patchValue(data.bank_name)
-        this.controls['ifsc_code'].patchValue(data.ifsc_code)
-        this.controls['branch_name'].patchValue(data.branch_name)
-        this.controls['family_member_name'].patchValue(data.family_member_name)
+      // ✅ Test ID
+      this.controls['test_id'].patchValue(data.test_id);
 
-        this.controls['last_drawn_salary'].patchValue(data.last_drawn_salary)
-        this.controls['previous_designation'].patchValue(data.previous_designation)
-        this.controls['hr_email'].patchValue(data.hr_email)
-        this.controls['hr_mobile'].patchValue(data.hr_mobile)
+      const headerData = data.questionnaireHeader || [];
 
-        this.previewUrl = 'data:image/png;base64,' + data.profile_photo_base64;
+      this.questionnaireHeaderArray.clear();
+      if (headerData.length > 0) {
+        headerData.forEach((questionItem: any) => {
+          const questionGroup = this.newQuestionnaireHeader();
+          questionGroup.patchValue({
+            questionnaire_header_id : questionItem.questionnaire_header_id,
+            question: questionItem.question,
+            question_mark: questionItem.question_mark,
+            question_type_id: questionItem.question_type_id,
+            answer: questionItem.answer
+          });
 
-        const QuestionnaireEducation = data.QuestionnaireEducation;
-        if (QuestionnaireEducation.length > 0) {
-          this.getQuestionnaireArray.clear();
-          for (let index = 0; index < QuestionnaireEducation.length; index++) {
-            const element = QuestionnaireEducation[index];
-            // this.getQuestionnaireArray.push(this.newQuestionnaire());
-            this.getQuestionnaireArray.at(index).get('Questionnaire_education_id')?.patchValue(element.Questionnaire_education_id)
-            this.getQuestionnaireArray.at(index).get('education_type')?.patchValue(element.education_type)
-            this.getQuestionnaireArray.at(index).get('education_name')?.patchValue(element.education_name)
-            this.getQuestionnaireArray.at(index).get('passing_year')?.patchValue(element.passing_year)
-            this.getQuestionnaireArray.at(index).get('university')?.patchValue(element.university)
-            this.getQuestionnaireArray.at(index).get('university')?.patchValue(element.university)
-            this.getQuestionnaireArray.at(index).get('document_name')?.patchValue(element.document_name)
-            this.getQuestionnaireArray.at(index).get('file_path')?.patchValue(element.image_base64)
+          // 👉 Handle Footer (Options)
+          const footerArray = questionGroup.get('questionnaireFooter') as FormArray;
+          footerArray.clear();
+
+          const footerData = questionItem.questionnaireFooter || [];
+
+          if (footerData.length > 0) {
+            footerData.forEach((optionItem: any) => {
+              const optionGroup = this.newQuestionnaireFooter();
+              optionGroup.patchValue({
+                questionnaire_footer_id: optionItem.questionnaire_footer_id,
+                option: optionItem.option
+              });
+
+              footerArray.push(optionGroup);
+            });
+          } else {
+            footerArray.push(this.newQuestionnaireFooter());
           }
-        }
-      
-        
-      
-      
+
+          this.questionnaireHeaderArray.push(questionGroup);
+
+        });
+
+      } else {
+        // fallback (at least 1 question)
+        this.questionnaireHeaderArray.push(this.newQuestionnaireHeader());
       }
-    })
+    }
+  });
+}
+
+
+getAlphabetIndexSmall(index: number): string {
+  return String.fromCharCode(97 + index); // 97 = 'a'
+}
+onQuestionTypeChange(index: number) {
+  const question = this.questionnaireHeaderArray.at(index);
+  const typeId = question.get('question_type_id')?.value;
+
+  const footerArray = question.get('questionnaireFooter') as FormArray;
+
+  // 👉 selected type find karo
+  const selectedType = this.allQuestionTypeList.find(
+    (x: any) => x.question_type_id == typeId
+  );
+
+  const typeName = selectedType?.question_type?.trim();
+
+  // 👉 purane options remove karo
+  while (footerArray.length > 0) {
+    footerArray.removeAt(0);
   }
 
+  let optionCount = 0;
 
+  // 👉 Radio Button / Select → 2
+  if (typeName === 'Radio Button' || typeName === 'Select') {
+    optionCount = 2;
+  }
 
- 
+  // 👉 Checkbox / Multiple Choice → 4
+  else if (typeName === 'Checkbox' || typeName === 'Multiple Choice') {
+    optionCount = 4;
+  }
 
+  // 👉 options create karo
+  for (let i = 0; i < optionCount; i++) {
+    footerArray.push(this.newQuestionnaireFooter());
+  }
+}
+isMultiOptionType(question: any): boolean {
+  const typeId = question.get('question_type_id')?.value;
+
+  const selectedType = this.allQuestionTypeList.find(
+    (x: any) => x.question_type_id == typeId
+  );
+
+  const typeName = selectedType?.question_type?.trim().toLowerCase();
+
+  return (
+    typeName === 'checkbox' ||
+    typeName === 'multiple choice' ||
+    typeName === 'radio button' ||
+    typeName === 'select'
+  );
+}
+getMaxOptions(question: any): number {
+  const typeId = question.get('question_type_id')?.value;
+
+  const selectedType = this.allQuestionTypeList.find(
+    (x: any) => x.question_type_id == typeId
+  );
+
+  const typeName = selectedType?.question_type?.trim().toLowerCase();
+
+  if (typeName === 'radio button' || typeName === 'select') {
+    return 2;
+  }
+
+  if (typeName === 'checkbox' || typeName === 'multiple choice') {
+    return 4;
+  }
+
+  return 0;
+}
+preview() {
+  this.isPreviewMode = true;
+}
+
+backToEdit() {
+  this.isPreviewMode = false;
+}
+goToQuestion() {
+  if (!this.jumpIndex) return;
+
+  const index = this.jumpIndex - 1; // because UI starts from 1
+
+  if (index >= 0 && index < this.questionnaireHeaderArray.length) {
+    this.currentIndex = index;
+  } else {
+    // alert('Invalid Question Number');  
+    this._toastrService.warning('Invalid Question Number')
+  }
+}
 }

@@ -9,21 +9,22 @@ import { SharedService } from './shared/shared.service';
 })
 export class AppComponent implements OnInit {
   title = 'Tecstaq TestHub App';
-  isAdmin = false;  
+  isAdmin = false;
+  isStudent = false;
   isLoading = false;
-  isLogin:any
-  constructor(private router: Router, private _sharedService: SharedService , ) { }
+  isLogin: any
+  constructor(private router: Router, private _sharedService: SharedService,) { }
   ngOnInit(): void {
-   
-    let isLogin:any =localStorage.getItem('isLogin')
+
+    let isLogin: any = localStorage.getItem('isLogin')
     this.isLogin = JSON.parse(isLogin)
     this._sharedService.isLogin$.subscribe({
       next: (res: any) => {
         if (res) {
           this.isLogin = res;
-          if (!isLogin){
-          } 
-            isLogin =localStorage.getItem('isLogin')
+          if (!isLogin) {
+          }
+          isLogin = localStorage.getItem('isLogin')
         } else {
           this.isLogin = res
         }
@@ -43,28 +44,34 @@ export class AppComponent implements OnInit {
     const currentRoute = this.router.routerState.snapshot.url;
     let storedData = localStorage.getItem('data');
     if (currentRoute?.split('/')[1] === 'admin') {
-            this.isAdmin = true;
-          }
-          else if (currentRoute === '/') {
-            this.isAdmin = false;
-            localStorage.clear();
-          } 
-          else {
-            this.isAdmin = false;
-  
-          }
-          
-        }
-        navigateToDashboard(): void {
-          const storedData = localStorage.getItem('data');
-          let isLogin:any =localStorage.getItem('isLogin')
-          this.isLogin = JSON.parse(isLogin)
-          if (!isLogin ) {
-           
-            this.router.navigate(['/auth']);
-            return;
-          }
-        }
+      this.isAdmin = true;
+      this.isStudent = false;
+    }
+    else if (currentRoute === '/') {
+      this.isAdmin = false;
+      this.isStudent = false;
+      localStorage.clear();
+    }
+    else if (currentRoute?.split('/')[1] === 'student') {
+      this.isStudent = true;
+      this.isAdmin = false;
+    }
+    else {
+      this.isAdmin = false;
+      this.isStudent = false;
+    }
+
+  }
+  navigateToDashboard(): void {
+    const storedData = localStorage.getItem('data');
+    let isLogin: any = localStorage.getItem('isLogin')
+    this.isLogin = JSON.parse(isLogin)
+    if (!isLogin) {
+
+      this.router.navigate(['/auth']);
+      return;
+    }
+  }
 
 
 }

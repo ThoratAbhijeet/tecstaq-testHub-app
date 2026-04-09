@@ -17,9 +17,11 @@ import { AddUpdateQuetionTypeComponent } from './quetion/quetion-type/add-update
 import { QuestionnaireComponent } from './quetion/questionnaire/questionnaire.component';
 import { AddUpdateQuestionnaireComponent } from './quetion/questionnaire/add-update-questionnaire/add-update-questionnaire.component';
 import { ViewQuestionnaireComponent } from './quetion/questionnaire/view-questionnaire/view-questionnaire.component';
+import { StudentReportComponent } from './reports/student-report/student-report.component';
+import { TestReportComponent } from './reports/test-report/test-report.component';
 
 const routes: Routes = [
-    { path: "", redirectTo: "admin", pathMatch: "full" },
+  { path: "", redirectTo: "admin", pathMatch: "full" },
   {
     path: "admin-dashboard",
     component: AdminDashboardComponent,
@@ -29,13 +31,13 @@ const routes: Routes = [
   },
   {
     path: "student",
-    component:StudentComponent,
+    component: StudentComponent,
     pathMatch: "full",
     outlet: "admin_menu",
     canActivate: [AuthGuard]
 
   },
-   {
+  {
     path: "add-student",
     component: AddUpdateStudentComponent,
     pathMatch: "full",
@@ -56,15 +58,15 @@ const routes: Routes = [
     outlet: "admin_menu",
     canActivate: [AuthGuard]
   },
-    {
+  {
     path: "group",
-    component:GroupComponent,
+    component: GroupComponent,
     pathMatch: "full",
     outlet: "admin_menu",
     canActivate: [AuthGuard]
 
   },
-   {
+  {
     path: "add-group",
     component: AddUpdateGroupComponent,
     pathMatch: "full",
@@ -93,7 +95,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
 
   },
-   {
+  {
     path: "add-test",
     component: AddUpdateTestComponent,
     pathMatch: "full",
@@ -114,7 +116,7 @@ const routes: Routes = [
     outlet: "admin_menu",
     canActivate: [AuthGuard]
   },
-    {
+  {
     path: "quetion-type",
     component: QuetionTypeComponent,
     pathMatch: "full",
@@ -122,7 +124,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
 
   },
-   {
+  {
     path: "add-quetion-type",
     component: AddUpdateQuetionTypeComponent,
     pathMatch: "full",
@@ -143,7 +145,7 @@ const routes: Routes = [
     outlet: "admin_menu",
     canActivate: [AuthGuard]
   },
-   {
+  {
     path: "questionnaire",
     component: QuestionnaireComponent,
     pathMatch: "full",
@@ -151,7 +153,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
 
   },
-   {
+  {
     path: "add-questionnaire",
     component: AddUpdateQuestionnaireComponent,
     pathMatch: "full",
@@ -168,6 +170,20 @@ const routes: Routes = [
   {
     path: "view-questionnaire/:id",
     component: ViewQuestionnaireComponent,
+    pathMatch: "full",
+    outlet: "admin_menu",
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "student-report",
+    component: StudentReportComponent,
+    pathMatch: "full",
+    outlet: "admin_menu",
+    canActivate: [AuthGuard]
+  },
+    {
+    path: "test-report",
+    component: TestReportComponent,
     pathMatch: "full",
     outlet: "admin_menu",
     canActivate: [AuthGuard]

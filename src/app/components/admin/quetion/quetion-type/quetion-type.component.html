@@ -76,7 +76,7 @@
                               '/admin',
                               {
                                 outlets: {
-                                  admin_menu: 'view-quetion-type/' + item.quetion_type_id,
+                                  admin_menu: 'view-quetion-type/' + item.question_type_id,
                                 },
                               },
                             ]"
@@ -90,7 +90,7 @@
                               '/admin',
                               {
                                 outlets: {
-                                  admin_menu: 'edit-quetion-type/' + item.quetion_type_id,
+                                  admin_menu: 'edit-quetion-type/' + item.question_type_id,
                                 },
                               },
                             ]"
@@ -103,14 +103,14 @@
                     </td>
                     <td class="">
                       <mat-slide-toggle
-                        (change)="changeEvent($event, item.quetion_type_id)"
+                        (change)="changeEvent($event, item.question_type_id)"
                         class="example-margin small-toggle cursor-pointer"
                         [checked]="item.status == true"
                       >
                       </mat-slide-toggle>
                     </td>
                     <td class="wrap-text">
-                      {{ (item.quetion_type| titlecase) || "--" }}
+                      {{ (item.question_type| titlecase) || "--" }}
                     </td>
                     <td class="wrap-text">{{ (item.description | titlecase) || "--" }}</td>
                   </tr>

@@ -1,249 +1,432 @@
 <div class="container-fluid">
   <div class="row justify-content-center">
     <div class="col-md-12 m-3">
-      <div class="card p-3">
-        <div class="card-header d-flex justify-content-between p-3">
-          <strong class="text-dark"
-            >{{ isEdit ? "Edit" : "Add " }} Questionnaire</strong
-          >
+      <div class="card p-3" *ngIf="!isPreviewMode">
+        <div
+          class="card-header d-flex justify-content-between align-items-center p-3"
+        >
+          <strong class="text-dark">
+            {{ isEdit ? "Edit" : "Add " }} Questionnaire
+          </strong>
+
+          <!-- 🔍 Jump to Question -->
+          <div class="d-flex align-items-center">
+            <!-- Current / Total -->
+            <span class="me-2 fw-bold">
+              {{ currentIndex + 1 }} / {{ questionnaireHeaderArray.length }}
+            </span>
+
+            <input
+              type="number"
+              min="1"
+              class="form-control form-control-sm me-2"
+              placeholder="Go to Q"
+              [(ngModel)]="jumpIndex"
+              [ngModelOptions]="{ standalone: true }"
+              style="width: 90px"
+            />
+
+            <button class="btn btn-primary btn-sm" (click)="goToQuestion()">
+              Go
+            </button>
+          </div>
         </div>
         <div class="card-body p-0">
           <form [formGroup]="form">
             <div class="row">
+              <div class="col-4 col-md-4">
+                <div class="form-group">
+                  <label class="">
+                    Test Name <span class="text-danger">*</span></label
+                  >
+                  <mat-select
+                    formControlName="test_id"
+                    placeholder="Select Test"
+                    class="form-control theme-input"
+                    [ngClass]="{
+                      'is-invalid':
+                        controls['test_id'].invalid &&
+                        (controls['test_id'].dirty ||
+                          controls['test_id'].touched),
+                    }"
+                  >
+                    <mat-option>
+                      <ngx-mat-select-search
+                        [(ngModel)]="searchTestValue"
+                        [ngModelOptions]="{ standalone: true }"
+                        (input)="filterTest()"
+                        placeholderLabel=" Search Test"
+                        noEntriesFoundLabel="No result found"
+                      ></ngx-mat-select-search>
+                    </mat-option>
 
-                        <div class="col-3 col-md-3">
-                          <div class="form-group">
-                            <label class="">
-                              First Name
-                              <span class="text-danger">*</span></label
-                            >
-                            <input
-                              type="text"
-                              class="form-control"
-                              placeholder="First Name"
-                              formControlName="first_name"
-                              autocomplete="new-password"
-                              [ngClass]="{
-                                'is-invalid':
-                                  controls['first_name'].invalid &&
-                                  (controls['first_name'].dirty ||
-                                    controls['first_name'].touched),
-                              }"
-                            />
-                            <div
-                              class="text-danger"
-                              *ngIf="
-                                controls['first_name'].invalid &&
-                                (controls['first_name'].dirty ||
-                                  controls['first_name'].touched)
-                              "
-                            >
-                              <small> First Name is Required</small>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-3 col-md-3">
-                          <div class="form-group">
-                            <label class=" "
-                              >Last Name
-                              <span class="text-danger">*</span></label
-                            >
-                            <input
-                              type="text"
-                              class="form-control"
-                              placeholder="Last Name"
-                              formControlName="last_name"
-                              autocomplete="new-password"
-                              [ngClass]="{
-                                'is-invalid':
-                                  controls['last_name'].invalid &&
-                                  (controls['last_name'].dirty ||
-                                    controls['last_name'].touched),
-                              }"
-                            />
-                            <div
-                              class="text-danger"
-                              *ngIf="
-                                controls['last_name'].invalid &&
-                                (controls['last_name'].dirty ||
-                                  controls['last_name'].touched)
-                              "
-                            >
-                              <small> Last Name is Required</small>
-                            </div>
-                          </div>
-                        </div>
-                     
-                        <div class="col-2 col-md-2">
-                          <div class="form-group">
-                            <label class=" "
-                              >DOB<span class="text-danger">*</span></label
-                            >
-                            <input
-                              type="date"
-                              class="form-control"
-                              placeholder="DOB"
-                              formControlName="dob"
-                              autocomplete="new-password"
-                              [ngClass]="{
-                                'is-invalid':
-                                  controls['dob'].invalid &&
-                                  (controls['dob'].dirty ||
-                                    controls['dob'].touched),
-                              }"
-                            />
-                            <div
-                              class="text-danger"
-                              *ngIf="
-                                controls['dob'].invalid &&
-                                (controls['dob'].dirty ||
-                                  controls['dob'].touched)
-                              "
-                            >
-                              <small>DOB is Required</small>
-                            </div>
-                          </div>
-                        </div>
-                      
-                        
-                        <div class="col-3 col-md-3">
-                          <div class="form-group">
-                            <label class="">Employee Code <span class="text-danger">*</span></label>
-                            <input
-                              type="text"
-                              class="form-control"
-                              placeholder="Employee Code"
-                              formControlName="employee_code"
-                              [ngClass]="{
-                                'is-invalid':
-                                  controls['employee_code'].invalid &&
-                                  (controls['employee_code'].dirty ||
-                                    controls['employee_code'].touched),
-                              }"
-                            />
-                            <div
-                              class="text-danger"
-                              *ngIf="
-                                controls['employee_code'].invalid &&
-                                (controls['employee_code'].touched ||
-                                  controls['employee_code'].dirty)
-                              "
-                            >
-                              <small> Employee Code is Required</small>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                <div class="my-3 card py-2">
-                  <div class="row mx-0 p-2" formArrayName="questionnaireFooter">
-                    <div
-                      class="row card mx-0 mb-2"
-                      *ngFor="
-                        let item of getQuestionnaireArray.controls;
-                        let i = index
-                      "
-                      [formGroupName]="i"
+                    <mat-option
+                      *ngFor="let source of filteredTestList"
+                      [value]="source.test_id"
                     >
-                      <div class="row p-2">
-                        <div class="col-3 col-md-3">
-                          <div class="form-group">
-                            <label class="">Education Type</label>
-                            <mat-select
-                              formControlName="option"
-                              placeholder="Select Education Type"
-                              class="form-control"
-                            >
-                              <mat-option value="">
-                                Select Education Type
-                              </mat-option>
-                              <mat-option
-                                *ngFor="let item of filteredCompanyList"
-                                [value]="item.name"
-                              >
-                                {{ item.name | titlecase }}
-                              </mat-option>
-                            </mat-select>
-                          </div>
-                        </div>
-                        <div class="col-2 col-md-2">
-                          <div class="form-group">
-                            <label for=""></label><br />
-                            <span
-                              class="view"
-                              data-toggle="tooltip"
-                              data-placement="top"
-                              title="Preview"
-                            >
-                              <i
-                                class="bi fs-3"
-                                (click)="onImagePreview(i)"
-                                [ngClass]="{
-                                  'bi-eye-fill': getQuestionnaireArray
-                                    .at(i)
-                                    .get('visible')?.value,
-                                  'bi-eye-slash-fill': !getQuestionnaireArray
-                                    .at(i)
-                                    .get('visible')?.value,
-                                }"
-                              >
-                              </i>
-                            </span>
-                          </div>
-                        </div>
-                        <div class="col-3 col-md-3 d-flex justify-content-end">
-                          <div
-                            class="form-group"
-                            *ngIf="
-                              getQuestionnaireArray.at(i).get('visible')?.value
-                            "
-                          >
-                            <img
-                              [src]="
-                                getQuestionnaireArray.at(i).get('file_path')?.value
-                                  ? 'data:image/png;base64,' +
-                                    getQuestionnaireArray.at(i).get('file_path')
-                                      ?.value
-                                  : 'assets/image/document-placeholder.png'
-                              "
-                              alt="Preview"
-                              height="130px"
-                              width="180px"
-                              class="border"
-                            />
-                          </div>
-                          <i
-                            class="bi fs-3 bi-x-circle text-danger mx-3 cursor-pointer"
-                            (click)="removeQuestionnaire(i,item.get('Questionnaire_education_id')?.value)"
-                            *ngIf="getQuestionnaireArray.value.length > 1"
-                          ></i>
-                        </div>
-                        <!-- <div class="col-1 col-md-1">
-                                                <br>
-                                                <i class="bi fs-3 bi-x-circle text-danger mx-3 "
-                                                        (click)="removeEducation(i)"
-                                                        *ngIf="getQuestionnaireArray.value.length>1"></i>
-                                            </div> -->
+                      {{ source.test_name | titlecase }}
+                    </mat-option>
+                  </mat-select>
+                  <div
+                    class="text-danger"
+                    *ngIf="
+                      controls['test_id'].invalid &&
+                      (controls['test_id'].touched || controls['test_id'].dirty)
+                    "
+                  >
+                    <small>Please select a Test Name.</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div formArrayName="questionnaireHeader">
+              <div
+                class="card mb-3 p-2"
+                *ngFor="
+                  let question of questionnaireHeaderArray.controls;
+                  let i = index
+                "
+                [formGroupName]="i"
+                [hidden]="i !== currentIndex"
+                [attr.id]="'question-' + i"
+              >
+                <!-- Question -->
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <samp class="fw-bold">Q.{{ i + 1 }}.</samp
+                      ><label
+                        >Question <span class="text-danger">*</span></label
+                      >
+                      <textarea
+                        type="text"
+                        class="form-control"
+                        formControlName="question"
+                        placeholder="Enter Question"
+                        [ngClass]="{
+                          'is-invalid':
+                            question.get('question')?.invalid &&
+                            (question.get('question')?.dirty ||
+                              question.get('question')?.touched),
+                        }"
+                      >
+                      </textarea>
+                      <div
+                        class="text-danger"
+                        *ngIf="
+                          question.get('question')?.invalid &&
+                          (question.get('question')?.touched ||
+                            question.get('question')?.dirty)
+                        "
+                      >
+                        <small>Question is Required</small>
                       </div>
                     </div>
-                    <div class="row">
-                      <div
-                        class="col-md-12 row d-flex justify-content-end mt-2"
+                  </div>
+
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label
+                        >Question Type <span class="text-danger">*</span></label
                       >
-                        <div class="col-md-auto">
-                          <!-- <button
-                            class="btn btn-sm btn-primary"
-                            (click)="addQuestionnaire()"
-                          >
-                            Add
-                          </button> -->
+                      <mat-select
+                        formControlName="question_type_id"
+                        (selectionChange)="onQuestionTypeChange(i)"
+                        placeholder="Select Question Type"
+                        class="form-control theme-input"
+                        [ngClass]="{
+                          'is-invalid':
+                            question.get('question_type_id')?.invalid &&
+                            (question.get('question_type_id')?.dirty ||
+                              question.get('question_type_id')?.touched),
+                        }"
+                      >
+                        <mat-option
+                          *ngFor="let source of allQuestionTypeList"
+                          [value]="source.question_type_id"
+                        >
+                          {{ source.question_type | titlecase }}
+                        </mat-option>
+                      </mat-select>
+                      <div
+                        class="text-danger"
+                        *ngIf="
+                          question.get('question_type_id')?.invalid &&
+                          (question.get('question_type_id')?.touched ||
+                            question.get('question_type_id')?.dirty)
+                        "
+                      >
+                        <small>Please select a Question Type.</small>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label
+                        >Currect Answer
+                        <span class="text-danger">*</span></label
+                      >
+                      <textarea
+                        type="text"
+                        class="form-control"
+                        formControlName="answer"
+                        placeholder="Enter Answer"
+                        [ngClass]="{
+                          'is-invalid':
+                            question.get('answer')?.invalid &&
+                            (question.get('answer')?.dirty ||
+                              question.get('answer')?.touched),
+                        }"
+                      ></textarea>
+                      <div
+                        class="text-danger"
+                        *ngIf="
+                          question.get('answer')?.invalid &&
+                          (question.get('answer')?.touched ||
+                            question.get('answer')?.dirty)
+                        "
+                      >
+                        <small>Currect Answer is Required.</small>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-1">
+                    <div class="form-group">
+                      <label>Mark <span class="text-danger">*</span></label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        formControlName="question_mark"
+                        placeholder="Enter Mark"
+                        [ngClass]="{
+                          'is-invalid':
+                            question.get('question_mark')?.invalid &&
+                            (question.get('question_mark')?.dirty ||
+                              question.get('question_mark')?.touched),
+                        }"
+                      />
+                      <div
+                        class="text-danger"
+                        *ngIf="
+                          question.get('question_mark')?.invalid &&
+                          (question.get('question_mark')?.touched ||
+                            question.get('question_mark')?.dirty)
+                        "
+                      >
+                        <small>Mark is Required</small>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-1 d-flex align-items-center">
+                    <div class="form-group">
+                      <i
+                        class="bi fs-3 bi-x-circle text-danger mx-3 cursor-pointer"
+                        title="Remove"
+                        (click)="
+                          removeQuestion(
+                            i,
+                            question.get('questionnaire_header_id')?.value
+                          )
+                        "
+                        *ngIf="this.questionnaireHeaderArray.value.length >= 1"
+                      ></i>
+                    </div>
+                  </div>
+                </div>
+                <hr class="m-0" />
+                <!-- Options (Footer Array) -->
+                <div formArrayName="questionnaireFooter">
+                  <div class="row">
+                    <div
+                      class="col-md-3 mb-1"
+                      *ngFor="
+                        let option of getFooterArray(i).controls;
+                        let j = index
+                      "
+                      [formGroupName]="j"
+                    >
+                      <div class="form-group">
+                        <div class="d-flex align-items-start">
+                          <!-- Index -->
+                          <samp class="fw-bold">
+                            {{ getAlphabetIndexSmall(j) }}.
+                          </samp>
+
+                          <!-- Input -->
+                          <div class="w-100">
+                            <div class="form-group">
+                              <label
+                                >Option
+                                <span class="text-danger">*</span></label
+                              >
+                              <input
+                                type="text"
+                                class="form-control"
+                                formControlName="option"
+                                placeholder="Enter Option"
+                                [ngClass]="{
+                                  'is-invalid':
+                                    option.get('option')?.invalid &&
+                                    (option.get('option')?.dirty ||
+                                      option.get('option')?.touched),
+                                }"
+                              />
+                              <div
+                                class="text-danger"
+                                *ngIf="
+                                  option.get('option')?.invalid &&
+                                  (option.get('option')?.touched ||
+                                    option.get('option')?.dirty)
+                                "
+                              >
+                                <small>Option is Required.</small>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- Remove Icon -->
+                          <!-- <i
+  class="bi fs-5 bi-x-circle text-danger ms-2 mt-4 cursor-pointer"
+  (click)="removeOption(i, j)"
+  *ngIf="isMultiOptionType(question) && getFooterArray(i).length >= 2"
+></i> -->
                         </div>
                       </div>
                     </div>
                   </div>
-             
+                  <!-- Add Option Button -->
+                  <!-- <button
+  class="btn btn-primary btn-sm"
+  (click)="addOption(i)"
+  type="button"
+  *ngIf="isMultiOptionType(question)"
+  [disabled]="getFooterArray(i).length >= getMaxOptions(question)"
+>
+  + Add Option
+</button> -->
                 </div>
+              </div>
 
+              <div class="d-flex justify-content-between mt-3">
+                <!-- Back Button -->
+                <button
+                  class="btn btn-secondary btn-sm"
+                  type="button"
+                  (click)="prevQuestion()"
+                  *ngIf="currentIndex > 0"
+                >
+                  ⬅ Back
+                </button>
+
+                <div class="ms-auto">
+                  <!-- ✅ Cancel Button (Only First & Last) -->
+                  <button
+                    class="btn btn-secondary btn-sm me-2"
+                    type="button"
+                    (click)="goToback()"
+                    *ngIf="
+                      currentIndex === 0 ||
+                      currentIndex === questionnaireHeaderArray.length - 1
+                    "
+                  >
+                    Cancel
+                  </button>
+
+                  <!-- Next Button -->
+                  <button
+                    class="btn btn-primary btn-sm me-2"
+                    type="button"
+                    (click)="nextQuestion()"
+                    [disabled]="
+                      questionnaireHeaderArray.at(currentIndex).invalid
+                    "
+                    *ngIf="currentIndex < questionnaireHeaderArray.length - 1"
+                  >
+                    Next ➡
+                  </button>
+
+                  <!-- Last Step Buttons -->
+                  <ng-container
+                    *ngIf="currentIndex === questionnaireHeaderArray.length - 1"
+                  >
+                    <button
+                      class="btn btn-success btn-sm me-2"
+                      type="button"
+                      (click)="addQuestion()"
+                    >
+                      + Add Question
+                    </button>
+                    <!-- 
+      <button
+        class="btn btn-primary btn-sm me-2"
+        type="button"
+        (click)="submit()"
+      >
+        {{ isEdit ? "Update" : "Submit" }}
+      </button> -->
+                    <button
+  class="btn btn-primary btn-sm me-2"
+  type="button"
+  (click)="preview()"
+  *ngIf="form.valid"
+>
+  Preview
+</button>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
           </form>
+        </div>
+      </div>
+      <div class="card preview-card p-0" *ngIf="isPreviewMode">
+        <!-- Header -->
+        <div class="preview-header text-center">
+          <h4 class="mb-1">Question Paper</h4>
+          <p class="mb-0">
+            Total Questions: {{ questionnaireHeaderArray.length }}
+          </p>
+        </div>
+
+        <!-- Body -->
+        <div class="preview-body">
+          <div
+            *ngFor="
+              let question of questionnaireHeaderArray.controls;
+              let i = index
+            "
+            class="question-block"
+          >
+            <!-- Question -->
+            <div class="question-text">
+              <span class="q-number">{{ i + 1 }}.</span>
+              {{ question.get("question")?.value }}
+            </div>
+
+            <!-- Options -->
+            <div class="options" *ngIf="getFooterArray(i).length > 0">
+              <div
+                class="option-item"
+                *ngFor="let option of getFooterArray(i).controls; let j = index"
+              >
+                <span class="option-label">
+                  {{ getAlphabetIndexSmall(j) }}.
+                </span>
+                {{ option.get("option")?.value }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer Buttons -->
+        <div class="preview-footer text-end">
+          <button class="btn btn-secondary btn-sm me-2" (click)="backToEdit()">
+            ⬅ Back
+          </button>
+
+          <button class="btn btn-primary btn-sm" (click)="submit()">
+            {{ isEdit ? "Update" : "Submit" }}
+          </button>
         </div>
       </div>
     </div>

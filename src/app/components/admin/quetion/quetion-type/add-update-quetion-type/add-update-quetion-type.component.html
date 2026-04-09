@@ -12,32 +12,32 @@
             <div class="row">
               <div class="col-3 col-md-4">
                 <div class="form-QuetionType">
-                  <label for="quetion_type" class="mb-1"
-                    >Quetion Type  <span class="text-danger">*</span>
+                  <label for="question_type" class="mb-1"
+                    >Question Type  <span class="text-danger">*</span>
                   </label>
                   <input
                     class="form-control mb-1"
-                    id="quetion_type"
+                    id="question_type"
                     placeholder="Quetion Type "
                     type="text"
-                    formControlName="quetion_type"
+                    formControlName="question_type"
                     [ngClass]="{
                       'is-invalid':
-                        controls['quetion_type'].invalid &&
-                        (controls['quetion_type'].dirty ||
-                          controls['quetion_type'].touched),
+                        controls['question_type'].invalid &&
+                        (controls['question_type'].dirty ||
+                          controls['question_type'].touched),
                     }"
                   />
                   <div
                     class="text-danger"
                     *ngIf="
-                      controls['quetion_type'].invalid &&
-                      (controls['quetion_type'].dirty ||
-                        controls['quetion_type'].touched)
+                      controls['question_type'].invalid &&
+                      (controls['question_type'].dirty ||
+                        controls['question_type'].touched)
                     "
                   >
-                    <div *ngIf="controls['quetion_type'].errors?.['required']">
-                      <small>Quetion Type  is Required</small>
+                    <div *ngIf="controls['question_type'].errors?.['required']">
+                      <small>Question Type  is Required</small>
                     </div>
                   </div>
                 </div>

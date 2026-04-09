@@ -1,0 +1,66 @@
+/* Main Card */
+.question-paper {
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+  background: #ffffff;
+}
+
+/* Header */
+.question-paper .card-header {
+  background: linear-gradient(90deg, #ccd9ff, #d5def9);
+  color: #fff;
+  border-radius: 10px 10px 0 0;
+}
+
+/* Test Name */
+.question-paper p {
+  font-size: 16px;
+  margin-bottom: 0;
+}
+
+/* Question Block */
+.question-paper h6 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #2c3e50;
+}
+
+/* Options */
+.question-paper .form-check {
+  padding-left: 30px;
+  margin-bottom: 6px;
+}
+
+/* Question Spacing */
+.question-paper .mb-4 {
+  padding: 12px;
+  border-radius: 8px;
+  transition: 0.3s;
+}
+
+/* Hover Effect */
+.question-paper .mb-4:hover {
+  background-color: #f8f9fc;
+}
+
+/* Divider */
+.question-paper hr {
+  border-top: 1px dashed #ccc;
+}
+
+/* Button */
+// .question-paper .btn {
+//   border-radius: 20px;
+// }
+.question-paper {
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+.question-paper .form-check-label {
+  color: #2c3e50;   /* dark blue-gray */
+  font-weight: 500;
+}
+.option-text {
+  color: #1a1a1a;
+  font-weight: 500;
+}

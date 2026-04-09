@@ -89,6 +89,54 @@
                   </div>
                 </div>
               </div>
+                   <div class="col-3 col-md-3">
+                <div class="form-group">
+                    <label class="mb-1"
+                      >Test Date <span class="text-danger">*</span></label
+                    >
+                    <div
+                      class="input-group"
+                      id="testdatePicker"
+                      data-td-target-input="nearest"
+                      data-td-target-toggle="nearest"
+                    >
+                      <input
+                        id="testDateTime"
+                        type="text"
+                        class="form-control"
+                        placeholder="DD/MM/YYYY"
+                        formControlName="test_date"
+                        data-td-target="#testDateTime"
+                        readonly
+                        [ngClass]="{
+                      'is-invalid':
+                        controls['test_date'].invalid &&
+                        (controls['test_date'].dirty ||
+                          controls['test_date'].touched),
+                    }"
+                      />
+                      <span
+                        class="input-group-text cursor-pointer"
+                        data-td-target="#testDateTime"
+                        data-td-toggle="datetimepicker"
+                      >
+                        <i class="fa fa-calendar"></i>
+                      </span>
+                    </div>
+                     <div
+                    class="text-danger"
+                    *ngIf="
+                      controls['test_date'].invalid &&
+                      (controls['test_date'].dirty ||
+                        controls['test_date'].touched)
+                    "
+                  >
+                    <div *ngIf="controls['test_date'].errors?.['required']">
+                      <small>Test date is Required</small>
+                    </div>
+                  </div>
+                    </div>
+                  </div>
               <div class="col-3 col-md-3">
                 <div class="form-group">
                   <label

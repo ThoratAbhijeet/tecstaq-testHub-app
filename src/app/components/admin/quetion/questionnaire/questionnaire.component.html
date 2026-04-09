@@ -53,78 +53,101 @@
                   <tr>
                     <th scope="col">Sr.No</th>
                     <th scope="col" class="text-center">Options</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Question</th>
-                    <th scope="col">Question Type</th>
+                    <!-- <th scope="col">Status</th> -->
+                    <th scope="col">Created Date</th>
                     <th scope="col">Test Name</th>
-                    <th scope="col">Answer</th>
+                    <th scope="col">Total Question</th>
+                     <th scope="col">Total Marks</th>
+                    <th scope="col">Start Time</th>
+                    <th scope="col">End Time</th>
                   </tr>
                 </thead>
                 <tbody class="body-data">
-                  <tr *ngFor="let item of allQuestionnaireList; let i = index">
-                    <td>{{ i + 1 }}</td>
-                    <td class="text-center">
-                      <div class="btn-group dropright cursor-pointer">
-                        <i
-                          class="bi bi-three-dots-vertical dropdown-toggle-split"
-                          data-toggle="dropdown"
-                          aria-haspopup="true"
-                          aria-expanded="false"
-                        ></i>
-                        <div class="dropdown-menu short-dropdown-menu">
-                          <a
-                            class="dropdown-item cursor-pointer"
-                            [routerLink]="[
-                              '/admin',
-                              {
-                                outlets: {
-                                  admin_menu: 'view-questionnaire/' + item.questionnaire_header_id,
-                                },
-                              },
-                            ]"
-                          >
-                            <i class="bi bi-eye fs-5"></i>
-                            <small> View</small>
-                          </a>
-                          <a
-                            class="dropdown-item cursor-pointer"
-                            [routerLink]="[
-                              '/admin',
-                              {
-                                outlets: {
-                                  admin_menu: 'edit-questionnaire/' + item.questionnaire_header_id,
-                                },
-                              },
-                            ]"
-                          >
-                            <i class="bi bi-pencil-square fs-5"></i>
-                            <small> Edit</small>
-                          </a>
-                        </div>
-                      </div>
-                    </td>
-                    <td class="">
-                      <mat-slide-toggle
-                        (change)="changeEvent($event, item.questionnaire_header_id)"
-                        class="example-margin small-toggle cursor-pointer"
-                        [checked]="item.status == true"
-                      >
-                      </mat-slide-toggle>
-                    </td>
-                    <td class="wrap-text">
-                      {{ (item.quetion| titlecase) || "--" }}
-                    </td>
-                    <td class="wrap-text">{{ (item.quetion_type | titlecase) || "--" }}</td>
-                     <td class="wrap-text">{{ (item.test_name | titlecase) || "--" }}</td>
-                     <td class="wrap-text">{{ (item.answer | titlecase) || "--" }}</td>
-                  </tr>
-                  <tr
-                    class="fw-bold text-center"
-                    *ngIf="allQuestionnaireList.length === 0"
-                  >
-                    <td colspan="10" class="text-danger">No Data Available</td>
-                  </tr>
-                </tbody>
+
+   <tr *ngFor="let item of allQuestionnaireList; let i = index">
+
+    <td>{{ i + 1 }}</td>
+
+    <td class="text-center">
+      <div class="btn-group dropright cursor-pointer">
+        <i
+          class="bi bi-three-dots-vertical dropdown-toggle-split"
+          data-toggle="dropdown"
+        ></i>
+
+        <div class="dropdown-menu short-dropdown-menu">
+
+          <a
+            class="dropdown-item cursor-pointer"
+            [routerLink]="[
+              '/admin',
+              {
+                outlets: {
+                  admin_menu: 'view-questionnaire/' + item.questionnaire_id
+                }
+              }
+            ]"
+          >
+            <i class="bi bi-eye fs-5"></i>
+            <small> View</small>
+          </a>
+
+          <a
+            class="dropdown-item cursor-pointer"
+            [routerLink]="[
+              '/admin',
+              {
+                outlets: {
+                  admin_menu: 'edit-questionnaire/' + item.questionnaire_id
+                }
+              }
+            ]"
+          >
+            <i class="bi bi-pencil-square fs-5"></i>
+            <small> Edit</small>
+          </a>
+
+        </div>
+      </div>
+    </td>
+
+    <!-- <td>
+      <mat-slide-toggle
+        (change)="changeEvent($event, item.questionnaire_id)"
+        [checked]="item.status == 1"
+      >
+      </mat-slide-toggle>
+    </td> -->
+
+    <td class="wrap-text">
+      {{ (item.cts | date) || '--' }}
+    </td>
+<td class="wrap-text">
+      {{ (item.test_name | titlecase ) || '--'}}
+    </td>
+  
+
+    
+   
+ <td class="wrap-text">
+      {{( item.total_questions) || '--' }}
+    </td>
+     <td class="wrap-text">
+      {{ (item.total_marks ) || '--'}}
+    </td>
+   <td>{{ formatTime(item.start_time) }}</td>
+   <td>{{ formatTime(item.end_time) }}</td>
+
+  </tr> 
+
+  <!-- No Data -->
+  <tr *ngIf="allQuestionnaireList.length === 0">
+    <td colspan="10" class="text-center text-danger">
+      No Data Available
+    </td>
+  </tr>
+
+</tbody>
               </table>
 
               <div class="col-md-12">

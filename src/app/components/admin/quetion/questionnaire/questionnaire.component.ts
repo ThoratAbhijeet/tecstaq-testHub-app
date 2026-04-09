@@ -32,19 +32,22 @@ export class QuestionnaireComponent implements OnInit {
     this.searchKey = searchKey;
     this.getQuestionnaireList();
   }
-  getQuestionnaireList() {
-    this._adminService.getQuestionnaireList(this.searchKey, this.page, this.limit).subscribe({
+getQuestionnaireList() {
+  this._adminService
+    .getQuestionnaireList(this.searchKey, this.page, this.limit)
+    .subscribe({
       next: (res: any) => {
-        if (res.data.length > 0) {
+   if (res.data.length > 0) {
           this.allQuestionnaireList = res.data;
           this.total = res.pagination.total;
         } else {
           this.allQuestionnaireList = []
           this.total = 0;
         }
+
       }
-    })
-  }
+    });
+}
   changeEvent(event: any, id: any) {
     let status = 0;
     if (event.checked) {

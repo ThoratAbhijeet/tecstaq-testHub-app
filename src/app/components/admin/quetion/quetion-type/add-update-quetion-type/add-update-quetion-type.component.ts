@@ -37,7 +37,7 @@ export class AddUpdateQuetionTypeComponent implements OnInit {
   //employee form
   createForm() {
     this.QuetionTypeForm = this.fb.group({
-      quetion_type: ['', Validators.required],
+      question_type: ['', Validators.required],
       description: ['', Validators.required],
 
     })
@@ -123,7 +123,7 @@ getQuetionTypeById(id: any) {
       const QuetionTypeData = result.data;
 
       // Patch main fields
-      this.controls['quetion_type'].patchValue(QuetionTypeData.quetion_type);
+      this.controls['question_type'].patchValue(QuetionTypeData.question_type);
       this.controls['description'].patchValue(QuetionTypeData.description);
     }
   });

@@ -1,0 +1,162 @@
+<div class="container-fluid exam-container">
+  <div class="row h-100">
+
+    <!-- LEFT SIDE (QUESTIONS) -->
+    <div class="col-md-9 left-panel">
+
+      <!-- Header -->
+     <div class="exam-header d-flex justify-content-between align-items-center flex-wrap">
+
+  <!-- LEFT SIDE -->
+  <div>
+    <h4 class="mb-1">{{ allQuestionnaireDetails?.test_name }}</h4>
+
+    <div class="header-info d-flex gap-3 flex-wrap">
+
+  <!-- Date -->
+  <div class="info-item d-flex align-items-center gap-2">
+    <span class="info-icon">
+      <i class="bi bi-calendar-event-fill"></i>
+    </span>
+    <span>{{ allQuestionnaireDetails?.test_date | date:'dd/MM/yyyy' }}</span>
+  </div>
+
+  <!-- Group -->
+  <div class="info-item d-flex align-items-center gap-2">
+    <span class="info-icon">
+      <i class="bi bi-people-fill"></i>
+    </span>
+    <span>{{ allQuestionnaireDetails?.group_name }}</span>
+  </div>
+
+  <!-- Marks -->
+  <div class="info-item d-flex align-items-center gap-2">
+    <span class="info-icon">
+      <i class="bi bi-bullseye"></i>
+    </span>
+    <span>Total Marks: {{ allQuestionnaireDetails?.total_marks }}</span>
+  </div>
+
+</div>
+  </div>
+
+  <!-- RIGHT SIDE -->
+  <div class="text-end">
+
+    <div class="time-range d-flex align-items-center gap-2">
+  <span class="info-icon">
+    <i class="bi bi-clock-fill"></i>
+  </span>
+
+  <span>
+    {{ formatTime(allQuestionnaireDetails?.start_time) }} -
+    {{ formatTime(allQuestionnaireDetails?.end_time) }}
+  </span>
+</div>
+
+    <!-- LIVE TIMER -->
+    <div class="live-timer">
+      ⏳ {{ remainingTime }}
+    </div>
+
+  </div>
+
+</div>
+
+      <!-- Questions -->
+       <form [formGroup]="QuestionForm">
+  <div class="question-box mt-3"
+  *ngIf="allQuestionnaireDetails?.questionnaireHeader?.length">
+
+ <div class="d-flex justify-content-between align-items-center mb-2">
+
+  <!-- LEFT: Question -->
+  <h6 class="mb-0">
+    <strong>Q{{ currentQuestionIndex + 1 }}.</strong>
+    {{ allQuestionnaireDetails?.questionnaireHeader[currentQuestionIndex]?.question }}
+  </h6>
+
+  <!-- RIGHT: Question Marks -->
+  <small>
+    {{ allQuestionnaireDetails?.questionnaireHeader[currentQuestionIndex]?.question_mark }} Marks
+  </small>
+
+</div>
+
+  <div *ngFor="let opt of allQuestionnaireDetails?.questionnaireHeader[currentQuestionIndex]?.questionnaireFooter; let j = index" class="form-check">
+
+    <input
+  type="radio"
+  class="form-check-input custom-radio"
+  [id]="'q' + currentQuestionIndex + '_opt' + j"
+  [name]="'question_' + currentQuestionIndex"
+ [checked]="isSelected(currentQuestionIndex, opt)"
+  (change)="selectAnswer(currentQuestionIndex, opt)"
+/>
+
+    <label
+      class="form-check-label cursor-pointer"
+      [for]="'q' + currentQuestionIndex + '_opt' + j">
+      ({{ getOptionLabel(j) }}) {{ opt.option }}
+    </label>
+
+  </div>
+
+</div>
+</form>
+      <!-- Buttons -->
+      <div class="mt-3">
+
+  <!-- Save & Next (sirf last ke alawa sab pe) -->
+  <button 
+    *ngIf="currentQuestionIndex < allQuestionnaireDetails.questionnaireHeader.length - 1"
+    class="btn btn-success me-2" 
+    (click)="nextQuestion()">
+    Save & Next
+  </button>
+
+  <!-- Submit (sirf last question pe) -->
+  <button 
+    *ngIf="currentQuestionIndex === allQuestionnaireDetails.questionnaireHeader.length - 1"
+    class="btn btn-primary" 
+    (click)="submit()">
+    Submit
+  </button>
+
+</div>
+
+    </div>
+
+    <!-- RIGHT SIDE (QUESTION PALETTE) -->
+    <div class="col-md-3 right-panel">
+
+      <div class="user-box text-center">
+        <i class="fa fa-user-graduate user-icon "></i>
+        <h6 class="mt-2">{{student_name}}</h6>
+      </div>
+
+      <!-- Status -->
+      <div class="status-box">
+        <p><span class="dot answered"></span> Answered</p>
+        <p><span class="dot not-answered"></span> Not Answered</p>
+      </div>
+
+      <!-- Question Numbers -->
+      <div class="question-grid">
+    <div
+  *ngFor="let q of allQuestionnaireDetails?.questionnaireHeader; let i = index"
+  class="q-number"
+  (click)="goToQuestion(i)"
+  [ngClass]="{
+    'answered-q': answeredQuestions.includes(i),
+    'not-answered-q': notAnsweredQuestions.includes(i),
+    'active-q': currentQuestionIndex === i
+  }">
+  {{ i + 1 }}
+</div>
+      </div>
+
+    </div>
+
+  </div>
+</div>

@@ -8,12 +8,13 @@
 
   <!-- Single router outlet -->
   <router-outlet></router-outlet>
-
+<router-outlet *ngIf="!isAdmin && !isStudent"></router-outlet>
   <!-- Sidebar condition -->
   <div class="container-fluid m-0 p-0">
     <div class="row m-0 p-0 flex-nowrap">
       <div class="col-md-12"></div>
     </div>
-    <app-admin-sidebar *ngIf="isAdmin"></app-admin-sidebar>
+    <app-admin-sidebar *ngIf="isAdmin && !isStudent"></app-admin-sidebar>
+    <app-student-sidebar *ngIf="isStudent && !isAdmin "></app-student-sidebar>
   </div>
 </div>

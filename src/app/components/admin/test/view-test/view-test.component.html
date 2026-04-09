@@ -8,6 +8,7 @@
         <div class="card-body">
           <form>
             <div class="row">
+              
                 <div class="col-4 mb-3">
                 <div class="form-group">
                   <label for="Test_name">Group:</label>
@@ -28,6 +29,18 @@
                     class="form-control"
                     id="Test_name"
                     [value]="(allTestDetails.test_name | titlecase) || '--'"
+                    [disabled]="true"
+                  />
+                </div>
+              </div>
+               <div class="col-4 mb-3">
+                <div class="form-group">
+                  <label for="Test_name">Start Time:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="Test_name"
+                   [value]="(allTestDetails.test_date | date : 'dd-MM-yyyy' )|| '--'"
                     [disabled]="true"
                   />
                 </div>

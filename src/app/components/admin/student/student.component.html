@@ -21,7 +21,54 @@
                 </div>
 
                 <hr class="m-0" />
-                <div class="card-header bg-white d-flex justify-content-end px-3">
+                <div class="card-header bg-white d-flex justify-content-between px-3">
+                    <div class="row"  [formGroup]="form">
+                    <div class="col-md-10">
+              <label
+                class="  align-items-center"
+              >
+                <span>Group </span>
+              </label>
+              <mat-select
+                formControlName="group_id"
+                (selectionChange)="onGroupChange($event)"
+                placeholder="Select Group"
+                class="form-control theme-input"
+              >
+                <mat-option>
+                  <ngx-mat-select-search
+                    [(ngModel)]="searchGroupValue"
+                    (ngModelChange)="filterGroup()" 
+                    [ngModelOptions]="{ standalone: true }"
+                    placeholderLabel="Search Group"
+                    noEntriesFoundLabel="No result found"
+                  ></ngx-mat-select-search>
+                </mat-option>
+                <mat-option value="null">All Group</mat-option>
+                <mat-option
+                  *ngFor="let source of filteredGroupList"
+                  [value]="source.group_id"
+                >
+                  {{ source.group_name | titlecase }}
+                </mat-option>
+              </mat-select>
+            </div>
+            <div class="col-md-2"  *ngIf="
+    form.get('group_id')?.value !== '' &&
+    form.get('group_id')?.value !== 'null'
+  "
+>
+                <label
+                class="  align-items-center"
+              >
+                <span>Approve </span>
+              </label>
+                      <mat-slide-toggle (change)="changeAllEvent($event, form.get('group_id')?.value)"
+                                                class="example-margin small-toggle cursor-pointer">
+                                            </mat-slide-toggle>
+            </div>
+           </div>
+                    <div class="mt-4">
                     <button type="button" class="fw-bold btn btn-outline-primary btn-primary text-white px-4 btn-sm"
                         [routerLink]="['/admin',{ outlets: { admin_menu: 'add-student' } }]">
                         <i class="fa fw-bolded fa-solid fa-plus me-1"></i> Add
@@ -30,6 +77,7 @@
                         (click)="downloadStudentList()">
                         <i class="fa fw-bolded fa-download me-1"></i> Download
                     </button>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="col-md-12">
@@ -41,6 +89,7 @@
                                         <th scope="col">Sr.No</th>
                                         <th scope="col" class="text-center">Options</th>
                                         <th scope="col" class="text-center">Group</th>
+                                         <th scope="col" class="text-center">Test</th>
                                         <th scope="col">Name</th>
                                         <th scope="col">Email</th>
                                         <th scope="col">Mobile</th>
@@ -78,6 +127,7 @@
                                             </mat-slide-toggle>
                                         </td> -->
                                         <td class="wrap-text text-center">{{ item.group_name || "--" }}</td>
+                                        <td class="wrap-text">{{(item.test_name | titlecase) ||"--"}}</td>
                                         <td class="wrap-text">{{(item.student_name | titlecase) ||"--"}}</td>
                                         <td class="wrap-text">{{ item.email_id || "--" }}</td>
                                         <td class="wrap-text">{{ item.phone_number || "--" }}</td>
@@ -89,7 +139,7 @@
                                            <td class="">
                                             <mat-slide-toggle (change)="changeEvent($event, item.student_id)"
                                                 class="example-margin small-toggle cursor-pointer"
-                                                [checked]="item.status == true">
+                                                [checked]="item.is_approved == true">
                                             </mat-slide-toggle>
                                         </td>
                                     </tr>

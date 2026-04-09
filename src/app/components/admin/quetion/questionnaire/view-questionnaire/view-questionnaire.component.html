@@ -1,1 +1,85 @@
-<p>view-questionnaire works!</p>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+     <div class="card p-3 m-3 question-paper">
+  <div class="card-header d-flex justify-content-between p-3">
+    <strong class="text-dark">View Questionnaire</strong>
+  </div>
+
+  <div class="card-body">
+    <form>
+
+      <!-- Questionnaire Name -->
+         <div class="d-flex justify-content-between align-items-center mb-2">
+      
+      <!-- LEFT: Test Name -->
+      <div>
+        <p class="form-control-plaintext mb-0">
+          <strong>Test Name:</strong> {{ allQuestionnaireDetails?.test_name || '--' }}
+        </p>
+      </div>
+
+      <!-- RIGHT: Total Marks -->
+      <div class="text-end">
+        <span class=" fs-6 px-3 py-2">
+          <strong>Total Marks: </strong> {{ allQuestionnaireDetails?.total_marks }}
+        </span>
+      </div>
+</div>
+
+      <hr class="mt-0"/>
+
+      <!-- Questions Loop -->
+   <div *ngFor="let ques of allQuestionnaireDetails?.questionnaireHeader; let i = index" class="mb-4">
+
+ <div class="d-flex justify-content-between align-items-center mb-2">
+        
+        <!-- LEFT: Question -->
+        <h6 class="mb-0">
+          <strong>Q{{ i + 1 }}.</strong> {{ ques.question }}
+        </h6>
+
+        <!-- RIGHT: Question Marks -->
+        <span class="fs-6 ">
+          <small>{{ ques.question_mark }} Marks</small>
+        </span>
+
+      </div>
+
+
+  <!-- All options (circle style) -->
+  <div *ngFor="let opt of ques.questionnaireFooter; let j = index" class="form-check">
+
+    <input
+      type="radio"
+      class="form-check-input"
+      onclick="return false;" 
+    />
+
+    <label class="form-check-label option-text">
+  ({{ getOptionLabel(j) }}) {{ opt.option }}
+</label>
+
+  </div>
+
+</div>
+
+      <hr class="mt-0" />
+
+      <!-- Button -->
+      <div>
+        <button
+          type="button"
+          class="btn btn-secondary px-4 btn-sm fw-bold"
+          (click)="goToback()"
+        >
+          Cancel
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>
+    </div>
+  </div>
+</div>

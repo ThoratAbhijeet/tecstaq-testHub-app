@@ -51,9 +51,7 @@ export class LoginComponent implements OnInit {
     if (this.LoginForm.valid) {
       this._sharedService.setLoading(true)
       this._authService.login(data).subscribe({
-
         next: (res: any) => {
-
           localStorage.setItem('accessToken', res.token);
           localStorage.setItem("user_id", res.data.user_id);
           localStorage.setItem("user_name", res.data.user_name);
@@ -63,10 +61,9 @@ export class LoginComponent implements OnInit {
           if (res.status == 200 || res.status == 201) {
             localStorage.setItem('user', JSON.stringify(res.data));
             this._toastrService.clear();
-            //  && res.user.designation_id == 1
             if (res.data.role == 'admin') {
               this.router.navigate(['/admin', { outlets: { admin_menu: 'admin-dashboard' } }]);
-            }  else if (res.user.role === 'student') {
+            }  else if (res.data.role === 'student') {
               this.router.navigate(['/student', { outlets: { student_menu: 'student-dashboard' } }]);
             } else {
               this._toastrService.warning('Unauthorized');

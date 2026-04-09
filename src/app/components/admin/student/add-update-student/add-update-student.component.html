@@ -19,6 +19,7 @@
                   </label>
                   <mat-select
                     formControlName="group_id"
+                    (selectionChange)="onGroupChange($event)"
                     placeholder="Select Group"
                     class="form-control theme-input"
                     [ngClass]="{
@@ -54,6 +55,53 @@
                     "
                   >
                     <small>Please select a Group.</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-3 col-md-3">
+                <div class="form-group">
+                  <label
+                    class="mb-1 d-flex justify-content-between align-items-center"
+                  >
+                    <span>Test <span class="text-danger">*</span></span>
+                  </label>
+                  <mat-select
+                    formControlName="test_id"
+                    placeholder="Select Test"
+                    class="form-control theme-input"
+                    [ngClass]="{
+                      'is-invalid':
+                        controls['test_id'].invalid &&
+                        (controls['test_id'].dirty ||
+                          controls['test_id'].touched),
+                    }"
+                  >
+                    <mat-option>
+                      <ngx-mat-select-search
+                        [(ngModel)]="searchTestValue"
+                        [ngModelOptions]="{ standalone: true }"
+                        (input)="filterTest()"
+                        placeholderLabel="Search Test"
+                        noEntriesFoundLabel="No result found"
+                      ></ngx-mat-select-search>
+                    </mat-option>
+
+                    <mat-option
+                      *ngFor="let source of filteredTestList"
+                      [value]="source.test_id"
+                    >
+                      {{ source.test_name | titlecase }}
+                    </mat-option>
+                  </mat-select>
+                  <div
+                    class="text-danger"
+                    *ngIf="
+                      controls['test_id'].invalid &&
+                      (controls['test_id'].touched ||
+                        controls['test_id'].dirty)
+                    "
+                  >
+                    <small>Please select a Test.</small>
                   </div>
                 </div>
               </div>

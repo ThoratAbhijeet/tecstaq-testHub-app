@@ -22,6 +22,7 @@ allGroupList: Array<any> = [];
   filteredGroupList: any[] = [];
     pickerStart: any;
   pickerEnd: any;
+  pickerTestDate: any;
   constructor(
     private fb: FormBuilder,
    private _toastrService: ToastrService,
@@ -43,6 +44,8 @@ allGroupList: Array<any> = [];
 
   }
 ngAfterViewInit() {
+
+  // ================= START TIME =================
   const startElement = document.getElementById('startTimePicker');
   if (startElement) {
     this.pickerStart = new TempusDominus(startElement, {
@@ -64,6 +67,7 @@ ngAfterViewInit() {
     });
   }
 
+  // ================= END TIME =================
   const endElement = document.getElementById('endTimePicker');
   if (endElement) {
     this.pickerEnd = new TempusDominus(endElement, {
@@ -83,13 +87,51 @@ ngAfterViewInit() {
         });
       }
     });
-  } 
+  }
+
+  // ================= TEST DATE (NEW) =================
+  const testDateElement = document.getElementById('testdatePicker');
+  if (testDateElement) {
+    this.pickerTestDate = new TempusDominus(testDateElement, {
+      display: {
+        components: {
+          calendar: true,
+          date: true,
+          month: true,
+          year: true,
+          hours: true,
+          minutes: true,
+          seconds: false
+        },
+        theme: 'light',
+        placement: 'bottom'
+      },
+      localization: {
+        locale: 'en-US',
+        hourCycle: 'h12',
+        format: 'dd/MM/yyyy',
+      },
+    } as any);
+
+    testDateElement.addEventListener('change.td', (e: any) => {
+      const selectedDate = e.detail.date;
+      if (selectedDate) {
+        this.ngZone.run(() => {
+          this.controls['test_date'].setValue(
+            moment(selectedDate).format('YYYY-MM-DD') // backend format
+          );
+        });
+      }
+    });
+  }
+
 }
   //employee form
   createForm() {
     this.TestForm = this.fb.group({
       group_id: ['', Validators.required],
       test_name: ['', Validators.required],
+      test_date: ['', Validators.required],
       duration: ['', Validators.required],
       total_marks: ['', Validators.required],
       start_time: ['', Validators.required],
@@ -138,6 +180,8 @@ ngAfterViewInit() {
   //add Test
   addTest() {
     let data = this.TestForm.value;
+    console.log(data);
+    
     if (this.TestForm.valid) {
       this._sharedService.setLoading(true);
       this._adminService.addTest(data).subscribe({
@@ -173,6 +217,9 @@ getTestById(id: any) {
       // Patch main fields
       this.controls['group_id'].patchValue(TestData.group_id);
       this.controls['test_name'].patchValue(TestData.test_name);
+     this.controls['test_date'].patchValue(
+  moment.utc(TestData.test_date).local().format('DD/MM/YYYY')
+);
       this.controls['duration'].patchValue(TestData.duration);
       this.controls['total_marks'].patchValue(TestData.total_marks);
       this.controls['start_time'].patchValue(TestData.start_time);

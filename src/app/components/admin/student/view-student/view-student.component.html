@@ -22,6 +22,18 @@
               </div>
               <div class="col-4 mb-3">
                 <div class="form-group">
+                  <label for="student_name">Test:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="student_name"
+                    [value]="(allStudentDetails.test_name | titlecase) || '--'"
+                    [disabled]="true"
+                  />
+                </div>
+              </div>
+              <div class="col-4 mb-3">
+                <div class="form-group">
                   <label for="student_name">Student Name:</label>
                   <input
                     type="text"

@@ -12,19 +12,23 @@ import { SharedService } from '../../../../shared/shared.service';
   templateUrl: './add-update-student.component.html',
   styleUrl: './add-update-student.component.scss'
 })
-export class AddUpdateStudentComponent  implements OnInit {
+export class AddUpdateStudentComponent implements OnInit {
   isEdit = false;
   StudentForm!: FormGroup;
   Student_Id: any;
-allGroupList: Array<any> = [];
+  allGroupList: Array<any> = [];
   searchGroupValue: string = '';
   filteredGroupList: any[] = [];
+  allTestList: Array<any> = [];
+  searchTestValue: string = '';
+  filteredTestList: any[] = [];
+  group_id: any;
   allGenderList = environment.allGenderList;
   allCourseYearList = environment.allCourseYearList;
   allRoleList = environment.allRoleList;
   constructor(
     private fb: FormBuilder,
-   private _toastrService: ToastrService,
+    private _toastrService: ToastrService,
     private _adminService: AdminService,
     private _sharedService: SharedService,
     private url: ActivatedRoute,
@@ -41,13 +45,14 @@ allGroupList: Array<any> = [];
     }
 
   }
-   onPhoneInput(value: string) {
+  onPhoneInput(value: string) {
     const phonePattern = /^[0-9]{10}$/;
   }
   //employee form
   createForm() {
     this.StudentForm = this.fb.group({
       group_id: ['', Validators.required],
+      test_id: ['', Validators.required],
       student_name: ['', Validators.required],
       email_id: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|org|net|edu|gov)$/)]],
       phone_number: ['', [Validators.required, Validators.pattern('^((\\+91-?)|0)?[0-9]{10}$')]],
@@ -134,25 +139,26 @@ allGroupList: Array<any> = [];
     }
   }
   //get employee by id
-getStudentById(id: any) {
-  this._adminService.getStudentById(id).subscribe({
-    next: (result: any) => {
-      const StudentData = result.data;
-
-      // Patch main fields
-      this.controls['group_id'].patchValue(StudentData.group_id);
-      this.controls['student_name'].patchValue(StudentData.student_name);
-      this.controls['email_id'].patchValue(StudentData.email_id);
-      this.controls['phone_number'].patchValue(StudentData.phone_number);
-      this.controls['gender'].patchValue(StudentData.gender);
-      this.controls['college_name'].patchValue(StudentData.college_name);
-      this.controls['course'].patchValue(StudentData.course);
-      this.controls['course_year'].patchValue(StudentData.course_year);
-      this.controls['role'].patchValue(StudentData.role);
-    }
-  });
-}
-getAllGroupListWma() {
+  getStudentById(id: any) {
+    this._adminService.getStudentById(id).subscribe({
+      next: (result: any) => {
+        const StudentData = result.data;
+        this.getAllTestListWma(StudentData.group_id);
+        // Patch main fields
+        this.controls['group_id'].patchValue(StudentData.group_id);
+        this.controls['test_id'].patchValue(StudentData.test_id);
+        this.controls['student_name'].patchValue(StudentData.student_name);
+        this.controls['email_id'].patchValue(StudentData.email_id);
+        this.controls['phone_number'].patchValue(StudentData.phone_number);
+        this.controls['gender'].patchValue(StudentData.gender);
+        this.controls['college_name'].patchValue(StudentData.college_name);
+        this.controls['course'].patchValue(StudentData.course);
+        this.controls['course_year'].patchValue(StudentData.course_year);
+        this.controls['role'].patchValue(StudentData.role);
+      }
+    });
+  }
+  getAllGroupListWma() {
     this._adminService.getAllGroupListWma().subscribe({
       next: (res: any) => {
         if (res.data.length > 0) {
@@ -170,6 +176,32 @@ getAllGroupListWma() {
       );
     } else {
       this.filteredGroupList = this.allGroupList;
+    }
+  }
+  onGroupChange(event: any) {
+    const groupId = event.value;
+    this.group_id = groupId;
+
+    this.getAllTestListWma(this.group_id);
+  }
+  getAllTestListWma(id: any) {
+    this._adminService.getAllTestListWma(id).subscribe({
+      next: (res: any) => {
+        if (res.data.length > 0) {
+          this.allTestList = res.data;
+          this.filteredTestList = this.allTestList;
+        }
+      }
+    });
+  }
+
+  filterTest() {
+    if (this.searchTestValue !== '') {
+      this.filteredTestList = this.allTestList.filter(project =>
+        project.test_name.toLowerCase().includes(this.searchTestValue.toLowerCase())
+      );
+    } else {
+      this.filteredTestList = this.allTestList;
     }
   }
 
