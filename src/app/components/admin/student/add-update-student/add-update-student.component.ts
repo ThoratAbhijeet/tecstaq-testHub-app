@@ -6,6 +6,8 @@ import { Location } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { AdminService } from '../../admin.service';
 import { SharedService } from '../../../../shared/shared.service';
+import { Observable, ReplaySubject } from 'rxjs';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-add-update-student',
@@ -23,6 +25,7 @@ export class AddUpdateStudentComponent implements OnInit {
   searchTestValue: string = '';
   filteredTestList: any[] = [];
   group_id: any;
+  selectedUploadType:any;
   allGenderList = environment.allGenderList;
   allCourseYearList = environment.allCourseYearList;
   allRoleList = environment.allRoleList;
@@ -51,8 +54,8 @@ export class AddUpdateStudentComponent implements OnInit {
   //employee form
   createForm() {
     this.StudentForm = this.fb.group({
-      group_id: ['', Validators.required],
-      test_id: ['', Validators.required],
+      group_id: [''],
+      test_id: [''],
       student_name: ['', Validators.required],
       email_id: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|org|net|edu|gov)$/)]],
       phone_number: ['', [Validators.required, Validators.pattern('^((\\+91-?)|0)?[0-9]{10}$')]],
@@ -60,10 +63,11 @@ export class AddUpdateStudentComponent implements OnInit {
       college_name: ['', Validators.required],
       course: ['', Validators.required],
       course_year: ['', Validators.required],
-      role: ['', Validators.required],
-
+      role: ['student', Validators.required],
+       file: [''],
     })
   }
+
   get controls() {
     return this.StudentForm.controls
   }
@@ -209,6 +213,124 @@ export class AddUpdateStudentComponent implements OnInit {
   goToback() {
     this.location.back();
   }
+uploadExcel() {
+  if (!this.controls['file'].value) {
+    alert("Please select file");
+    return;
+  }
+  const payload = {
+    file: this.controls['file'].value,
+  };
+ if (payload) {
+      this._sharedService.setLoading(true);
+      this._adminService.uploadStudent(payload).subscribe({
+            next: (res: any) => {
+              if (res.status == 200) {
+                this._toastrService.success(res.message);
+                this.goToback();
+              } else {
+                this._toastrService.warning(res.message);
+              }
+            },
+            error: (err: any) => {
+              if (err.error.status == 422) {
+                this._toastrService.warning(err.error.message);
+              } else {
+                this._toastrService.error(err.error.message);
+              }
+            },
+          });
+    } else {
+      this.StudentForm.markAllAsTouched()
+      this._toastrService.warning('Fill required fields')
+    }
+}
+onFileSelect(event: any) {
+  const file = event.target.files[0];
+  const control = this.StudentForm.get('file');
+
+  if (!file) return;
+
+  const allowedExtensions = ['xls', 'xlsx'];
+  const maxSize = 5 * 1024 * 1024; // 5MB
+
+  const fileExtension = file.name.split('.').pop()?.toLowerCase();
+
+  let errors: any = {};
+
+  // ❌ Extension check
+  if (!allowedExtensions.includes(fileExtension!)) {
+    errors.invalidType = true;
+  }
+
+  // ❌ Size check
+  if (file.size > maxSize) {
+    errors.fileSizeExceeded = true;
+  }
+
+  if (Object.keys(errors).length > 0) {
+    control?.setErrors(errors);
+    control?.markAsTouched();
+    return;
+  }
+
+  // ✅ VALID FILE
+  control?.setErrors(null);
+  control?.patchValue(file);
+
+  // 👉 optional base64
+  this.convertFile(file).subscribe((base64) => {
+    this.controls['file']?.patchValue(base64);
+  });
+}
+ convertFile(file: File): Observable<string> {
+    const result = new ReplaySubject<string>(1);
+    const reader = new FileReader();
+    reader.readAsBinaryString(file);
+    reader.onload = (event: any) =>
+      result.next(btoa(event.target.result.toString()));
+    return result;
+  }
+onSubmit() {
+    let data = this.StudentForm.value
+    if (data) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'Do you want to Submit?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes',
+      }).then((result) => {
+        if (result.isConfirmed) {
+
+          this._adminService.uploadStudent(this.StudentForm.value).subscribe({
+            next: (res: any) => {
+              if (res.status == 200) {
+                this._toastrService.success(res.message);
+              } else {
+                this._toastrService.warning(res.message);
+              }
+            },
+            error: (err: any) => {
+              if (err.error.status == 422) {
+                this._toastrService.warning(err.error.message);
+              } else {
+                this._toastrService.error(err.error.message);
+              }
+            },
+          });
+
+        }
+      });
+
+    } else {
+      this._toastrService.warning('Fill required fields');
+      this.StudentForm.markAllAsTouched();
+    }
 
 
+
+}
 }

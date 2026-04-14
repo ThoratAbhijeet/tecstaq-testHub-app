@@ -22,6 +22,8 @@ import { AddUpdateQuestionnaireComponent } from './quetion/questionnaire/add-upd
 import { ViewQuestionnaireComponent } from './quetion/questionnaire/view-questionnaire/view-questionnaire.component';
 import { StudentReportComponent } from './reports/student-report/student-report.component';
 import { TestReportComponent } from './reports/test-report/test-report.component';
+import { TestResultsComponent } from './test/test-results/test-results.component';
+import { ResultReportComponent } from './reports/result-report/result-report.component';
 
 
 @NgModule({
@@ -44,7 +46,9 @@ import { TestReportComponent } from './reports/test-report/test-report.component
     AddUpdateQuestionnaireComponent,
     ViewQuestionnaireComponent,
     StudentReportComponent,
-    TestReportComponent
+    TestReportComponent,
+    TestResultsComponent,
+    ResultReportComponent
   ],
   imports: [
     CommonModule,

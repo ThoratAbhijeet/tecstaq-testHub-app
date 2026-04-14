@@ -180,7 +180,7 @@
 
                   <div class="input-group">
                     <input
-                      type="text"
+                      type="number"
                       class="form-control"
                       formControlName="total_marks"
                       placeholder="Total Marks"
@@ -204,6 +204,28 @@
                     <div *ngIf="controls['total_marks'].errors?.['required']">
                       <small>Total Marks is Required</small>
                     </div>
+                  </div>
+                </div>
+              </div>
+               <div class="col-3 col-md-3">
+                <div class="form-group">
+                  <label for="total_marks" class="mb-1">
+                    Cut Off
+                  </label>
+
+                  <div class="input-group">
+                    <input
+                      type="number"
+                      class="form-control"
+                      formControlName="cut_off"
+                      placeholder="Cut Off"
+                      [ngClass]="{
+                        'is-invalid':
+                          controls['cut_off'].invalid &&
+                          (controls['cut_off'].dirty ||
+                            controls['cut_off'].touched),
+                      }"
+                    />
                   </div>
                 </div>
               </div>

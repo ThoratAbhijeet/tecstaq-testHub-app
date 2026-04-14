@@ -1,0 +1,155 @@
+<div class="container-fluid exam-container p-3">
+
+  <!-- 🔥 HEADER -->
+  <div class="result-header p-4 mb-3">
+
+    <div class="d-flex justify-content-between flex-wrap align-items-center">
+
+      <!-- LEFT -->
+      <div>
+        <h3 class="mb-1 text-gradient">
+          {{ allTestResultDetails[0]?.test_name }}
+        </h3>
+
+        <p class="mb-1">
+          👤 <b>{{ allTestResultDetails[0]?.user_name }}</b>
+        </p>
+
+        <p class="mb-1 text-muted">
+          📅 {{ allTestResultDetails[0]?.test_date | date:'fullDate' }}
+        </p>
+
+        <p class="mb-0">
+          🕒 
+          <b>{{ formatTime(allTestResultDetails[0]?.start_time) }}</b> -
+          <b>{{ formatTime(allTestResultDetails[0]?.end_time) }}</b>
+
+          <span class="badge bg-dark ms-2">
+            ⏱ {{ getDuration(
+              allTestResultDetails[0]?.start_time,
+              allTestResultDetails[0]?.end_time
+            ) }}
+          </span>
+        </p>
+      </div>
+
+      <!-- RIGHT -->
+     <div class="result-summary text-end">
+
+  <!-- 🎯 SCORE BOX -->
+  <div class="score-box">
+    <div class="score-value">
+      {{ getScore() }}
+      <span class="total">/ {{ allTestResultDetails[0]?.total_marks }}</span>
+    </div>
+    <div class="score-label">Score</div>
+  </div>
+
+  <!-- 📊 PROGRESS BAR -->
+  <div class="progress-wrapper mt-2">
+    <div class="progress-label">
+      <span>Performance</span>
+      <span>{{ getPercentage() }}%</span>
+    </div>
+
+    <div class="progress">
+      <div class="progress-bar"
+           [style.width.%]="getPercentage()">
+      </div>
+    </div>
+  </div>
+
+</div>
+
+    </div>
+
+  </div>
+
+  <!-- 🔥 QUESTION NAVIGATION -->
+<div class="question-nav mb-2">
+  <span
+    *ngFor="let q of allTestResultDetails[0]?.answer; let i=index"
+    (click)="scrollTo(i)"
+    class="nav-box"
+    [ngClass]="{
+      'correct': q.result_status === 'correct',
+      'wrong': q.result_status === 'wrong',
+      'active': openedIndex === i
+    }">
+    {{ i + 1 }}
+  </span>
+</div>
+
+  <!-- 🔥 QUESTIONS -->
+ <div class="question-container">
+
+  <div *ngFor="let item of allTestResultDetails">
+
+    <div *ngFor="let q of item.answer; let i = index"
+     [attr.id]="'q' + i"
+     class="question-card mb-2">
+
+      <!-- 🔥 HEADER (Always visible) -->
+      <div class="question-header d-flex justify-content-between align-items-center"
+           (click)="toggle(i)">
+
+        <h6 class="mb-0">
+          Q{{ i + 1 }}. {{ q.question }}
+        </h6>
+
+        <div>
+          <span class="badge me-2"
+            [ngClass]="{
+              'bg-success': q.result_status === 'correct',
+              'bg-danger': q.result_status === 'wrong'
+            }">
+            {{ q.result_status === 'correct' ? '✔' : '✖' }}
+          </span>
+
+          <i class="bi"
+             [ngClass]="openedIndex === i ? 'bi-chevron-up' : 'bi-chevron-down'">
+          </i>
+        </div>
+
+      </div>
+
+      <!-- 🔥 BODY (Toggle) -->
+      <div class="question-body" *ngIf="openedIndex === i">
+
+        <div class="row mt-2 g-2">
+
+  <div class="col-md-6">
+    <div class="answer-card user-answer">
+      <div class="label">Your Answer</div>
+      <div class="value">
+        {{ q.student_select_ans || 'Not Attempted' }}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="answer-card correct-answer">
+      <div class="label">Correct Answer</div>
+      <div class="value">
+        {{ q.is_correct }}
+      </div>
+    </div>
+  </div>
+
+</div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+<div class="exit-section text-center mt-3">
+
+  <button class="btn-exit" (click)="goToback()">
+    Back  
+  </button>
+
+</div>
+</div>

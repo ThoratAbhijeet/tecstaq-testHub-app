@@ -58,6 +58,7 @@
                     <th scope="col">Test Name</th>
                     <th scope="col">Total Question</th>
                      <th scope="col">Total Marks</th>
+                     <th scope="col">Test Date</th>
                     <th scope="col">Start Time</th>
                     <th scope="col">End Time</th>
                   </tr>
@@ -134,6 +135,9 @@
     </td>
      <td class="wrap-text">
       {{ (item.total_marks ) || '--'}}
+    </td>
+    <td class="wrap-text">
+      {{ (item.test_date | date) || '--' }}
     </td>
    <td>{{ formatTime(item.start_time) }}</td>
    <td>{{ formatTime(item.end_time) }}</td>

@@ -1,0 +1,435 @@
+<div
+  class="container-fluid background min-vh-100 d-flex flex-row align-items-center p-0 m-0"
+>
+  <div class="row fit-to-screen d-flex justify-content-center w-100 p-4 m-0">
+    <div class="col-md-12 row d-flex justify-content-center m-0">
+      <div class="col-sm-12 col-md-6 col-lg-6 form-card rounded-4 p-0 m-0">
+        <div class="logo p-3 d-flex justify-content-center">
+          <img
+            class="large-logo logo-image"
+            src="assets/image/Tecstaq-new-logo-transeparent.png"
+            alt="Tecstaq Logo"
+          />
+        </div>
+        <div class="sign-box d-flex justify-content-center mt-2">
+          <div class="login-card p-4 login-form m-0">
+            <div class="row login-filds mt-2">
+              <form [formGroup]="StudentForm">
+                <div class="row">
+                  <!-- <div class="col-4 col-md-4">
+                <div class="form-group">
+                  <label
+                    class="mb-1 d-flex justify-content-between align-items-center"
+                  >
+                    <span>Group <span class="text-danger">*</span></span>
+                  </label>
+                  <mat-select
+                    formControlName="group_id"
+                    (selectionChange)="onGroupChange($event)"
+                    placeholder="Select Group"
+                    class="form-control theme-input"
+                    [ngClass]="{
+                      'is-invalid':
+                        controls['group_id'].invalid &&
+                        (controls['group_id'].dirty ||
+                          controls['group_id'].touched),
+                    }"
+                  >
+                    <mat-option>
+                      <ngx-mat-select-search
+                        [(ngModel)]="searchGroupValue"
+                        [ngModelOptions]="{ standalone: true }"
+                        (input)="filterGroup()"
+                        placeholderLabel="Search Group"
+                        noEntriesFoundLabel="No result found"
+                      ></ngx-mat-select-search>
+                    </mat-option>
+
+                    <mat-option
+                      *ngFor="let source of filteredGroupList"
+                      [value]="source.group_id"
+                    >
+                      {{ source.group_name | titlecase }}
+                    </mat-option>
+                  </mat-select>
+                  <div
+                    class="text-danger"
+                    *ngIf="
+                      controls['group_id'].invalid &&
+                      (controls['group_id'].touched ||
+                        controls['group_id'].dirty)
+                    "
+                  >
+                    <small>Please select a Group.</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-4 col-md-4">
+                <div class="form-group">
+                  <label
+                    class="mb-1 d-flex justify-content-between align-items-center"
+                  >
+                    <span>Test <span class="text-danger">*</span></span>
+                  </label>
+                  <mat-select
+                    formControlName="test_id"
+                    placeholder="Select Test"
+                    class="form-control theme-input"
+                    [ngClass]="{
+                      'is-invalid':
+                        controls['test_id'].invalid &&
+                        (controls['test_id'].dirty ||
+                          controls['test_id'].touched),
+                    }"
+                  >
+                    <mat-option>
+                      <ngx-mat-select-search
+                        [(ngModel)]="searchTestValue"
+                        [ngModelOptions]="{ standalone: true }"
+                        (input)="filterTest()"
+                        placeholderLabel="Search Test"
+                        noEntriesFoundLabel="No result found"
+                      ></ngx-mat-select-search>
+                    </mat-option>
+
+                    <mat-option
+                      *ngFor="let source of filteredTestList"
+                      [value]="source.test_id"
+                    >
+                      {{ source.test_name | titlecase }}
+                    </mat-option>
+                  </mat-select>
+                  <div
+                    class="text-danger"
+                    *ngIf="
+                      controls['test_id'].invalid &&
+                      (controls['test_id'].touched ||
+                        controls['test_id'].dirty)
+                    "
+                  >
+                    <small>Please select a Test.</small>
+                  </div>
+                </div>
+              </div> -->
+                  <div class="col-4 col-md-4">
+                    <div class="form-group">
+                      <label for="student_name" class="mb-1"
+                        >Student Name <span class="text-danger">*</span>
+                      </label>
+                      <input
+                        class="form-control mb-1"
+                        id="student_name"
+                        placeholder="Student Name"
+                        type="text"
+                        formControlName="student_name"
+                        [ngClass]="{
+                          'is-invalid':
+                            controls['student_name'].invalid &&
+                            (controls['student_name'].dirty ||
+                              controls['student_name'].touched),
+                        }"
+                      />
+                      <div
+                        class="text-danger"
+                        *ngIf="
+                          controls['student_name'].invalid &&
+                          (controls['student_name'].dirty ||
+                            controls['student_name'].touched)
+                        "
+                      >
+                        <div
+                          *ngIf="controls['student_name'].errors?.['required']"
+                        >
+                          <small>Student Name is Required</small>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-4 col-md-4">
+                    <div class="form-group">
+                      <label
+                        class="mb-1 d-flex justify-content-between align-items-center"
+                      >
+                        <span>Email <span class="text-danger">*</span></span>
+                      </label>
+
+                      <input
+                        type="email"
+                        class="form-control"
+                        formControlName="email_id"
+                        placeholder="Email"
+                        [ngClass]="{
+                          'is-invalid':
+                            controls['email_id'].invalid &&
+                            (controls['email_id'].dirty ||
+                              controls['email_id'].touched),
+                        }"
+                      />
+                      <div
+                        class="text-danger"
+                        *ngIf="
+                          controls['email_id'].invalid &&
+                          (controls['email_id'].dirty ||
+                            controls['email_id'].touched)
+                        "
+                      >
+                        <div *ngIf="controls['email_id'].errors?.['required']">
+                          <small>Email is Required</small>
+                        </div>
+                        <small *ngIf="controls['email_id'].errors?.['pattern']"
+                          >Invalid email format.</small
+                        >
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-4 col-md-4">
+                    <div class="form-group">
+                      <label for="phone_number" class="mb-1">
+                        Mobile Number
+                        <span class="text-danger">*</span>
+                      </label>
+
+                      <div class="input-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="phone_number"
+                          #searchInput
+                          (input)="onPhoneInput(searchInput.value)"
+                          placeholder="Mobile Number"
+                          maxlength="10"
+                          pattern="[0-9]*"
+                          inputmode="numeric"
+                          (keypress)="allowOnlyDigits($event)"
+                          [ngClass]="{
+                            'is-invalid':
+                              controls['phone_number'].invalid &&
+                              (controls['phone_number'].dirty ||
+                                controls['phone_number'].touched),
+                          }"
+                        />
+                      </div>
+
+                      <div
+                        class="text-danger"
+                        *ngIf="
+                          controls['phone_number'].invalid &&
+                          (controls['phone_number'].dirty ||
+                            controls['phone_number'].touched)
+                        "
+                      >
+                        <div
+                          *ngIf="controls['phone_number'].errors?.['required']"
+                        >
+                          <small>Mobile Number is Required</small>
+                        </div>
+                        <div
+                          *ngIf="controls['phone_number'].errors?.['pattern']"
+                        >
+                          <small>Mobile Number only 10 digit</small>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-4 col-md-4">
+                    <div class="form-group">
+                      <label class="mb-1">
+                        Gender <span class="text-danger">*</span></label
+                      >
+                      <mat-select
+                        formControlName="gender"
+                        placeholder="Select Gender"
+                        class="form-control"
+                        [ngClass]="{
+                          'is-invalid':
+                            controls['gender'].invalid &&
+                            (controls['gender'].dirty ||
+                              controls['gender'].touched),
+                        }"
+                      >
+                        <mat-option value=""> Select Gender </mat-option>
+                        <mat-option
+                          *ngFor="let item of allGenderList"
+                          [value]="item"
+                        >
+                          {{ item | titlecase }}
+                        </mat-option>
+                      </mat-select>
+                      <div
+                        class="text-danger"
+                        *ngIf="
+                          controls['gender'].invalid &&
+                          (controls['gender'].touched ||
+                            controls['gender'].dirty)
+                        "
+                      >
+                        <small>Please select a Gender.</small>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-4 col-md-4">
+                    <div class="form-group">
+                      <label for="college_name" class="mb-1"
+                        >College Name <span class="text-danger">*</span>
+                      </label>
+                      <input
+                        class="form-control mb-1"
+                        id="college_name"
+                        placeholder="College Name"
+                        type="text"
+                        formControlName="college_name"
+                        [ngClass]="{
+                          'is-invalid':
+                            controls['college_name'].invalid &&
+                            (controls['college_name'].dirty ||
+                              controls['college_name'].touched),
+                        }"
+                      />
+                      <div
+                        class="text-danger"
+                        *ngIf="
+                          controls['college_name'].invalid &&
+                          (controls['college_name'].dirty ||
+                            controls['college_name'].touched)
+                        "
+                      >
+                        <div
+                          *ngIf="controls['college_name'].errors?.['required']"
+                        >
+                          <small>College Name is Required</small>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-4 col-md-4">
+                    <div class="form-group">
+                      <label class="mb-1">
+                        Course <span class="text-danger">*</span>
+                      </label>
+
+                      <mat-select
+                        formControlName="course"
+                        placeholder="Select Course"
+                        class="form-control"
+                        [ngClass]="{
+                          'is-invalid':
+                            controls['course'].invalid &&
+                            (controls['course'].dirty ||
+                              controls['course'].touched),
+                        }"
+                      >
+                        <mat-option value="">Select Course</mat-option>
+                        <mat-option value="MCA">MCA</mat-option>
+                      </mat-select>
+
+                      <div
+                        class="text-danger"
+                        *ngIf="
+                          controls['course'].invalid &&
+                          (controls['course'].dirty ||
+                            controls['course'].touched)
+                        "
+                      >
+                        <small *ngIf="controls['course'].errors?.['required']">
+                          Course is Required
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-4 col-md-4">
+                    <div class="form-group">
+                      <label class="mb-1">
+                        Course Year <span class="text-danger">*</span></label
+                      >
+                      <mat-select
+                        formControlName="course_year"
+                        placeholder="Select Course Year"
+                        class="form-control"
+                        [ngClass]="{
+                          'is-invalid':
+                            controls['course_year'].invalid &&
+                            (controls['course_year'].dirty ||
+                              controls['course_year'].touched),
+                        }"
+                      >
+                        <mat-option value=""> Select Course Year </mat-option>
+                        <mat-option
+                          *ngFor="let item of allCourseYearList"
+                          [value]="item"
+                        >
+                          {{ item | titlecase }}
+                        </mat-option>
+                      </mat-select>
+                      <div
+                        class="text-danger"
+                        *ngIf="
+                          controls['course_year'].invalid &&
+                          (controls['course_year'].touched ||
+                            controls['course_year'].dirty)
+                        "
+                      >
+                        <small>Please select a Course Year.</small>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- <div class="col-4 col-md-4">
+                <div class="form-group">
+                  <label class="mb-1">
+                    Role <span class="text-danger">*</span></label
+                  >
+                  <mat-select
+                    formControlName="role"
+                    placeholder="Select Role"
+                    class="form-control"
+                    [ngClass]="{
+                      'is-invalid':
+                        controls['role'].invalid &&
+                        (controls['role'].dirty ||
+                          controls['role'].touched),
+                    }"
+                  >
+                    <mat-option value=""> Select Role</mat-option>
+                    <mat-option
+                      *ngFor="let item of allRoleList"
+                      [value]="item"
+                    >
+                      {{ item | titlecase }}
+                    </mat-option>
+                  </mat-select>
+                  <div
+                    class="text-danger"
+                    *ngIf="
+                      controls['role'].invalid &&
+                      (controls['role'].touched || controls['role'].dirty)
+                    "
+                  >
+                    <small>Please select a Role.</small>
+                  </div>
+                </div>
+              </div> -->
+                </div>
+                <hr />
+                <div>
+                  <button
+                    type="submit"
+                    class="btn btn-primary px-4 btn-sm fw-bold"
+                    (click)="submit()"
+                  >
+                    Sign Up
+                  </button>
+                  <button
+                    type="submit"
+                    class="btn btn-secondary ms-3 px-4 btn-sm fw-bold"
+                    (click)="goToback()"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

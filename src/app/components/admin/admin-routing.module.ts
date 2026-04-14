@@ -19,6 +19,8 @@ import { AddUpdateQuestionnaireComponent } from './quetion/questionnaire/add-upd
 import { ViewQuestionnaireComponent } from './quetion/questionnaire/view-questionnaire/view-questionnaire.component';
 import { StudentReportComponent } from './reports/student-report/student-report.component';
 import { TestReportComponent } from './reports/test-report/test-report.component';
+import { TestResultsComponent } from './test/test-results/test-results.component';
+import { ResultReportComponent } from './reports/result-report/result-report.component';
 
 const routes: Routes = [
   { path: "", redirectTo: "admin", pathMatch: "full" },
@@ -181,12 +183,27 @@ const routes: Routes = [
     outlet: "admin_menu",
     canActivate: [AuthGuard]
   },
-    {
+  {
     path: "test-report",
     component: TestReportComponent,
     pathMatch: "full",
     outlet: "admin_menu",
     canActivate: [AuthGuard]
+  },
+  {
+    path: "result-report",
+    component: ResultReportComponent,
+    pathMatch: "full",
+    outlet: "admin_menu",
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "test-result/:id",
+    component: TestResultsComponent,
+    pathMatch: "full",
+    outlet: "admin_menu",
+    canActivate: [AuthGuard]
+
   },
 ];
 

@@ -1,0 +1,240 @@
+<div class="container-fluid p-0">
+  <div class="row justify-content-center mx-3">
+    <div class="col-md-12 m-3">
+      <div class="card my-3">
+        <div class="d-flex align-items-center justify-content-between p-2">
+          <h3 class="m-0 fw-bold fs-4 d-flex align-items-center">
+            <i class="fa fas fs-2 fa-scroll mx-3 text-primary"></i> All Result
+          </h3>
+          <div class="col-md-9 d-flex align-items-center justify-content-end">
+            <i class="fa-solid fa-magnifying-glass searching-icon"></i>
+            <input
+              type="search"
+              placeholder="Search here..."
+              aria-label="Search"
+              class="search-input"
+              #searchInput
+              (input)="getSearchInput(searchInput.value)"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card px-3">
+        <div class="col-md-12">
+          <mat-paginator
+            [length]="total"
+            [pageSize]="perPage"
+            [pageSizeOptions]="[10, 25, 50, 100]"
+            [showFirstLastButtons]="true"
+            (page)="onPageChange($event)"
+          >
+          </mat-paginator>
+        </div>
+
+        <hr class="m-0" />
+        <div class="card-header bg-white px-3">
+          <div class="row h-100 d-flex" [formGroup]="form">
+            <div class="col-md-2 mb-3">
+              <div class="form-group">
+                <label for="fromDate">From Date</label>
+                <input
+                  class="form-control"
+                  id="fromDate"
+                  name="fromDate"
+                  sizing="sm"
+                  type="date"
+                  formControlName="fromDate"
+                />
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div class="form-group">
+                <label for="toDate">To Date</label>
+                <input
+                  class="form-control"
+                  id="toDate"
+                  name="toDate"
+                  sizing="sm"
+                  type="date"
+                  formControlName="toDate"
+                />
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="isRefer">Students</label>
+                <mat-select
+                  placeholder="Select Student"
+                  formControlName="student_id"
+                  class="form-control"
+                >
+                  <ngx-mat-select-search
+                    [(ngModel)]="searchStudentValue"
+                    [ngModelOptions]="{ standalone: true }"
+                    (input)="filterStudent()"
+                    placeholderLabel="Search Student"
+                    noEntriesFoundLabel="No result found"
+                  >
+                  </ngx-mat-select-search>
+
+                  <mat-option value=""> All</mat-option>
+                  <mat-option
+                    *ngFor="let item of filteredStudentList"
+                    [value]="item.student_id"
+                  >
+                    {{ item.student_name | titlecase }}
+                  </mat-option>
+                </mat-select>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label>Result</label>
+
+                <mat-select
+                  placeholder="Select Result"
+                  formControlName="final_result"
+                  class="form-control"
+                >
+                  <mat-option value="">All</mat-option>
+                  <mat-option value="pass">Pass</mat-option>
+                  <mat-option value="fail">Fail</mat-option>
+                </mat-select>
+              </div>
+            </div>
+
+            <div class="col-md-6 d-flex align-items-center mt-3">
+              <button
+                type="button"
+                class="fw-bold btn btn-outline-primary btn-primary text-white px-4 btn-sm"
+                (click)="getAllStudentReportList()"
+              >
+                Submit
+              </button>
+              <button
+                class="btn btn-success fw-bold text-white px-4 btn-sm ms-2"
+                (click)="downloadAllStudentReportList()"
+              >
+                Download
+              </button>
+              <button
+                class="btn btn-secondary fw-bold text-white px-4 btn-sm ms-2 no-wrap"
+                (click)="allClearFilter()"
+              >
+                Clear Filters
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="col-md-12">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead class="table-light">
+                  <tr>
+                    <th scope="col">Sr.No</th>
+                    <th scope="col" class="text-center">Options</th>
+                    <!-- <th scope="col" class="text-center">Group</th> -->
+                    <th scope="col" class="text-center">Test</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Attempted Questions</th>
+                    <th scope="col">Correct Questions</th>
+                    <th scope="col">Wrong Questions</th>
+                    <th scope="col">Obtained Marks</th>
+                    <th scope="col">Total Marks</th>
+                    <th scope="col">Result</th>
+                    <!-- <th scope="col">Approve</th> -->
+                  </tr>
+                </thead>
+                <tbody class="body-data">
+                  <tr *ngFor="let item of allReportList; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td class="text-center">
+                      <div class="btn-group dropright cursor-pointer">
+                        <i
+                          class="bi bi-three-dots-vertical dropdown-toggle-split"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                        ></i>
+                        <div class="dropdown-menu short-dropdown-menu">
+                          <a
+                            class="dropdown-item cursor-pointer"
+                            [routerLink]="[
+                              '/admin',
+                              {
+                                outlets: {
+                                  admin_menu: 'test-result/' + item.student_id,
+                                },
+                              },
+                            ]"
+                          >
+                            <i class="bi bi-eye fs-5"></i>
+                            <small> View</small>
+                          </a>
+                        </div>
+                      </div>
+                    </td>
+                    <!-- <td class="">
+                                            <mat-slide-toggle (change)="changeEvent($event, item.designation_id)"
+                                                class="example-margin small-toggle cursor-pointer"
+                                                [checked]="item.status == true">
+                                            </mat-slide-toggle>
+                                        </td> -->
+                    <!-- <td class="wrap-text text-center">{{ item.group_name || "--" }}</td> -->
+                    <td class="wrap-text">
+                      {{ (item.test_name | titlecase) || "--" }}
+                    </td>
+                    <td class="wrap-text">
+                      {{ (item.student_name | titlecase) || "--" }}
+                    </td>
+                    <td class="wrap-text">
+                      {{ item.attempted_questions || "--" }}
+                    </td>
+                    <td class="wrap-text">
+                      {{ item.correct_questions || "--" }}
+                    </td>
+                    <td class="wrap-text">
+                      {{ item.wrong_questions || "--" }}
+                    </td>
+                    <td class="wrap-text">{{ item.correct_marks || "--" }}</td>
+                    <td class="wrap-text">{{ item.total_marks || "--" }}</td>
+                   <td class="wrap-text text-center fw-bold fs-6">
+  <span
+    [ngClass]="{
+      'badge pass-badge': item.final_result?.toLowerCase() === 'pass',
+      'badge fail-badge': item.final_result?.toLowerCase() === 'fail'
+    }"
+  >
+    {{ (item.final_result | titlecase) || '--' }}
+  </span>
+</td>
+                    <!-- <td class="wrap-text text-center">{{ (item.Student_status | titlecase) || "--" }}</td> -->
+                  </tr>
+                  <tr
+                    class="fw-bold text-center"
+                    *ngIf="allReportList.length === 0"
+                  >
+                    <td colspan="10" class="text-danger">No Data Available</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="col-md-12">
+                <mat-paginator
+                  [length]="total"
+                  [pageSize]="perPage"
+                  [pageSizeOptions]="[5, 10, 25, 100]"
+                  aria-label="Select page"
+                  [showFirstLastButtons]="true"
+                  (page)="onPageChange($event)"
+                >
+                </mat-paginator>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

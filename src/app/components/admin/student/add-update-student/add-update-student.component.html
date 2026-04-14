@@ -2,15 +2,67 @@
   <div class="row justify-content-center">
     <div class="col-md-12 m-3">
       <div class="card p-3">
-        <div class="card-header d-flex justify-content-between p-3">
-          <strong class="text-dark"
-            >{{ isEdit ? " Edit" : "Add " }} Student</strong
-          >
-        </div>
+       <div class="card-header d-flex justify-content-between align-items-center p-3">
+
+  <!-- LEFT TITLE -->
+  <strong class="text-dark">
+    {{ isEdit ? "Edit" : "Add" }} Student
+  </strong>
+
+  <!-- RIGHT FILE UPLOAD -->
+<div class="d-flex flex-column align-items-end">
+
+  <label class="fw-bold mb-1">
+    📄 All Student Upload Sheet
+  </label>
+
+  <div class="d-flex align-items-center gap-2">
+<div class="form-group mt-1">
+
+  <input
+    type="file"
+    class="form-control"
+    formControlName="file"
+    (change)="onFileSelect($event)"
+    accept=".xls,.xlsx"
+  />
+  <div
+    class="text-danger"
+    *ngIf="
+      controls['file']?.invalid &&
+      (controls['file']?.touched || controls['file']?.dirty)
+    "
+  >
+    <small *ngIf="controls['file']?.errors?.['required']">
+      File is required
+    </small>
+
+    <small *ngIf="controls['file']?.errors?.['invalidType']">
+      Only Excel files (.xls, .xlsx) are allowed
+    </small>
+
+    <small *ngIf="controls['file']?.errors?.['fileSizeExceeded']">
+      File size must be less than 5 MB
+    </small>
+  </div>
+</div>
+    <button
+      *ngIf="controls['file']?.value"
+      class="btn btn-success btn-sm fw-bold"
+      (click)="uploadExcel()"
+      type="button"
+    >
+    Upload
+    </button>
+  </div>
+
+</div>
+
+</div>
         <div class="card-body">
           <form [formGroup]="StudentForm">
             <div class="row">
-              <div class="col-3 col-md-3">
+              <!-- <div class="col-3 col-md-3">
                 <div class="form-group">
                   <label
                     class="mb-1 d-flex justify-content-between align-items-center"
@@ -104,7 +156,7 @@
                     <small>Please select a Test.</small>
                   </div>
                 </div>
-              </div>
+              </div> -->
               <div class="col-3 col-md-3">
                 <div class="form-group">
                   <label for="student_name" class="mb-1"
@@ -286,38 +338,41 @@
                   </div>
                 </div>
               </div>
-              <div class="col-3 col-md-3">
-                <div class="form-group">
-                  <label for="course" class="mb-1"
-                    >Course <span class="text-danger">*</span>
-                  </label>
-                  <input
-                    class="form-control mb-1"
-                    id="course"
-                    placeholder="Course "
-                    type="text"
-                    formControlName="course"
-                    [ngClass]="{
-                      'is-invalid':
-                        controls['course'].invalid &&
-                        (controls['course'].dirty ||
-                          controls['course'].touched),
-                    }"
-                  />
-                  <div
-                    class="text-danger"
-                    *ngIf="
-                      controls['course'].invalid &&
-                      (controls['course'].dirty ||
-                        controls['course'].touched)
-                    "
-                  >
-                    <div *ngIf="controls['course'].errors?.['required']">
-                      <small>Course is Required</small>
+               <div class="col-3 col-md-3">
+                    <div class="form-group">
+                      <label class="mb-1">
+                        Course <span class="text-danger">*</span>
+                      </label>
+
+                      <mat-select
+                        formControlName="course"
+                        placeholder="Select Course"
+                        class="form-control"
+                        [ngClass]="{
+                          'is-invalid':
+                            controls['course'].invalid &&
+                            (controls['course'].dirty ||
+                              controls['course'].touched),
+                        }"
+                      >
+                        <mat-option value="">Select Course</mat-option>
+                        <mat-option value="MCA">MCA</mat-option>
+                      </mat-select>
+
+                      <div
+                        class="text-danger"
+                        *ngIf="
+                          controls['course'].invalid &&
+                          (controls['course'].dirty ||
+                            controls['course'].touched)
+                        "
+                      >
+                        <small *ngIf="controls['course'].errors?.['required']">
+                          Course is Required
+                        </small>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
                 <div class="col-3 col-md-3">
                 <div class="form-group">
                   <label class="mb-1">
@@ -353,7 +408,7 @@
                   </div>
                 </div>
               </div>
-               <div class="col-3 col-md-3">
+               <!-- <div class="col-3 col-md-3">
                 <div class="form-group">
                   <label class="mb-1">
                     Role <span class="text-danger">*</span></label
@@ -387,7 +442,7 @@
                     <small>Please select a Role.</small>
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
             <hr />
             <div>

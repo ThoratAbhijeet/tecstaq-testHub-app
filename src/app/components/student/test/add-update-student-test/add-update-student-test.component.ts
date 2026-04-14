@@ -25,6 +25,7 @@ export class AddUpdateStudentTestComponent implements OnInit {
   timerInterval: any;
   student_name: any;
   student_id: any;
+  test_id :any;
   currentQuestionIndex = 0;
   tabSwitched = false;
   isSubmitted = false;
@@ -44,13 +45,14 @@ export class AddUpdateStudentTestComponent implements OnInit {
     const data = localStorage.getItem('user')
     this.student_name = data ? JSON.parse(data)?.user_name : null;
     this.student_id = data ? JSON.parse(data)?.student_id : null;
-    this.createForm();
     //activate route get id
     this.QuestionnaireId = this.url.snapshot.params['id'];
     if (this.QuestionnaireId) {
       this.getQuestionnaireById(this.QuestionnaireId)
     }
     document.addEventListener('visibilitychange', this.handleVisibilityChange);
+    this.createForm();
+    
   }
   ngOnDestroy(): void {
     document.removeEventListener('visibilitychange', this.handleVisibilityChange);
@@ -62,6 +64,7 @@ export class AddUpdateStudentTestComponent implements OnInit {
   createForm() {
     this.QuestionForm = this.fb.group({
       student_id: [this.student_id],
+      test_id :[''],
       answer: this.fb.array([])
     });
   }
@@ -92,14 +95,14 @@ export class AddUpdateStudentTestComponent implements OnInit {
 
       this.answerArray.push(group);
     });
-
-    console.log('Initialized FormArray:', this.answerArray.value);
   }
   //get Questionnaire by id
   getQuestionnaireById(id: any) {
     this._adminService.getQuestionnaireById(id).subscribe({
       next: (result: any) => {
         this.allQuestionnaireDetails = result.data;
+        this.test_id =  this.allQuestionnaireDetails.test_id;
+        this.controls['test_id'].patchValue(this.test_id);
         this.initializeAnswers();
         this.startTimer();
       }
@@ -156,14 +159,6 @@ export class AddUpdateStudentTestComponent implements OnInit {
                   allowEnterKey: false
                 });
                 this.getTestResultById(this.student_id);
-                //           this.router.navigate([
-                //   '/student',
-                //   {
-                //     outlets: {
-                //       student_menu: 'attempt-test/' + this.allQuestionnaireDetails.questionnaire_id
-                //     }
-                //   }
-                // ]);
                 localStorage.removeItem('examAnswers');
                 localStorage.removeItem('examIndex');
                 localStorage.removeItem('examEndTime');
@@ -350,7 +345,7 @@ export class AddUpdateStudentTestComponent implements OnInit {
                   '/student',
                   {
                     outlets: {
-                      student_menu: ['test-result']
+                      student_menu: ['test-result' ]
                     }
                   }
                 ]);
@@ -495,13 +490,13 @@ export class AddUpdateStudentTestComponent implements OnInit {
             // ✅ View Answers
             if (result.isConfirmed) {
               this.router.navigate([
-                '/student',
-                {
-                  outlets: {
-                    student_menu: ['test-result']
+                  '/student',
+                  {
+                    outlets: {
+                      student_menu: ['test-result']
+                    }
                   }
-                }
-              ]);
+                ]);
             }
 
             // ✅ Exit (Logout)

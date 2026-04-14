@@ -64,7 +64,7 @@ export class LoginComponent implements OnInit {
             if (res.data.role == 'admin') {
               this.router.navigate(['/admin', { outlets: { admin_menu: 'admin-dashboard' } }]);
             }  else if (res.data.role === 'student') {
-              this.router.navigate(['/student', { outlets: { student_menu: 'student-dashboard' } }]);
+              this.router.navigate(['/student', { outlets: { student_menu: 'test' } }]);
             } else {
               this._toastrService.warning('Unauthorized');
               this.router.navigate(['/auth']);

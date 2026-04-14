@@ -59,9 +59,9 @@
                     <th scope="col">Test Name</th>
                     <th scope="col">Duration</th>
                     <th scope="col">Total Marks</th>
+                    <th scope="col">Cut Off</th>
                     <th scope="col">Start Time</th>
                     <th scope="col">End Time</th>
-                    <!-- <th scope="col">Designation</th> -->
                   </tr>
                 </thead>
                 <tbody class="body-data">
@@ -129,9 +129,9 @@
                     </td>
                     <td class="wrap-text">{{ item.duration || "--" }}</td>
                     <td class="wrap-text">{{ item.total_marks || "--" }}</td>
+                    <td class="wrap-text">{{ (item.cut_off) || "--" }}</td>
                     <td>{{ formatTime(item.start_time) }}</td>
                     <td>{{ formatTime(item.end_time) }}</td>
-                    <!-- <td class="wrap-text">{{ (item.designation | titlecase) || "--" }}</td> -->
                     <!-- <td class="wrap-text text-center">{{ (item.Test_status | titlecase) || "--" }}</td> -->
                   </tr>
                   <tr

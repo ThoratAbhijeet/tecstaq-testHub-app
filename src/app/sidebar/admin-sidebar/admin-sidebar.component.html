@@ -127,6 +127,13 @@
             >
               Tests
             </li>
+              <li
+              class="nav-item sub-nav-item"
+              routerLinkActive="active"
+              [routerLink]="['/admin', { outlets: { admin_menu: ['result-report'] } }]"
+            >
+              Results
+            </li>
           </ul>
           <!-- Change Password -->
           <li class="nav-item" (click)="openChangePasswordDialog()">

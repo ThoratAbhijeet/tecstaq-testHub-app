@@ -8,15 +8,15 @@ import { Observable } from 'rxjs';
 })
 export class AdminService {
 
- baseUrl = environment.baseUrl
+  baseUrl = environment.baseUrl
   constructor(private http: HttpClient) { }
   //Student list
-  getStudentList(key: any, page: any, perPage: any,group_id:any): Observable<any> {
+  getStudentList(key: any, page: any, perPage: any, group_id: any): Observable<any> {
     let params: any = {
       page: page,
       perPage: perPage,
       key: key,
-      group_id:group_id
+      group_id: group_id
     };
     // Check if page or perPage is empty and remove them from params if so
     if (page === '' || perPage === '') {
@@ -50,7 +50,7 @@ export class AdminService {
       params: params
     });
   }
-   // Student approve
+  // Student approve
   StudentApprove(id: any, is_approved: any,): Observable<any> {
     const body = { is_approved: is_approved };
     let params = new HttpParams().set('is_approved', is_approved);
@@ -58,7 +58,7 @@ export class AdminService {
       params: params
     });
   }
-   //All Student approve
+  //All Student approve
   StudentAllApprove(id: any, is_approved: any,): Observable<any> {
     const body = { is_approved: is_approved };
     let params = new HttpParams().set('is_approved', is_approved);
@@ -66,7 +66,7 @@ export class AdminService {
       params: params
     });
   }
-   //get all Student report list  ...............................................................
+  //get all Student report list  ...............................................................
   getAllStudentReport(page: any, perPage: any, fromDate: any, toDate: any, group_id: any, test_id: any, student_id: any, key: any): Observable<any> {
     let params = {
       'page': page,
@@ -88,7 +88,7 @@ export class AdminService {
       delete params['fromDate'];
       delete params['toDate'];
     }
-    if (group_id  == '' || group_id  == 'null') {
+    if (group_id == '' || group_id == 'null') {
       delete params['group_id'];
     }
     if (test_id == '' || test_id == 'null') {
@@ -98,13 +98,13 @@ export class AdminService {
       delete params['student_id'];
     }
     if (key === '' || key === 'null') delete params.key;
-    
+
     return this.http.get(this.baseUrl + 'api/student', {
       params: params
     })
   }
   // student report download
-  downloadAllStudentReportList( fromDate: any, toDate: any, group_id: any, test_id: any, student_id: any,key: any): Observable<any> {
+  downloadAllStudentReportList(fromDate: any, toDate: any, group_id: any, test_id: any, student_id: any, key: any): Observable<any> {
     let params = {
       'fromDate': fromDate,
       'toDate': toDate,
@@ -113,13 +113,13 @@ export class AdminService {
       'student_id': student_id,
       'key': key,
     };
-    
+
 
     if (fromDate == '' || toDate == '') {
       delete params['fromDate'];
       delete params['toDate'];
     }
-    if (group_id  == '' || group_id  == 'null') {
+    if (group_id == '' || group_id == 'null') {
       delete params['group_id'];
     }
     if (test_id == '' || test_id == 'null') {
@@ -134,12 +134,12 @@ export class AdminService {
       params: params
     })
   }
-    //get Student wma ....................................................
+  //get Student wma ....................................................
   getAllStudentListWma(): Observable<any> {
     return this.http.get(this.baseUrl + 'api/student/wma')
   }
-     //get Student wma ....................................................
-  getAllStudentsListWma(test_id:any): Observable<any> {
+  //get Student wma ....................................................
+  getAllStudentsListWma(test_id: any): Observable<any> {
     let params: any = {
       test_id: test_id,
 
@@ -149,7 +149,7 @@ export class AdminService {
     })
   }
 
-    //Group list
+  //Group list
   getGroupList(key: any, page: any, perPage: any): Observable<any> {
     let params: any = {
       page: page,
@@ -187,11 +187,11 @@ export class AdminService {
       params: params
     });
   }
-    //get Group wma ....................................................
+  //get Group wma ....................................................
   getAllGroupListWma(): Observable<any> {
     return this.http.get(this.baseUrl + 'api/group/wma')
   }
-   //Test list
+  //Test list
   getTestList(key: any, page: any, perPage: any): Observable<any> {
     let params: any = {
       page: page,
@@ -229,7 +229,7 @@ export class AdminService {
       params: params
     });
   }
-    //get all test report list  ...............................................................
+  //get all test report list  ...............................................................
   getAllTestReport(page: any, perPage: any, fromDate: any, toDate: any, group_id: any, key: any): Observable<any> {
     let params = {
       'page': page,
@@ -249,30 +249,30 @@ export class AdminService {
       delete params['fromDate'];
       delete params['toDate'];
     }
-    if (group_id  == '' || group_id  == 'null') {
+    if (group_id == '' || group_id == 'null') {
       delete params['group_id'];
     }
     if (key === '' || key === 'null') delete params.key;
-    
+
     return this.http.get(this.baseUrl + 'api/questionnaire', {
       params: params
     })
   }
   // Test report download
-  downloadAllTestReportList( fromDate: any, toDate: any, group_id: any, key: any): Observable<any> {
+  downloadAllTestReportList(fromDate: any, toDate: any, group_id: any, key: any): Observable<any> {
     let params = {
       'fromDate': fromDate,
       'toDate': toDate,
       'group_id': group_id,
       'key': key,
     };
-    
+
 
     if (fromDate == '' || toDate == '') {
       delete params['fromDate'];
       delete params['toDate'];
     }
-    if (group_id  == '' || group_id  == 'null') {
+    if (group_id == '' || group_id == 'null') {
       delete params['group_id'];
     }
     if (key === '' || key === 'null') delete params.key;
@@ -281,8 +281,8 @@ export class AdminService {
       params: params
     })
   }
-    //get Test wma ....................................................
-  getAllTestListWma(group_id:any): Observable<any> {
+  //get Test wma ....................................................
+  getAllTestListWma(group_id: any): Observable<any> {
     let params: any = {
       group_id: group_id,
 
@@ -291,8 +291,8 @@ export class AdminService {
       params: params
     });
   }
- 
-     //QuetionType list
+
+  //QuetionType list
   getQuetionTypeList(key: any, page: any, perPage: any): Observable<any> {
     let params: any = {
       page: page,
@@ -330,11 +330,11 @@ export class AdminService {
       params: params
     });
   }
-    //get QuetionType wma ....................................................
+  //get QuetionType wma ....................................................
   getAllQuetionTypeListWma(): Observable<any> {
     return this.http.get(this.baseUrl + 'api/quetion_type/wma')
   }
-   //Questionnaire list
+  //Questionnaire list
   getQuestionnaireList(key: any, page: any, perPage: any): Observable<any> {
     let params: any = {
       page: page,
@@ -372,17 +372,17 @@ export class AdminService {
       params: params
     });
   }
-    //get Questionnaire wma ....................................................
+  //get Questionnaire wma ....................................................
   getAllQuestionnaireListWma(): Observable<any> {
     return this.http.get(this.baseUrl + 'api/questionnaire/wma')
   }
   //student test list
-  getStudentTestList(key: any, page: any, perPage: any,student_id:any): Observable<any> {
+  getStudentTestList(key: any, page: any, perPage: any, student_id: any): Observable<any> {
     let params: any = {
       page: page,
       perPage: perPage,
       key: key,
-      student_id:student_id
+      student_id: student_id
     };
     // Check if page or perPage is empty and remove them from params if so
     if (page === '' || perPage === '') {
@@ -400,19 +400,19 @@ export class AdminService {
   addQuestionnaireTestSubmit(data: any): Observable<any> {
     return this.http.post(this.baseUrl + 'api/questionnaire/answer', data);
   }
-    //result count get by id ...
-  getTestResultById(student_id:any) {
+  //result count get by id ...
+  getTestResultById(student_id: any) {
     let params: any = {
-      student_id:student_id
+      student_id: student_id
     };
     if (student_id === '' || student_id === 'null') delete params.student_id;
     return this.http.get(this.baseUrl + 'api/questionnaire/result', {
       params: params
     })
   }
-   getStudentTestResultList(student_id:any): Observable<any> {
+  getStudentTestResultList(student_id: any): Observable<any> {
     let params: any = {
-      student_id:student_id
+      student_id: student_id
     };
     if (student_id === '' || student_id === 'null') delete params.student_id;
     return this.http.get(this.baseUrl + 'api/questionnaire/answer-list', {
@@ -420,5 +420,56 @@ export class AdminService {
     });
 
   }
+  uploadStudent(data: any): Observable<any> {
+    return this.http.post(this.baseUrl + 'api/student/student-upload', data);
+  }
+  getAllTestResultById(page: any, perPage: any, fromDate: any, toDate: any, student_id: any, final_result: any, key: any) {
+    let params: any = {
+      'page': page,
+      'perPage': perPage,
+      'fromDate': fromDate,
+      'toDate': toDate,
+      student_id: student_id,
+      'final_result': final_result,
+      key: key,
+    };
+    // Check if page or perPage is empty and remove them from params if so
+    if (page === '' || perPage === '') {
+      delete params.page;
+      delete params.perPage;
+    }
 
+    if (fromDate == '' || toDate == '') {
+      delete params['fromDate'];
+      delete params['toDate'];
+    }
+    if (student_id === '' || student_id === 'null') delete params.student_id;
+    if (final_result === '' || final_result === 'null') delete params.final_result;
+    if (key === '' || key === 'null') delete params.key;
+    return this.http.get(this.baseUrl + 'api/questionnaire/result', {
+      params: params
+    })
+  }
+  // Test All Test Result download
+  downloadAllTestResultList(fromDate: any, toDate: any, student_id: any, final_result: any, key: any): Observable<any> {
+    let params = {
+      'fromDate': fromDate,
+      'toDate': toDate,
+      student_id: student_id,
+      'final_result': final_result,
+      key: key,
+    };
+
+    if (fromDate == '' || toDate == '') {
+      delete params['fromDate'];
+      delete params['toDate'];
+    }
+    if (student_id === '' || student_id === 'null') delete params.student_id;
+    if (final_result === '' || final_result === 'null') delete params.final_result;
+    if (key === '' || key === 'null') delete params.key;
+    return this.http.get(this.baseUrl + 'api/questionnaire/result-download', {
+      responseType: 'blob',
+      params: params
+    })
+  }
 }

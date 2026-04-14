@@ -72,6 +72,18 @@
               </div>
                <div class="col-4 mb-3">
                 <div class="form-group">
+                  <label for="phone_number">Cut Off:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="phone_number"
+                    [value]="allTestDetails.cut_off || '--'"
+                    [disabled]="true"
+                  />
+                </div>
+              </div>
+               <div class="col-4 mb-3">
+                <div class="form-group">
                   <label for="Test_name">Start Time:</label>
                   <input
                     type="text"

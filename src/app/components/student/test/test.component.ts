@@ -21,7 +21,7 @@ export class TestComponent implements OnInit {
   searchControl: FormControl = new FormControl('');
   student_id: any;
   selectedTest: any;
-
+userDetails: any;
   constructor(
     private _adminService: AdminService,
     private _tosterService: ToastrService, private router: Router) {
@@ -29,6 +29,9 @@ export class TestComponent implements OnInit {
 
   ngOnInit(): void {
     const data = localStorage.getItem('user')
+  if (data) {
+    this.userDetails = JSON.parse(data);
+  }
 
     this.student_id = data ? JSON.parse(data)?.student_id : null;
     this.getQuestionnaireList();
@@ -120,7 +123,6 @@ export class TestComponent implements OnInit {
 openInstructionModal(item: any) {
 
   this.selectedTest = item;
-  console.log(this.selectedTest);
 
   const now = new Date();
 
@@ -270,5 +272,12 @@ showLiveSwal(item: any) {
         }
       }
     ]);
+  }
+    logout() {
+      console.log("Logout clicked");
+      
+    localStorage.clear();
+    this.router.navigate([''])
+
   }
 }
