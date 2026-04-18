@@ -1,16 +1,23 @@
 <div class="container-fuild">
   <div class="row h-100 m-0">
     <div class="side-bar">
-      <div class="logo p-3 text-center cursor-pointer">
+      <!-- <div class="logo p-3 text-center cursor-pointer">
         <img
           src="assets/image/Tecstaq-new-logo-transeparent.png"
           alt="tecstaq-test"
-          [routerLink]="[
+          
+        />
+      </div> -->
+      <div class="logo p-3 d-flex justify-content-center">
+      <img
+        src="../../../../assets/image/Tecstaq-new-logo-transeparent.png"
+        class="logo-img"
+        [routerLink]="[
             '/admin',
             { outlets: { admin_menu: ['admin-dashboard'] } },
           ]"
-        />
-      </div>
+      />
+    </div>
       <div class="menu">
         <ul class="nav">
           <!-- Dashboard -->

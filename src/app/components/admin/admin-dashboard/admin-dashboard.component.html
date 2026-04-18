@@ -1,1 +1,209 @@
-<p>admin-dashboard works!</p>
+<div class="container-fluid p-0">
+  <div class="row justify-content-center mx-3">
+    <div class="col-md-12 m-2">
+      <div class="row mt-1">
+        <!-- 🔵 GROUP -->
+        <div class="col-12 col-sm-6 col-md-3">
+          <div class="dashboard-card group">
+            <div class="icon-box">
+              <i class="fa fa-users"></i>
+            </div>
+            <div class="content">
+              <h3>{{ GroupCount || 0 }}</h3>
+              <b>Groups</b>
+            </div>
+          </div>
+        </div>
+
+        <!-- 🟢 TEST -->
+        <div class="col-12 col-sm-6 col-md-3">
+          <div class="dashboard-card test">
+            <div class="icon-box">
+              <i class="fa fa-file-text"></i>
+            </div>
+            <div class="content">
+              <h3>{{ testCount || 0 }}</h3>
+              <b>Tests</b>
+            </div>
+          </div>
+        </div>
+
+        <!-- 🟣 STUDENT -->
+        <div class="col-12 col-sm-6 col-md-3">
+          <div class="dashboard-card student">
+            <div class="icon-box">
+              <i class="fa fa-graduation-cap"></i>
+            </div>
+            <div class="content">
+              <h3>{{ StudentCount || 0 }}</h3>
+              <b>Students</b>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="row mt-3">
+        <div class="col-md-12">
+          <div class="card p-2 chart-container">
+            <canvas
+              #myChart
+              style="border: 1px solid #3f51b5 !important; padding: 25px"
+            ></canvas>
+          </div>
+        </div>
+      </div> -->
+      <hr class="mb-0" />
+      <div class="row">
+        <div class="top-bar">
+          <div class="tab-buttons">
+            <!-- PASS -->
+            <button
+              class="tab-btn"
+              [class.active]="isPassActive()"
+              (click)="setTab('Pass')"
+            >
+              Pass Students
+            </button>
+
+            <!-- TAB SWITCH -->
+            <button
+              class="tab-btn"
+              [class.active]="isTabSwitchActive()"
+              (click)="setTab('Tab Switch Detected')"
+            >
+              Tab Switch Detected
+            </button>
+          </div>
+
+          <!-- SEARCH -->
+          <div class="search-box">
+            <i class="fa fa-search"></i>
+            <input
+              type="search"
+              placeholder="Search ..."
+              #searchInput
+              (input)="getSearchInput(searchInput.value)"
+            />
+          </div>
+        </div>
+
+        <!-- 🔥 TABLE CARD -->
+        <div class="table-card main-container">
+          <div class="table-responsive">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th scope="col">Sr.No</th>
+                  <th scope="col" class="text-center">Options</th>
+                  <!-- <th scope="col" class="text-center">Group</th> -->
+                  <th scope="col" class="text-center">Test</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Attempted Questions</th>
+                  <th scope="col">Correct Questions</th>
+                  <th scope="col">Wrong Questions</th>
+                  <th scope="col">Obtained Marks</th>
+                  <th scope="col">Total Marks</th>
+                  <th scope="col">Result</th>
+                  <th scope="col">Status</th>
+                </tr>
+              </thead>
+
+              <tbody class="body-data">
+                <tr *ngFor="let item of allReportList; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td class="text-center">
+                    <div class="btn-group dropright cursor-pointer">
+                      <i
+                        class="bi bi-three-dots-vertical dropdown-toggle-split"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                      ></i>
+                      <div class="dropdown-menu short-dropdown-menu">
+                        <a
+                          class="dropdown-item cursor-pointer"
+                          [routerLink]="[
+                            '/admin',
+                            {
+                              outlets: {
+                                admin_menu: 'test-result/' + item.student_id,
+                              },
+                            },
+                          ]"
+                        >
+                          <i class="bi bi-eye fs-5"></i>
+                          <small> View</small>
+                        </a>
+                      </div>
+                    </div>
+                  </td>
+                  <!-- <td class="">
+                                            <mat-slide-toggle (change)="changeEvent($event, item.designation_id)"
+                                                class="example-margin small-toggle cursor-pointer"
+                                                [checked]="item.status == true">
+                                            </mat-slide-toggle>
+                                        </td> -->
+                  <!-- <td class="wrap-text text-center">{{ item.group_name || "--" }}</td> -->
+                  <td class="wrap-text">
+                    {{ (item.test_name | titlecase) || "--" }}
+                  </td>
+                  <td class="wrap-text">
+                    {{ (item.student_name | titlecase) || "--" }}
+                  </td>
+                  <td class="wrap-text">
+                    {{ item.attempted_questions || "--" }}
+                  </td>
+                  <td class="wrap-text">
+                    {{ item.correct_questions || "--" }}
+                  </td>
+                  <td class="wrap-text">
+                    {{ item.wrong_questions || "--" }}
+                  </td>
+                  <td class="wrap-text">{{ item.correct_marks || "--" }}</td>
+                  <td class="wrap-text">{{ item.total_marks || "--" }}</td>
+                  <td class="wrap-text text-center fw-bold ">
+                    <span
+                      [ngClass]="{
+                        'badge pass-badge':
+                          item.final_result?.toLowerCase() === 'pass',
+                        'badge fail-badge':
+                          item.final_result?.toLowerCase() === 'fail',
+                      }"
+                    >
+                      {{ (item.final_result | titlecase) || "--" }}
+                    </span>
+                  </td>
+                  <td class="wrap-text text-center">
+                    <small
+                      [ngClass]="{
+                        'text-danger':
+                          item.tab_status === 'Tab Switch Detected',
+                      }"
+                    >
+                      {{ (item.tab_status | titlecase) || "--" }}
+                    </small>
+                  </td>
+                </tr>
+                <tr
+                  class="fw-bold text-center"
+                  *ngIf="allReportList.length === 0"
+                >
+                  <td colspan="10" class="text-danger">No Data Available</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- PAGINATOR -->
+          <mat-paginator
+            [length]="total"
+            [pageSize]="perPage"
+            [pageSizeOptions]="[5, 10, 25, 100]"
+            (page)="onPageChange($event)"
+          >
+          </mat-paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

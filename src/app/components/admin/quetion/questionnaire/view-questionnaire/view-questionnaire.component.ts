@@ -29,7 +29,7 @@ export class ViewQuestionnaireComponent  implements OnInit {
   }
   //get Questionnaire by id
   getQuestionnaireById(id: any) {
-    this._adminService.getQuestionnaireById(id).subscribe({
+    this._adminService.getQuestionnaireAdminById(id).subscribe({
       next: (result: any) => {
         this.allQuestionnaireDetails = result.data;
       }

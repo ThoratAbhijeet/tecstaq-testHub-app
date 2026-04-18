@@ -364,6 +364,10 @@ export class AdminService {
   getQuestionnaireById(id: any) {
     return this.http.get(this.baseUrl + 'api/questionnaire/' + id)
   }
+   //Questionnaire admin get by id ...
+  getQuestionnaireAdminById(id: any) {
+    return this.http.get(this.baseUrl + 'api/questionnaire/admin/' + id)
+  }
   // Questionnaire enable disable
   QuestionnaireEnableDisable(id: any, status: any,): Observable<any> {
     const body = { status: status };
@@ -423,7 +427,7 @@ export class AdminService {
   uploadStudent(data: any): Observable<any> {
     return this.http.post(this.baseUrl + 'api/student/student-upload', data);
   }
-  getAllTestResultById(page: any, perPage: any, fromDate: any, toDate: any, student_id: any, final_result: any, key: any) {
+  getAllTestResultById(page: any, perPage: any, fromDate: any, toDate: any, student_id: any, final_result: any,tab_status:any, key: any) {
     let params: any = {
       'page': page,
       'perPage': perPage,
@@ -431,6 +435,7 @@ export class AdminService {
       'toDate': toDate,
       student_id: student_id,
       'final_result': final_result,
+      'tab_status':tab_status,
       key: key,
     };
     // Check if page or perPage is empty and remove them from params if so
@@ -445,18 +450,20 @@ export class AdminService {
     }
     if (student_id === '' || student_id === 'null') delete params.student_id;
     if (final_result === '' || final_result === 'null') delete params.final_result;
+     if (tab_status === '' || tab_status === 'null') delete params.tab_status;
     if (key === '' || key === 'null') delete params.key;
     return this.http.get(this.baseUrl + 'api/questionnaire/result', {
       params: params
     })
   }
   // Test All Test Result download
-  downloadAllTestResultList(fromDate: any, toDate: any, student_id: any, final_result: any, key: any): Observable<any> {
+  downloadAllTestResultList(fromDate: any, toDate: any, student_id: any, final_result: any,tab_status:any, key: any): Observable<any> {
     let params = {
       'fromDate': fromDate,
       'toDate': toDate,
       student_id: student_id,
       'final_result': final_result,
+      'tab_status': tab_status,
       key: key,
     };
 
@@ -466,10 +473,23 @@ export class AdminService {
     }
     if (student_id === '' || student_id === 'null') delete params.student_id;
     if (final_result === '' || final_result === 'null') delete params.final_result;
+     if (tab_status === '' || tab_status === 'null') delete params.tab_status;
     if (key === '' || key === 'null') delete params.key;
     return this.http.get(this.baseUrl + 'api/questionnaire/result-download', {
       responseType: 'blob',
       params: params
     })
+  }
+   // get Student count api
+  getAllStudentCount(): Observable<any> {
+    return this.http.get(this.baseUrl + 'api/student/student-count')
+  }
+   // get Test count api
+  getAllTestCount(): Observable<any> {
+    return this.http.get(this.baseUrl + 'api/test/test-count')
+  }
+    // get Group count api
+  getAllGroupCount(): Observable<any> {
+    return this.http.get(this.baseUrl + 'api/group/group-count')
   }
 }

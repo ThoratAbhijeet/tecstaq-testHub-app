@@ -105,9 +105,17 @@
 </div>
 </form>
       <!-- Buttons -->
-      <div class="mt-3">
+     <div class="mt-3">
 
-  <!-- Save & Next (sirf last ke alawa sab pe) -->
+  <!-- Skip Button (har question pe dikhega except last optional) -->
+  <button 
+    *ngIf="currentQuestionIndex < allQuestionnaireDetails.questionnaireHeader.length - 1"
+    class="btn btn-warning me-2" 
+    (click)="skipQuestion()">
+    Skip
+  </button>
+
+  <!-- Save & Next -->
   <button 
     *ngIf="currentQuestionIndex < allQuestionnaireDetails.questionnaireHeader.length - 1"
     class="btn btn-success me-2" 
@@ -115,7 +123,7 @@
     Save & Next
   </button>
 
-  <!-- Submit (sirf last question pe) -->
+  <!-- Submit (last question) -->
   <button 
     *ngIf="currentQuestionIndex === allQuestionnaireDetails.questionnaireHeader.length - 1"
     class="btn btn-primary" 

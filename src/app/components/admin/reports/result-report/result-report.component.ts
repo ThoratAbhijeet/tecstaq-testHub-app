@@ -67,7 +67,7 @@ final_result = '';
     // this.group_id = this.form.value.group_id;
     this.student_id = this.form.value.student_id;
     this.final_result = this.form.value.final_result;
-    this._adminService.getAllTestResultById(this.page, this.perPage, this.fromDate, this.toDate,this.student_id, this.final_result, this.searchKey).subscribe({
+    this._adminService.getAllTestResultById(this.page, this.perPage, this.fromDate, this.toDate,this.student_id, this.final_result,'', this.searchKey).subscribe({
       next: (res: any) => {
         if (res.data.length > 0) {
           this.allReportList = res.data;
@@ -101,7 +101,7 @@ final_result = '';
     this.toDate = this.form.value.toDate;
     this.student_id = this.form.value.student_id;
     this.final_result = this.form.value.final_result;
-    this._adminService.downloadAllTestResultList(this.fromDate, this.toDate, this.student_id, this.final_result, this.searchKey).subscribe({
+    this._adminService.downloadAllTestResultList(this.fromDate, this.toDate, this.student_id, this.final_result, '', this.searchKey).subscribe({
       next: (blob: Blob) => {
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');

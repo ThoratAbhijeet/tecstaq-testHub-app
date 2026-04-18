@@ -25,7 +25,7 @@ export class AddUpdateStudentTestComponent implements OnInit {
   timerInterval: any;
   student_name: any;
   student_id: any;
-  test_id :any;
+  test_id: any;
   currentQuestionIndex = 0;
   tabSwitched = false;
   isSubmitted = false;
@@ -52,7 +52,7 @@ export class AddUpdateStudentTestComponent implements OnInit {
     }
     document.addEventListener('visibilitychange', this.handleVisibilityChange);
     this.createForm();
-    
+
   }
   ngOnDestroy(): void {
     document.removeEventListener('visibilitychange', this.handleVisibilityChange);
@@ -64,8 +64,9 @@ export class AddUpdateStudentTestComponent implements OnInit {
   createForm() {
     this.QuestionForm = this.fb.group({
       student_id: [this.student_id],
-      test_id :[''],
-      answer: this.fb.array([])
+      test_id: [''],
+      answer: this.fb.array([]),
+      tab_status: ['']
     });
   }
 
@@ -101,7 +102,7 @@ export class AddUpdateStudentTestComponent implements OnInit {
     this._adminService.getQuestionnaireById(id).subscribe({
       next: (result: any) => {
         this.allQuestionnaireDetails = result.data;
-        this.test_id =  this.allQuestionnaireDetails.test_id;
+        this.test_id = this.allQuestionnaireDetails.test_id;
         this.controls['test_id'].patchValue(this.test_id);
         this.initializeAnswers();
         this.startTimer();
@@ -115,8 +116,11 @@ export class AddUpdateStudentTestComponent implements OnInit {
   getOptionLabel(index: number): string {
     return String.fromCharCode(97 + index); // a, b, c, d
   }
-  submit() {
 
+  submit() {
+ this.QuestionForm.patchValue({
+        tab_status: 'Log Out'
+      });
     Swal.fire({
       title: 'Are you sure?',
       text: 'Do you want to submit the test?',
@@ -136,7 +140,9 @@ export class AddUpdateStudentTestComponent implements OnInit {
 
         this.isSubmitted = true; // ✅ stop auto submit
         clearInterval(this.timerInterval); // ✅ stop timer
-
+        this.QuestionForm.patchValue({
+          tab_status: 'Log Out'
+        });
         let data = this.QuestionForm.value;
 
         if (this.QuestionForm.valid) {
@@ -224,6 +230,11 @@ export class AddUpdateStudentTestComponent implements OnInit {
       this.currentQuestionIndex++;
     }
   }
+  skipQuestion() {
+    if (this.currentQuestionIndex < this.allQuestionnaireDetails.questionnaireHeader.length - 1) {
+      this.currentQuestionIndex++;
+    }
+  }
   selectAnswer(index: number, option: any) {
 
     const currentQuestion =
@@ -285,6 +296,9 @@ export class AddUpdateStudentTestComponent implements OnInit {
         this.isSubmitted = true;
         clearInterval(this.timerInterval);
         this.remainingTime = 'Time Up ⛔';
+ this.QuestionForm.patchValue({
+    tab_status: 'Time Out'
+  });
         this.autoSubmitTest();
         return;
       }
@@ -310,7 +324,7 @@ export class AddUpdateStudentTestComponent implements OnInit {
       allowEscapeKey: false,
       allowEnterKey: false
     });
-
+   
     let data = this.QuestionForm.value;
 
     this._sharedService.setLoading(true);
@@ -345,7 +359,7 @@ export class AddUpdateStudentTestComponent implements OnInit {
                   '/student',
                   {
                     outlets: {
-                      student_menu: ['test-result' ]
+                      student_menu: ['test-result']
                     }
                   }
                 ]);
@@ -451,7 +465,7 @@ export class AddUpdateStudentTestComponent implements OnInit {
               
               <div style="flex:1">
                 <p style="margin:0; font-weight:bold;">
-                  <i class="bi bi-bar-chart"></i><br>Attempted
+                  <i class="bi bi-list-ol"></i><br>Total Questions
                 </p>
                 <p>${data.attempted_questions}</p>
               </div>
@@ -490,13 +504,13 @@ export class AddUpdateStudentTestComponent implements OnInit {
             // ✅ View Answers
             if (result.isConfirmed) {
               this.router.navigate([
-                  '/student',
-                  {
-                    outlets: {
-                      student_menu: ['test-result']
-                    }
+                '/student',
+                {
+                  outlets: {
+                    student_menu: ['test-result']
                   }
-                ]);
+                }
+              ]);
             }
 
             // ✅ Exit (Logout)
@@ -523,6 +537,9 @@ export class AddUpdateStudentTestComponent implements OnInit {
 
     // 👉 USER WAPAS AAYA
     if (this.examStarted && !document.hidden && this.tabSwitched && !this.isSubmitted) {
+      this.QuestionForm.patchValue({
+        tab_status: 'Tab Switch Detected'
+      });
 
       // ⚠️ WARNING SHOW
       Swal.fire({

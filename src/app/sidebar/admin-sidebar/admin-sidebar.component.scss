@@ -10,6 +10,22 @@
         width: 150px;
       }
   }
+  .logo-img {
+  width: 100%;   /* 👈 aur bada */
+  padding: 10px;
+
+  background: linear-gradient(135deg, #ffffff, #e0e7ff);
+  border-radius: 14px;
+
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+
+  transition: 0.3s;
+}
+
+.logo-img:hover {
+  transform: scale(1.05);
+}
+
   .side-bar{
     background-color: #222950;
     color: aliceblue;

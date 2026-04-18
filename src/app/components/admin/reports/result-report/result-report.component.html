@@ -143,7 +143,7 @@
                     <th scope="col">Obtained Marks</th>
                     <th scope="col">Total Marks</th>
                     <th scope="col">Result</th>
-                    <!-- <th scope="col">Approve</th> -->
+                    <th scope="col">Status</th>
                   </tr>
                 </thead>
                 <tbody class="body-data">
@@ -199,16 +199,28 @@
                     </td>
                     <td class="wrap-text">{{ item.correct_marks || "--" }}</td>
                     <td class="wrap-text">{{ item.total_marks || "--" }}</td>
-                   <td class="wrap-text text-center fw-bold fs-6">
-  <span
-    [ngClass]="{
-      'badge pass-badge': item.final_result?.toLowerCase() === 'pass',
-      'badge fail-badge': item.final_result?.toLowerCase() === 'fail'
-    }"
-  >
-    {{ (item.final_result | titlecase) || '--' }}
-  </span>
-</td>
+                    <td class="wrap-text text-center fw-bold ">
+                      <span
+                        [ngClass]="{
+                          'badge pass-badge':
+                            item.final_result?.toLowerCase() === 'pass',
+                          'badge fail-badge':
+                            item.final_result?.toLowerCase() === 'fail',
+                        }"
+                      >
+                        {{ (item.final_result | titlecase) || "--" }}
+                      </span>
+                    </td>
+                    <td class="wrap-text text-center">
+                    <small
+                      [ngClass]="{
+                        'text-danger':
+                          item.tab_status === 'Tab Switch Detected',
+                      }"
+                    >
+                      {{ (item.tab_status | titlecase) || "--" }}
+                    </small>
+                  </td>
                     <!-- <td class="wrap-text text-center">{{ (item.Student_status | titlecase) || "--" }}</td> -->
                   </tr>
                   <tr
