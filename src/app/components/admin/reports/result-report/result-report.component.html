@@ -135,7 +135,7 @@
                     <th scope="col">Sr.No</th>
                     <th scope="col" class="text-center">Options</th>
                     <!-- <th scope="col" class="text-center">Group</th> -->
-                    <th scope="col" class="text-center">Test</th>
+                    <!-- <th scope="col" class="text-center">Test</th> -->
                     <th scope="col">Name</th>
                     <th scope="col">Attempted Questions</th>
                     <th scope="col">Correct Questions</th>
@@ -182,9 +182,9 @@
                                             </mat-slide-toggle>
                                         </td> -->
                     <!-- <td class="wrap-text text-center">{{ item.group_name || "--" }}</td> -->
-                    <td class="wrap-text">
+                    <!-- <td class="wrap-text">
                       {{ (item.test_name | titlecase) || "--" }}
-                    </td>
+                    </td> -->
                     <td class="wrap-text">
                       {{ (item.student_name | titlecase) || "--" }}
                     </td>
@@ -227,7 +227,7 @@
                     class="fw-bold text-center"
                     *ngIf="allReportList.length === 0"
                   >
-                    <td colspan="10" class="text-danger">No Data Available</td>
+                    <td colspan="12" class="text-danger">No Data Available</td>
                   </tr>
                 </tbody>
               </table>
