@@ -41,19 +41,45 @@ export class AddUpdateStudentTestComponent implements OnInit {
     private router: Router
 
   ) { }
-  ngOnInit(): void {
-    const data = localStorage.getItem('user')
-    this.student_name = data ? JSON.parse(data)?.user_name : null;
-    this.student_id = data ? JSON.parse(data)?.student_id : null;
-    //activate route get id
-    this.QuestionnaireId = this.url.snapshot.params['id'];
-    if (this.QuestionnaireId) {
-      this.getQuestionnaireById(this.QuestionnaireId)
-    }
-    document.addEventListener('visibilitychange', this.handleVisibilityChange);
-    this.createForm();
+ ngOnInit(): void {
+  // 🔥 prevent back
+  history.pushState(null, '', location.href);
+  window.onpopstate = () => {
+    history.pushState(null, '', location.href);
+  };
 
+  const activeSwal = localStorage.getItem('activeSwal');
+  const isSubmitted = localStorage.getItem('examSubmitted');
+
+  // ✅ agar already submit ho gaya
+  if (activeSwal === 'submitted' && isSubmitted === 'true') {
+
+    // 🔥 RESULT FETCH KARO
+    const data = localStorage.getItem('user');
+    this.student_id = data ? JSON.parse(data)?.student_id : null;
+
+    this.getTestResultById(this.student_id); // ✅ ADD THIS
+
+    // 🔥 Swal (optional)
+    this.showResultSwal();
+
+    return; // ❌ stop exam load
   }
+
+  // normal flow
+  const data = localStorage.getItem('user')
+  this.student_name = data ? JSON.parse(data)?.user_name : null;
+  this.student_id = data ? JSON.parse(data)?.student_id : null;
+
+  this.QuestionnaireId = this.url.snapshot.params['id'];
+
+  if (this.QuestionnaireId) {
+    this.getQuestionnaireById(this.QuestionnaireId)
+  }
+
+  document.addEventListener('visibilitychange', this.handleVisibilityChange);
+  this.createForm();
+}
   ngOnDestroy(): void {
     document.removeEventListener('visibilitychange', this.handleVisibilityChange);
 
@@ -104,8 +130,10 @@ export class AddUpdateStudentTestComponent implements OnInit {
         this.allQuestionnaireDetails = result.data;
         this.test_id = this.allQuestionnaireDetails.test_id;
         this.controls['test_id'].patchValue(this.test_id);
-        this.initializeAnswers();
-        this.startTimer();
+    
+      this.initializeAnswers();
+      this.restoreState();
+      this.startTimer();
       }
     })
   }
@@ -153,7 +181,8 @@ export class AddUpdateStudentTestComponent implements OnInit {
             next: (res: any) => {
 
               if (res.success === true || res.status == 200) {
-
+               localStorage.setItem('examSubmitted', 'true');
+               localStorage.setItem('activeSwal', 'submitted');
                 Swal.fire({
                   icon: 'success',
                   title: 'Submitted!',
@@ -235,6 +264,15 @@ export class AddUpdateStudentTestComponent implements OnInit {
       this.currentQuestionIndex++;
     }
   }
+  prevQuestion() {
+
+  if (this.currentQuestionIndex > 0) {
+    this.currentQuestionIndex--;
+  }
+
+  // ✅ index save karo (refresh ke liye)
+  localStorage.setItem('examIndex', this.currentQuestionIndex.toString());
+}
   selectAnswer(index: number, option: any) {
 
     const currentQuestion =
@@ -278,6 +316,9 @@ export class AddUpdateStudentTestComponent implements OnInit {
   }
 
   startTimer() {
+     if (localStorage.getItem('examSubmitted') === 'true') {
+    return;
+  }
     const endTime = this.getEndDateTime();
     this.examStarted = true;
 
@@ -313,6 +354,9 @@ export class AddUpdateStudentTestComponent implements OnInit {
     }, 1000);
   }
   autoSubmitTest() {
+     if (localStorage.getItem('examSubmitted') === 'true') {
+    return;
+  }
     Swal.fire({
       icon: 'warning',
       title: 'Time Up ⛔',
@@ -333,7 +377,8 @@ export class AddUpdateStudentTestComponent implements OnInit {
       next: (res: any) => {
 
         if (res.success === true || res.status == 200) {
-
+  localStorage.setItem('examSubmitted', 'true')
+  localStorage.setItem('activeSwal', 'submitted');
           // ✅ RESULT BUTTON SWAL
           Swal.fire({
             icon: 'success',
@@ -570,29 +615,89 @@ export class AddUpdateStudentTestComponent implements OnInit {
       this.tabSwitched = true;
     }
   }
-  restoreState() {
+restoreState() {
 
-    const savedAnswers = localStorage.getItem('examAnswers');
-    const savedIndex = localStorage.getItem('examIndex');
+  const savedAnswers = localStorage.getItem('examAnswers');
+  const savedIndex = localStorage.getItem('examIndex');
+  const savedNotAnswered = localStorage.getItem('notAnswered');
+  const savedAnswered = localStorage.getItem('answered');
 
-    if (savedAnswers) {
-      const parsed = JSON.parse(savedAnswers);
+  this.answeredQuestions = [];
+  this.notAnsweredQuestions = [];
+  this.selectedAnswers = {};
 
-      parsed.forEach((ans: any, i: number) => {
-        if (this.answerArray.at(i)) {
-          this.answerArray.at(i).patchValue(ans);
+  // ✅ restore answers
+  if (savedAnswers) {
+    const parsed = JSON.parse(savedAnswers);
 
-          if (ans.questionnaire_footer_id !== 0) {
-            this.selectedAnswers[i] = ans.questionnaire_footer_id;
+    parsed.forEach((ans: any, i: number) => {
+      if (this.answerArray.at(i)) {
+
+        this.answerArray.at(i).patchValue(ans);
+
+        if (ans.questionnaire_footer_id !== 0) {
+          this.selectedAnswers[i] = ans.questionnaire_footer_id;
+
+          if (!this.answeredQuestions.includes(i)) {
             this.answeredQuestions.push(i);
           }
         }
-      });
-    }
-
-    if (savedIndex) {
-      this.currentQuestionIndex = Number(savedIndex);
-    }
+      }
+    });
   }
 
+  // ✅ restore red (not answered)
+  if (savedNotAnswered) {
+    this.notAnsweredQuestions = JSON.parse(savedNotAnswered);
+  }
+
+  // ✅ restore green (answered)
+  if (savedAnswered) {
+    this.answeredQuestions = JSON.parse(savedAnswered);
+  }
+
+  // ✅ restore index
+  if (savedIndex) {
+    this.currentQuestionIndex = Number(savedIndex);
+  }
+}
+clearExamStorage() {
+  localStorage.removeItem('examAnswers');
+  localStorage.removeItem('examIndex');
+  localStorage.removeItem('examEndTime');
+  localStorage.removeItem('examSubmitted');
+  localStorage.removeItem('activeSwal');
+}
+showResultSwal() {
+
+  Swal.fire({
+    icon: 'success',
+    title: 'Submitted!',
+    text: 'Your test has been submitted successfully.',
+    showCancelButton: true,
+    allowOutsideClick: false,
+    allowEscapeKey: false,
+    allowEnterKey: false,
+
+    confirmButtonText: 'View Answers',
+    cancelButtonText: 'Exit',
+
+    confirmButtonColor: '#198754',
+    cancelButtonColor: '#dc3545'
+  }).then((result) => {
+
+    if (result.isConfirmed) {
+      this.router.navigate([
+        '/student',
+        {
+          outlets: {
+            student_menu: ['test-result']
+          }
+        }
+      ]);
+      this.clearExamStorage();
+    } 
+
+  });
+}
 }
