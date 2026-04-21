@@ -340,7 +340,7 @@ export class AddUpdateStudentTestComponent implements OnInit {
  this.QuestionForm.patchValue({
     tab_status: 'Time Out'
   });
-        this.autoSubmitTest();
+        this.autoSubmitTest('time');
         return;
       }
 
@@ -353,91 +353,197 @@ export class AddUpdateStudentTestComponent implements OnInit {
 
     }, 1000);
   }
-  autoSubmitTest() {
-     if (localStorage.getItem('examSubmitted') === 'true') {
+  // autoSubmitTest(reason: 'time' | 'tab' | 'manual' = 'manual') {
+  //    if (localStorage.getItem('examSubmitted') === 'true') {
+  //   return;
+  // }
+  //   Swal.fire({
+  //     icon: 'warning',
+  //     title: 'Time Up ⛔',
+  //     text: 'Your test is being submitted automatically...',
+  //     timer: 2000,
+  //     showConfirmButton: false,
+  //     // ✅ ADD THIS
+  //     allowOutsideClick: false,
+  //     allowEscapeKey: false,
+  //     allowEnterKey: false
+  //   });
+   
+  //   let data = this.QuestionForm.value;
+
+  //   this._sharedService.setLoading(true);
+
+  //   this._adminService.addQuestionnaireTestSubmit(data).subscribe({
+  //     next: (res: any) => {
+
+  //       if (res.success === true || res.status == 200) {
+  // localStorage.setItem('examSubmitted', 'true')
+  // localStorage.setItem('activeSwal', 'submitted');
+  //         // ✅ RESULT BUTTON SWAL
+  //         Swal.fire({
+  //           icon: 'success',
+  //           title: 'Submitted!',
+  //           text: 'Your test has been submitted successfully.',
+  //           showCancelButton: true,
+  //           // ✅ ADD THIS
+  //           allowOutsideClick: false,
+  //           allowEscapeKey: false,
+  //           allowEnterKey: false,
+
+  //           confirmButtonText: '<i class="bi bi-eye"></i> View Answers',
+  //           cancelButtonText: '<i class="bi bi-box-arrow-right"></i> Exit',
+
+  //           confirmButtonColor: '#198754', // green
+  //           cancelButtonColor: '#dc3545'   // red
+  //         })
+  //           .then((result) => {
+
+  //             // ✅ View Answers
+  //             if (result.isConfirmed) {
+  //               this.router.navigate([
+  //                 '/student',
+  //                 {
+  //                   outlets: {
+  //                     student_menu: ['test-result']
+  //                   }
+  //                 }
+  //               ]);
+  //               localStorage.removeItem('examAnswers');
+  //               localStorage.removeItem('examIndex');
+  //               localStorage.removeItem('examEndTime');
+  //             }
+
+  //             // ✅ Exit (Logout)
+  //             else if (result.dismiss === Swal.DismissReason.cancel) {
+  //               this.logout();
+  //             }
+
+  //           });
+
+  //       } else {
+  //         this._tosterService.warning(res.message);
+  //       }
+
+  //       this._sharedService.setLoading(false);
+  //     },
+
+  //     error: (err: any) => {
+  //       this._sharedService.setLoading(false);
+
+  //       if (err.error.status == 422) {
+  //         this._tosterService.warning(err.error.message);
+  //       } else {
+  //         this._tosterService.error(err.error.error);
+  //       }
+  //     }
+  //   });
+  // }
+  autoSubmitTest(reason: 'time' | 'tab' | 'manual' = 'manual') {
+
+  // 🔒 prevent multiple submit
+  if (localStorage.getItem('examSubmitted') === 'true') {
     return;
   }
-    Swal.fire({
-      icon: 'warning',
-      title: 'Time Up ⛔',
-      text: 'Your test is being submitted automatically...',
-      timer: 2000,
-      showConfirmButton: false,
-      // ✅ ADD THIS
-      allowOutsideClick: false,
-      allowEscapeKey: false,
-      allowEnterKey: false
-    });
-   
-    let data = this.QuestionForm.value;
 
-    this._sharedService.setLoading(true);
+  // ⛔ Top Warning Swal
+  Swal.fire({
+    icon: 'warning',
+    title: reason === 'tab' ? 'Tab Switch Detected ⛔' : 'Time Up ⛔',
+    text: 'Your test is being submitted automatically...',
+    timer: 2000,
+    showConfirmButton: false,
+    allowOutsideClick: false,
+    allowEscapeKey: false,
+    allowEnterKey: false
+  });
 
-    this._adminService.addQuestionnaireTestSubmit(data).subscribe({
-      next: (res: any) => {
+  let data = this.QuestionForm.value;
 
-        if (res.success === true || res.status == 200) {
-  localStorage.setItem('examSubmitted', 'true')
-  localStorage.setItem('activeSwal', 'submitted');
-          // ✅ RESULT BUTTON SWAL
-          Swal.fire({
-            icon: 'success',
-            title: 'Submitted!',
-            text: 'Your test has been submitted successfully.',
-            showCancelButton: true,
-            // ✅ ADD THIS
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-            allowEnterKey: false,
+  this._sharedService.setLoading(true);
 
-            confirmButtonText: '<i class="bi bi-eye"></i> View Answers',
-            cancelButtonText: '<i class="bi bi-box-arrow-right"></i> Exit',
+  this._adminService.addQuestionnaireTestSubmit(data).subscribe({
 
-            confirmButtonColor: '#198754', // green
-            cancelButtonColor: '#dc3545'   // red
-          })
-            .then((result) => {
+    next: (res: any) => {
 
-              // ✅ View Answers
-              if (result.isConfirmed) {
-                this.router.navigate([
-                  '/student',
-                  {
-                    outlets: {
-                      student_menu: ['test-result']
-                    }
-                  }
-                ]);
-                localStorage.removeItem('examAnswers');
-                localStorage.removeItem('examIndex');
-                localStorage.removeItem('examEndTime');
+      if (res.success === true || res.status == 200) {
+
+        // ✅ Mark submitted
+        localStorage.setItem('examSubmitted', 'true');
+        localStorage.setItem('activeSwal', 'submitted');
+
+        // 🎯 RESULT SWAL
+        Swal.fire({
+          icon: 'success',
+          title: 'Submitted!',
+
+          // ✅ Dynamic message
+          text: reason === 'tab'
+            ? 'Tab switching detected. Your test has been submitted.'
+            : 'Your test has been submitted successfully.',
+
+          showCancelButton: true,
+
+          // ✅ ONLY TIME CASE → show View Answers
+          showConfirmButton: reason === 'time',
+
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          allowEnterKey: false,
+
+          confirmButtonText: '<i class="bi bi-eye"></i> View Answers',
+          cancelButtonText: '<i class="bi bi-box-arrow-right"></i> Exit',
+
+          confirmButtonColor: '#198754',
+          cancelButtonColor: '#dc3545'
+        })
+        .then((result) => {
+
+          // ✅ View Answers (ONLY TIME CASE)
+          if (result.isConfirmed && reason === 'time') {
+
+            this.router.navigate([
+              '/student',
+              {
+                outlets: {
+                  student_menu: ['test-result']
+                }
               }
+            ]);
 
-              // ✅ Exit (Logout)
-              else if (result.dismiss === Swal.DismissReason.cancel) {
-                this.logout();
-              }
+            localStorage.removeItem('examAnswers');
+            localStorage.removeItem('examIndex');
+            localStorage.removeItem('examEndTime');
+          }
 
-            });
+          // ✅ Exit (for all other cases)
+          else {
+            this.logout();
+          }
 
-        } else {
-          this._tosterService.warning(res.message);
-        }
+        });
 
-        this._sharedService.setLoading(false);
-      },
-
-      error: (err: any) => {
-        this._sharedService.setLoading(false);
-
-        if (err.error.status == 422) {
-          this._tosterService.warning(err.error.message);
-        } else {
-          this._tosterService.error(err.error.error);
-        }
+      } else {
+        this._tosterService.warning(res.message);
       }
-    });
-  }
+
+      this._sharedService.setLoading(false);
+    },
+
+    error: (err: any) => {
+
+      this._sharedService.setLoading(false);
+
+      if (err.error.status == 422) {
+        this._tosterService.warning(err.error.message);
+      } else {
+        this._tosterService.error(err.error.error);
+      }
+
+    }
+
+  });
+
+}
   isSelected(i: number, opt: any): boolean {
     return this.answerArray.at(i)?.value?.questionnaire_footer_id === opt.questionnaire_footer_id;
   }
@@ -605,7 +711,7 @@ export class AddUpdateStudentTestComponent implements OnInit {
 
       // 🔥 delay ke baad submit
       setTimeout(() => {
-        this.autoSubmitTest();
+        this.autoSubmitTest('tab');
       }, 1500);
     }
   }
